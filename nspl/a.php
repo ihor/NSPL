@@ -45,3 +45,8 @@ function zip(array $list1, array $list2)
 
     return $result;
 }
+
+function flatten(array $multidimensionalList)
+{
+    // @todo
+}

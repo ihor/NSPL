@@ -82,6 +82,25 @@ function ppartial($function)
 }
 
 /**
+ * Returns memoized version of given function
+ * @param callable $function
+ * @return callable
+ */
+function memoize($function)
+{
+    return function() use ($function) {
+        static $memory = array();
+        $args = func_get_args();
+        $key = serialize($args);
+        if (!isset($memory[$key]) && !array_key_exists($key, $memory)) {
+            $memory[$key] = call_user_func_array($function, $args);
+        }
+
+        return $memory[$key];
+    };
+}
+
+/**
  * @param mixed $args
  * @param callable[] $functions
  * @return mixed
@@ -106,6 +125,9 @@ class f
     static public $filter;
     static public $apply;
     static public $partial;
+    static public $lpartial;
+    static public $rpartial;
+    static public $memoize;
 
 }
 
@@ -113,4 +135,7 @@ f::$map = function($function, $sequence) { return f\map($function, $sequence); }
 f::$reduce = function($function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
 f::$filter = function($function, $sequence) { return f\filter($function, $sequence); };
 f::$apply = function($function, array $args = array()) { return f\apply($function, $args); };
-f::$partial = function($function) { return f\apply('f\partial', func_get_args()); };
+f::$partial = function($function) { return f\apply('f\partial', array_slice(func_get_args(), 1)); };
+f::$lpartial = function($function) { return f\apply('f\lpartial', array_slice(func_get_args(), 1)); };
+f::$rpartial = function($function) { return f\apply('f\ppartial', array_slice(func_get_args(), 1)); };
+f::$memoize = function($function) { return f\memoize($function); };

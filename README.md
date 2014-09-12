@@ -5,6 +5,6 @@ Sometimes when you notice that you are not happy with PHP API you write an imple
 FAQ
 ===
 #### What are the future plans for this project?
-Well... If this repo collects 10,000 ~~likes~~ stars I may rewrite NSPL as extension.
+Well... If this repo collects 10,000 ~~likes~~ stars I may rewrite NSPL as an extension.
 #### Why namespaces are lowercased and often contain one or two characters?
 Because it is expected that developers will type NSPL library methods very often and f\map(op::$inc, [1, 2, 3])) requires less typing than FuncTools\map(Operator::$inc, [1, 2, 3]) (and also looks better, and shorter).

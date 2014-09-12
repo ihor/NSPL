@@ -34,6 +34,59 @@ class op
     static public $not;
 
     static public $concat;
+
+    /**
+     * Returns a function that returns key value for a given array
+     * @param string $key Array key
+     * @return callable
+     */
+    static public function itemGetter($key)
+    {
+        return function($array) use ($key) {
+            return isset($array[$key]) || array_key_exists($key, $array)
+                ? $array[$key]
+                : null;
+        };
+    }
+
+    /**
+     * Returns a function that returns property value for a given object
+     * @param string $property Object property
+     * @return callable
+     */
+    static public function propertyGetter($property)
+    {
+        return function($object) use ($property) {
+            if (!property_exists($object, $property)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Object "%s" does not have public property "%s"',
+                    get_class($object),
+                    $property
+                ));
+            }
+            return $object->{$property};
+        };
+    }
+
+    /**
+     * Returns a function that returns method result for a given object on predefined arguments
+     * @param string $method Object method
+     * @param array $args
+     * @return callable
+     */
+    static public function methodCaller($method, array $args = array())
+    {
+        return function($object) use ($method, $args) {
+            if (!method_exists($object, $method)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Object "%s" does not have public method "%s"',
+                    get_class($object),
+                    $method
+                ));
+            }
+            return call_user_func_array(array($object, $method), $args);
+        };
+    }
 }
 
 op::$sum = function($a, $b) { return $a + $b; };
@@ -66,3 +119,7 @@ op::$xor = function($a, $b) { return $a xor $b; };
 op::$not = function($a) { return !$a; };
 
 op::$concat = function($a, $b) { return $a . $b; };
+
+function itemGetter($key) { return op::itemGetter($key); }
+function propertyGetter($property) { return op::propertyGetter($property); }
+function methodCaller($method, array $args = array()) { return op::methodCaller($method, $args); }

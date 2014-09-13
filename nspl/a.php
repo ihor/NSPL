@@ -50,3 +50,14 @@ function flatten(array $multidimensionalList)
 {
     // @todo
 }
+
+//region Aliases
+/**
+ * @param array $list
+ * @return array
+ */
+function reversed($list)
+{
+    return array_reverse($list);
+}
+//endregion

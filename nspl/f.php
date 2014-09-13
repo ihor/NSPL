@@ -47,6 +47,9 @@ function apply($function, array $args = array())
 }
 
 /**
+ * Returns new partial function which will behave like $function with
+ * predefined left arguments passed to partial
+ *
  * @param callable $function
  * @param mixed $param1
  * @param mixed $param2
@@ -57,36 +60,59 @@ function partial($function)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return apply($function, a\extend(func_get_args(), $args));
+        return call_user_func_array($function, a\extend($args, func_get_args()));
     };
 }
 
 /**
+ * Returns new partial function which will behave like $function with
+ * predefined right arguments passed to rpartial
+ *
  * @param callable $function
  * @param mixed $param1
  * @param mixed $param2
  * @param mixed ...
  * @return callable
  */
-function lpartial($function)
+function rpartial($function)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return apply($function, a\extend($args, func_get_args()));
+        return call_user_func_array($function, a\extend(func_get_args(), $args));
     };
 }
 
-function ppartial($function)
+/**
+ * Returns new partial function which will behave like $function with
+ * predefined positional arguments passed to ppartial
+ *
+ * @param callable $function
+ * @param array $args Predefined positional args (position => value)
+ * @return callable
+ */
+function ppartial($function, array $args)
 {
-    // @todo
+    return function() use ($function, $args) {
+        $_args = func_get_args();
+        $position = 0;
+        do {
+            if (!isset($args[$position]) && !array_key_exists($position, $args)) {
+                $args[$position] = array_pop($_args);
+            }
+            ++$position;
+        } while($_args);
+        ksort($args);
+        return call_user_func_array($function, $args);
+    };
 }
 
 /**
- * Returns memoized version of given function
+ * Returns memoized $function which returns the cached result when the same inputs occur again
+ *
  * @param callable $function
  * @return callable
  */
-function memoize($function)
+function memoized($function)
 {
     return function() use ($function) {
         static $memory = array();
@@ -101,18 +127,57 @@ function memoize($function)
 }
 
 /**
+ * Returns composition of the last function in arguments with any functions that take one argument
+ *
+ * @param callable $f
+ * @param callable $g
+ * @return callable
+ */
+function compose($f, $g)
+{
+    $functions = func_get_args();
+    return function() use ($functions) {
+        $args = func_get_args();
+        foreach (array_reverse($functions) as $function) {
+            $args = array(call_user_func_array($function, $args));
+        }
+
+        return current($args);
+    };
+}
+
+/**
+ * Passes args to composition of functions (functions have to be in the reversed order)
+ *
  * @param mixed $args
  * @param callable[] $functions
  * @return mixed
  */
-function pipe($args, $functions)
+function pipe($args, array $functions)
 {
-    $functionsCount = count($functions);
-    for ($i = 0; $i < $functionsCount; ++$i) {
-        $args = array(apply($functions[$i], $args));
+    if (!is_array($args)) {
+        $args = (array) $args;
     }
 
-    return current($args);
+    return call_user_func_array(
+        call_user_func_array(
+            \nspl\f::$compose,
+            array_reverse($functions)
+        ),
+        $args
+    );
+}
+
+/**
+ * Alias for @see pipe()
+ *
+ * @param mixed $args
+ * @param callable[] $functions
+ * @return mixed
+ */
+function I($args, array $functions)
+{
+    return pipe($args, $functions);
 }
 
 
@@ -125,17 +190,19 @@ class f
     static public $filter;
     static public $apply;
     static public $partial;
-    static public $lpartial;
     static public $rpartial;
+    static public $ppartial;
     static public $memoize;
+    static public $compose;
 
 }
 
 f::$map = function($function, $sequence) { return f\map($function, $sequence); };
 f::$reduce = function($function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
 f::$filter = function($function, $sequence) { return f\filter($function, $sequence); };
-f::$apply = function($function, array $args = array()) { return f\apply($function, $args); };
-f::$partial = function($function) { return f\apply('f\partial', array_slice(func_get_args(), 1)); };
-f::$lpartial = function($function) { return f\apply('f\lpartial', array_slice(func_get_args(), 1)); };
-f::$rpartial = function($function) { return f\apply('f\ppartial', array_slice(func_get_args(), 1)); };
-f::$memoize = function($function) { return f\memoize($function); };
+f::$apply = function($function, array $args = array()) { return call_user_func_array($function, $args); };
+f::$partial = function($function) { return call_user_func_array('\nspl\f\partial', array_slice(func_get_args(), 1)); };
+f::$rpartial = function($function) { return call_user_func_array('\nspl\f\lpartial', array_slice(func_get_args(), 1)); };
+f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', array_slice(func_get_args(), 1)); };
+f::$memoize = function($function) { return f\memoized($function); };
+f::$compose = function($f, $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };

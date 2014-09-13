@@ -37,6 +37,8 @@ function filter($function, $sequence)
 }
 
 /**
+ * Applies a function to arguments and returns the result
+ *
  * @param callable $function
  * @param array $args
  * @return mixed

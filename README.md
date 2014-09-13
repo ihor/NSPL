@@ -1,6 +1,6 @@
 Non-standard PHP library
 ========================
-Sometimes when you notice that you are not happy with PHP API you write an implementation that you like. Then you forget about it and never come back to that code again because it is not practical to use it. I decided to start collecting those implementations in Non-standard PHP library. Some of them are inspired (copied) from Python.
+Sometimes when I notice that I'm not happy with PHP API I write an implementation that I like. Then I forget about it and never come back to that code again because it is not practical to use it. I decided to start collecting those implementations in Non-standard PHP library. Some of them are inspired (copied) from Python.
 
 Installation
 ------------
@@ -36,6 +36,8 @@ filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]);
 ```
 
 **apply($function, array $args = [])**
+
+Applies a function to arguments and returns the result
 ```php
 apply('range', [1, 10, 2]);
 ```
@@ -109,4 +111,29 @@ pipe('underscore_to_camelcase', [
 
 **I($args, array $functions)**
 
-Alias to pipe
+Alias for pipe
+
+#### nspl/op
+
+Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. For example:
+```php
+use nspl\op;
+use function nspl\f\reduce;
+
+reduce(op::$sum, [1, 2, 3]);
+```
+which is shorter and nicer than:
+```php
+reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]);
+```
+I'm not going to list standard PHP operators, you can easily find any of them with autocompletion in your favourite IDE. I'm listing only non-standard ones.
+
+**itemGetter($key)**
+Returns a function that returns key value for a given array
+
+```php
+use nspl\op;
+use function nspl\f\map;
+
+assert([2, 5, 8] === map(op::itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+```

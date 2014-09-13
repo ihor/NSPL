@@ -37,15 +37,21 @@ class op
 
     /**
      * Returns a function that returns key value for a given array
-     * @param string $key Array key
+     * @param string $key Array key. Optionally it takes several keys as arguments and returns list of values
      * @return callable
      */
     static public function itemGetter($key)
     {
-        return function($array) use ($key) {
-            return isset($array[$key]) || array_key_exists($key, $array)
-                ? $array[$key]
-                : null;
+        $returnList = false;
+        if (func_num_args() > 1) {
+            $key = func_get_args();
+            $returnList = true;
+        }
+
+        return function($array) use ($key, $returnList) {
+            return $returnList
+                ? array_map(function($k) use ($array) { return $array[$k]; }, $key)
+                : $array[$key];
         };
     }
 
@@ -57,13 +63,6 @@ class op
     static public function propertyGetter($property)
     {
         return function($object) use ($property) {
-            if (!property_exists($object, $property)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Object "%s" does not have public property "%s"',
-                    get_class($object),
-                    $property
-                ));
-            }
             return $object->{$property};
         };
     }
@@ -77,13 +76,6 @@ class op
     static public function methodCaller($method, array $args = array())
     {
         return function($object) use ($method, $args) {
-            if (!method_exists($object, $method)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Object "%s" does not have public method "%s"',
-                    get_class($object),
-                    $method
-                ));
-            }
             return call_user_func_array(array($object, $method), $args);
         };
     }

@@ -137,3 +137,17 @@ use function nspl\f\map;
 
 assert([2, 5, 8] === map(op::itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
 ```
+
+**propertyGetter($property)**
+Returns a function that returns property value for a given object
+
+```php
+$userIds = map(op::propertyGetter('id'), $users);
+```
+
+**methodCaller($method, array $args = array())**
+Returns a function that returns method result for a given object on predefined arguments
+
+```php
+$userIds = map(op::methodCaller('getId'), $users);
+```

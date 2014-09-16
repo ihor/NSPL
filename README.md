@@ -126,28 +126,28 @@ which is shorter and nicer than:
 ```php
 reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]);
 ```
-I'm not going to list standard PHP operators, you can easily find any of them with autocompletion in your favourite IDE. I'm listing only non-standard ones.
+I'm not going to list standard PHP operators, you can easily find any of them with autocompletion in your favourite IDE. I'm listing only non-standard ones. All functions are presented as static variables of class *op* except cases when we need to pass some arguments to receive the desired function (like itemGetter). In these cases they are presented as static functions of class *op* and have aliases as functions in namespace *op*.
 
 **itemGetter($key)**
 Returns a function that returns key value for a given array
 
 ```php
-use nspl\op;
+use nspl\op\itemGetter;
 use function nspl\f\map;
 
-assert([2, 5, 8] === map(op::itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+assert([2, 5, 8] === map(itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
 ```
 
 **propertyGetter($property)**
 Returns a function that returns property value for a given object
 
 ```php
-$userIds = map(op::propertyGetter('id'), $users);
+$userIds = map(propertyGetter('id'), $users);
 ```
 
 **methodCaller($method, array $args = array())**
 Returns a function that returns method result for a given object on predefined arguments
 
 ```php
-$userIds = map(op::methodCaller('getId'), $users);
+$userIds = map(methodCaller('getId'), $users);
 ```

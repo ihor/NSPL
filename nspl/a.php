@@ -3,6 +3,8 @@
 namespace nspl\a;
 
 use nspl\f;
+use nspl\ds;
+use nspl\op;
 
 /**
  * Adds $list2 values to the end of $list1
@@ -51,13 +53,32 @@ function flatten(array $multidimensionalList)
     // @todo
 }
 
-//region Aliases
+
 /**
- * @param array $list
+ * @param array $sequence
+ * @param bool $reversed
+ * @param callable $cmp Custom comparison function of two arguments which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument
+ * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @return array
  */
-function reversed($list)
+function sorted($sequence, $reversed = false, $cmp = null, $key = null)
 {
-    return array_reverse($list);
+    if (!$cmp) {
+        $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
+    }
+
+    if ($key) {
+        $cmp = function($a, $b) use ($key, $cmp) {
+            return call_user_func_array($cmp, array($key($a), $key($b)));
+        };
+    }
+
+    if ($reversed) {
+        $cmp = f\compose(op::$neg, $cmp);
+    }
+
+    $array = ds\toArray($sequence);
+    uasort($array, $cmp);
+
+    return $array;
 }
-//endregion

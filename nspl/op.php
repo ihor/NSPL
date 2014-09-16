@@ -13,10 +13,10 @@ class op
     static public $dec;
     static public $neg;
 
-    static public $and_;
-    static public $xor_;
-    static public $or_;
-    static public $not_;
+    static public $band;
+    static public $bxor;
+    static public $bor;
+    static public $bnot;
     static public $lshift;
     static public $rshift;
 
@@ -25,7 +25,7 @@ class op
     static public $eq;
     static public $idnt;
     static public $ne;
-    static public $nis;
+    static public $nidnt;
     static public $ge;
     static public $gt;
 
@@ -91,10 +91,10 @@ op::$inc = function($a) { return ++$a; };
 op::$dec = function($a) { return --$a; };
 op::$neg = function($a) { return - $a; };
 
-op::$and_ = function($a, $b) { return $a & $b; };
-op::$xor_ = function($a, $b) { return $a ^ $b; };
-op::$or_ = function($a, $b) { return $a | $b; };
-op::$not_ = function($a) { return ~ $a; };
+op::$band = function($a, $b) { return $a & $b; };
+op::$bxor = function($a, $b) { return $a ^ $b; };
+op::$bor = function($a, $b) { return $a | $b; };
+op::$bnot = function($a) { return ~ $a; };
 op::$lshift = function($a, $b) { return $a << $b; };
 op::$rshift = function($a, $b) { return $a >> $b; };
 
@@ -103,7 +103,7 @@ op::$le = function($a, $b) { return $a <= $b; };
 op::$eq = function($a, $b) { return $a == $b; };
 op::$idnt = function($a, $b) { return $a === $b; };
 op::$ne = function($a, $b) { return $a != $b; };
-op::$nis = function($a, $b) { return $a !== $b; };
+op::$nidnt = function($a, $b) { return $a !== $b; };
 op::$ge = function($a, $b) { return $a >= $b; };
 op::$gt = function($a, $b) { return $a > $b; };
 

@@ -43,7 +43,7 @@ function filter($function, $sequence)
  * @param array $args
  * @return mixed
  */
-function apply($function, array $args = array())
+function apply($function, $args = array())
 {
     return call_user_func_array($function, $args);
 }
@@ -105,6 +105,39 @@ function ppartial($function, array $args)
         } while($_args);
         ksort($args);
         return call_user_func_array($function, $args);
+    };
+}
+
+/**
+ * Returns you a curried version of function. Allows you to compose functions with multiple args.
+ * If you are going to curry a function which read args with func_get_args() then pass number of args as the 2nd argument.
+ *
+ * @see partial()
+ * 
+ * @param $function
+ * @param bool $withOptionalArgs Curry function with only required args or with all args. Or pass number of args.
+ * @return callable
+ */
+function curried($function, $withOptionalArgs = true)
+{
+    if (is_bool($withOptionalArgs)) {
+        $reflection = new \ReflectionFunction($function);
+        $numOfArgs = $withOptionalArgs
+            ? $reflection->getNumberOfRequiredParameters()
+            : $reflection->getNumberOfParameters();
+    }
+    else {
+        $numOfArgs = $withOptionalArgs;
+    }
+
+    return function($arg) use ($function, $numOfArgs) {
+        if (1 === $numOfArgs) {
+            return call_user_func_array($function, array($arg));
+        }
+
+        return curried(function() use ($arg, $function) {
+            return call_user_func_array($function, array_merge(array($arg), func_get_args()));
+        }, $numOfArgs - 1);
     };
 }
 

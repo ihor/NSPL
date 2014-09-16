@@ -1,6 +1,6 @@
 Non-standard PHP library
 ========================
-Sometimes when I notice that I'm not happy with PHP API I write an implementation that I like. Then I forget about it and never come back to that code again because it is not practical to use it. I decided to start collecting those implementations in Non-standard PHP library. Some of them are inspired (copied) from Python.
+Sometimes I'm not happy with PHP API and write my own implementations or port something from other languages (like Python) to PHP. I decided to start collecting those implementations in Non-standard PHP library.
 
 Installation
 ------------

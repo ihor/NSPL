@@ -11,6 +11,7 @@ class op
     static public $mod;
     static public $inc;
     static public $dec;
+    static public $neg;
 
     static public $and_;
     static public $xor_;
@@ -88,6 +89,7 @@ op::$div = function($a, $b) { return $a / $b; };
 op::$mod = function($a, $b) { return $a % $b; };
 op::$inc = function($a) { return ++$a; };
 op::$dec = function($a) { return --$a; };
+op::$neg = function($a) { return - $a; };
 
 op::$and_ = function($a, $b) { return $a & $b; };
 op::$xor_ = function($a, $b) { return $a ^ $b; };

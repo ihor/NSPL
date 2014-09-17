@@ -14,7 +14,7 @@ Define the following requirement in your composer.json file:
 Usage
 -----
 
-Here I assume that all functions are imported with *use function*.
+Here I assume that described functions are imported with *use function*.
 
 #### nspl/f
 

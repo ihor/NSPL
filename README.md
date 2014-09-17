@@ -42,19 +42,6 @@ Applies a function to arguments and returns the result
 apply('range', [1, 10, 2]);
 ```
 
-**compose($f, $g)**
-
-Returns composition of the last function in arguments list with functions that take one argument
-compose(f, g, h) is the same as f(g(h(x)))
-```php
-$underscoreToCamelcase = compose(
-    'lcfirst',
-    partial('str_replace', ' ', ''),
-    'ucwords',
-    partial('str_replace', '_', ' ')
-);
-```
-
 **partial($function)**
 
 Returns new partial function which will behave like $function with predefined *left* arguments passed to partial
@@ -79,6 +66,52 @@ $greet = ppartial($concatThreeStrings, array(0 => 'Hello ', 2 => '!'));
 assert('Hello world!' === $greet('world'));
 ```
 
+**memoized($function)**
+
+Returns memoized $function which returns the cached result when the same inputs occur again
+```php
+$f = function($arg) {
+    echo sprintf("Performing heavy calculations with '%s'\n", $arg);
+    return $arg;
+};
+
+$memoized = memoized($f);
+echo $memoized('Hello world!') . "\n";
+echo $memoized('Hello world!') . "\n";
+```
+```
+Performing heavy calculations with 'Hello world!'
+Hello world!
+Hello world!
+```
+
+**compose($f, $g)**
+
+Returns composition of the last function in arguments list with functions that take one argument
+compose(f, g, h) is the same as f(g(h(x)))
+```php
+$underscoreToCamelcase = compose(
+    'lcfirst',
+    partial('str_replace', ' ', ''),
+    'ucwords',
+    partial('str_replace', '_', ' ')
+);
+```
+
+**pipe($args, array $functions)**
+
+Passes args to composition of functions (functions have to be in the reversed order)
+```php
+pipe('underscore_to_camelcase', [
+    partial('str_replace', '_', ' '),
+    'ucwords',
+    partial('str_replace', ' ', ''),
+    'lcfirst'
+])
+```
+
+**I($args, array $functions)**
+
 **curried($function, $withOptionalArgs = false)**
 
 Returns you a curried version of function. If you are going to curry a function which read args with func_get_args() then pass number of args as the 2nd argument.
@@ -99,39 +132,6 @@ Returns uncurried version of curried function
 $curriedStrReplace = curried('str_replace');
 $strReplace = uncurried($curriedStrReplace);
 ```
-
-**memoized($function)**
-
-Returns memoized $function which returns the cached result when the same inputs occur again
-```php
-$f = function($arg) {
-    echo sprintf("Performing heavy calculations with '%s'\n", $arg);
-    return $arg;
-};
-
-$memoized = memoized($f);
-echo $memoized('Hello world!') . "\n";
-echo $memoized('Hello world!') . "\n";
-```
-```
-Performing heavy calculations with 'Hello world!'
-Hello world!
-Hello world!
-```
-
-**pipe($args, array $functions)**
-
-Passes args to composition of functions (functions have to be in the reversed order)
-```php
-pipe('underscore_to_camelcase', [
-    partial('str_replace', '_', ' '),
-    'ucwords',
-    partial('str_replace', ' ', ''),
-    'lcfirst'
-])
-```
-
-**I($args, array $functions)**
 
 Alias for pipe
 

@@ -179,7 +179,9 @@ class ArrayObject implements \ArrayAccess, \Iterator
 }
 
 /**
- * @return Lst
+ * Returns new ArrayObject
+ *
+ * @return ArrayObject
  */
 function arrayobject()
 {

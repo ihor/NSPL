@@ -180,7 +180,7 @@ $userIds = map(methodCaller('getId'), $users);
 
 #### nspl/a
 
-Provides something missing array functions
+Provides some missing array functions.
 
 **extend(array $list1, array $list2)**
 
@@ -232,3 +232,44 @@ sorted($users, false, function($u1, $u2) { return $u1->getId() - $u2->getId(); }
 use function nspl\op\methodCaller;
 sorted($users, false, null, methodCaller('getId'));
 ```
+
+#### nspl/ds
+
+Provides non-standard data structures and methods to work with them.
+
+**getType($var)**
+
+Returns variable type or its class name if it is an object
+
+**ArrayObject**
+
+Alternative ArrayObject implementation
+
+**arrayobject()**
+
+Returns new ArrayObject
+
+**DefaultArray**
+
+Array with default value for missing keys
+It turns this code
+```php
+$a = array();
+foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
+    if (!isset($a[$v])) {
+        $a[$v] = 0;
+    }
+    ++$a[$v];
+}
+```
+into this
+```php
+$a = new DefaultArray(0);
+foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
+    ++$a[$v];
+}
+```
+
+**defaultarray($default)**
+
+Returns new DefaultArray

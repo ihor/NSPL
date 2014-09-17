@@ -12,7 +12,7 @@ use nspl\ds;
  */
 function map($function, $sequence)
 {
-    return array_map($function, ds\toArray($sequence));
+    return array_map($function, (array) $sequence);
 }
 
 /**
@@ -23,7 +23,7 @@ function map($function, $sequence)
  */
 function reduce($function, $sequence, $initial = 0)
 {
-    return array_reduce(ds\toArray($sequence), $function, $initial);
+    return array_reduce((array) $sequence, $function, $initial);
 }
 
 /**
@@ -33,7 +33,7 @@ function reduce($function, $sequence, $initial = 0)
  */
 function filter($function, $sequence)
 {
-    return array_filter(ds\toArray($sequence), $function);
+    return array_filter((array) $sequence, $function);
 }
 
 /**

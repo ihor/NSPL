@@ -3,19 +3,6 @@
 namespace nspl\ds;
 
 /**
- * @param mixed $notArray
- * @return array
- */
-function toArray($notArray)
-{
-    if ($notArray instanceof \Iterator) {
-        return iterator_to_array($notArray);
-    }
-
-    return (array) $notArray;
-}
-
-/**
  * @param mixed $var
  * @return string
  */

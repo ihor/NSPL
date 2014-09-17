@@ -86,7 +86,7 @@ function sorted($sequence, $reversed = false, $cmp = null, $key = null)
         $cmp = f\compose(op::$neg, $cmp);
     }
 
-    $array = ds\toArray($sequence);
+    $array = (array) $sequence;
     uasort($array, $cmp);
 
     return $array;

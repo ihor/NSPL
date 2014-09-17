@@ -247,6 +247,9 @@ class f
     static public $ppartial;
     static public $memoize;
     static public $compose;
+    static public $pipe;
+    static public $curried;
+    static public $uncurried;
 
 }
 
@@ -259,3 +262,6 @@ f::$rpartial = function($function) { return call_user_func_array('\nspl\f\lparti
 f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', array_slice(func_get_args(), 1)); };
 f::$memoize = function($function) { return f\memoized($function); };
 f::$compose = function($f, $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
+f::$pipe = function($args, array $functions) { return f\pipe($args, $functions); };
+f::$curried = function($function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };
+f::$uncurried = function($function) { return f\uncurried($function); };

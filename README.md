@@ -91,6 +91,15 @@ $replaceUnderscoresWithSpaces = $replaceUnderscores(' ');
 echo $replaceUnderscoresWithSpaces('Hello_world!');
 ```
 
+**uncurried($function)**
+
+Returns uncurried version of curried function
+
+```php
+$curriedStrReplace = curried('str_replace');
+$strReplace = uncurried($curriedStrReplace);
+```
+
 **memoized($function)**
 
 Returns memoized $function which returns the cached result when the same inputs occur again

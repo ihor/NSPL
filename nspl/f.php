@@ -49,6 +49,27 @@ function apply($function, $args = array())
 }
 
 /**
+ * Returns composition of the last function in arguments list with functions that take one argument
+ * compose(f, g, h) is the same as f(g(h(x)))
+ *
+ * @param callable $f
+ * @param callable $g
+ * @return callable
+ */
+function compose($f, $g)
+{
+    $functions = func_get_args();
+    return function() use ($functions) {
+        $args = func_get_args();
+        foreach (array_reverse($functions) as $function) {
+            $args = array(call_user_func_array($function, $args));
+        }
+
+        return current($args);
+    };
+}
+
+/**
  * Returns new partial function which will behave like $function with
  * predefined left arguments passed to partial
  *
@@ -109,22 +130,22 @@ function ppartial($function, array $args)
 }
 
 /**
- * Returns you a curried version of function. Allows you to compose functions with multiple args.
+ * Returns you a curried version of function
  * If you are going to curry a function which read args with func_get_args() then pass number of args as the 2nd argument.
  *
  * @see partial()
  * 
  * @param $function
- * @param bool $withOptionalArgs Curry function with only required args or with all args. Or pass number of args.
+ * @param bool $withOptionalArgs If true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
  * @return callable
  */
-function curried($function, $withOptionalArgs = true)
+function curried($function, $withOptionalArgs = false)
 {
     if (is_bool($withOptionalArgs)) {
         $reflection = new \ReflectionFunction($function);
         $numOfArgs = $withOptionalArgs
-            ? $reflection->getNumberOfRequiredParameters()
-            : $reflection->getNumberOfParameters();
+            ? $reflection->getNumberOfParameters()
+            : $reflection->getNumberOfRequiredParameters();
     }
     else {
         $numOfArgs = $withOptionalArgs;
@@ -138,6 +159,23 @@ function curried($function, $withOptionalArgs = true)
         return curried(function() use ($arg, $function) {
             return call_user_func_array($function, array_merge(array($arg), func_get_args()));
         }, $numOfArgs - 1);
+    };
+}
+
+/**
+ * Returns uncurried version of curried function
+ *
+ * @param callable $function Curried function
+ * @return callable
+ */
+function uncurried($function)
+{
+    return function() use ($function) {
+        foreach (func_get_args() as $arg) {
+            $function = call_user_func($function, $arg);
+        }
+
+        return $function;
     };
 }
 
@@ -158,26 +196,6 @@ function memoized($function)
         }
 
         return $memory[$key];
-    };
-}
-
-/**
- * Returns composition of the last function in arguments with any functions that take one argument
- *
- * @param callable $f
- * @param callable $g
- * @return callable
- */
-function compose($f, $g)
-{
-    $functions = func_get_args();
-    return function() use ($functions) {
-        $args = func_get_args();
-        foreach (array_reverse($functions) as $function) {
-            $args = array(call_user_func_array($function, $args));
-        }
-
-        return current($args);
     };
 }
 

@@ -23,6 +23,8 @@ function extend(array $list1, array $list2)
 }
 
 /**
+ * Zips passed lists
+ *
  * @param array $list1
  * @param array $list2
  * @return array
@@ -49,6 +51,8 @@ function zip(array $list1, array $list2)
 }
 
 /**
+ * Flattens multidimensional list
+ *
  * @param array $multidimensionalList
  * @return array
  */
@@ -58,6 +62,8 @@ function flatten(array $multidimensionalList)
 }
 
 /**
+ * Returns sorted copy of passed sequence
+ *
  * @param array $sequence
  * @param bool $reversed
  * @param callable $cmp Custom comparison function of two arguments which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument

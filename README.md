@@ -18,7 +18,7 @@ Here I assume that all functions are imported with *use function*.
 
 #### nspl/f
 
-Provides functions needed to work with functions
+Provides functions that work with other functions. Simplifies functional programming in PHP.
 
 **map($function, $sequence)**
 ```php
@@ -127,13 +127,17 @@ echo $replaceUnderscoresWithSpaces('Hello_world!');
 **uncurried($function)**
 
 Returns uncurried version of curried function
-
 ```php
 $curriedStrReplace = curried('str_replace');
 $strReplace = uncurried($curriedStrReplace);
 ```
 
 Alias for pipe
+
+**Lambdas**
+
+Class *f* provides all these functions as lambdas in its static variables.
+
 
 #### nspl/op
 
@@ -154,7 +158,7 @@ I'm not going to list standard PHP operators, you can easily find any of them wi
 Returns a function that returns key value for a given array
 
 ```php
-use nspl\op\itemGetter;
+use function nspl\op\itemGetter;
 use function nspl\f\map;
 
 assert([2, 5, 8] === map(itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
@@ -172,4 +176,59 @@ Returns a function that returns method result for a given object on predefined a
 
 ```php
 $userIds = map(methodCaller('getId'), $users);
+```
+
+#### nspl/a
+
+Provides something missing array functions
+
+**extend(array $list1, array $list2)**
+
+Adds $list2 values to the end of $list1
+```php
+extend([1, 2, 3], [4, 5, 6]);
+```
+
+**zip(array $list1, array $list2)**
+
+Zips passed lists
+```php
+assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
+```
+
+**flatten(array $multidimensionalList)**
+
+Flattens multidimensional list
+```php
+print_r(
+    flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+);
+```
+```
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+    [4] => 5
+    [5] => 6
+    [6] => 7
+    [7] => 8
+    [8] => 9
+)
+```
+
+**sorted($sequence, $reversed = false, $cmp = null, $key = null)**
+
+Returns sorted copy of passed sequence
+$key is a function of one argument that is used to extract a comparison key from each element
+```php
+sorted([2, 3, 1]);
+sorted(['c', 'a', 'b'], true);
+
+sorted($users, false, function($u1, $u2) { return $u1->getId() - $u2->getId(); });
+// Which is the same as
+use function nspl\op\methodCaller;
+sorted($users, false, null, methodCaller('getId'));
 ```

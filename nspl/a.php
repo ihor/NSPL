@@ -48,11 +48,14 @@ function zip(array $list1, array $list2)
     return $result;
 }
 
+/**
+ * @param array $multidimensionalList
+ * @return array
+ */
 function flatten(array $multidimensionalList)
 {
-    // @todo
+    return call_user_func_array('array_merge', array_map('array_values', $multidimensionalList));
 }
-
 
 /**
  * @param array $sequence

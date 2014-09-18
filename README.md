@@ -251,7 +251,7 @@ Returns new ArrayObject
 
 **DefaultArray**
 
-Array with default value for missing keys
+Array with default value for missing keys. If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
 It turns this code
 ```php
 $a = array();

@@ -5,10 +5,15 @@ namespace nspl\ds;
 class DefaultArray extends ArrayObject
 {
     /**
-     * @var mixed
+     * @var mixed|callable
      */
     private $default;
 
+    /**
+     * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
+     *
+     * @param mixed|callable $default
+     */
     public function __construct($default)
     {
         $this->default = $default;
@@ -46,7 +51,9 @@ class DefaultArray extends ArrayObject
 }
 
 /**
- * @param mixed $default
+ * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
+ *
+ * @param mixed|callable $default
  * @return DefaultArray
  */
 function defaultarray($default)

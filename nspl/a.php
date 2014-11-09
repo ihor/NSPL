@@ -91,3 +91,13 @@ function sorted($sequence, $reversed = false, $cmp = null, $key = null)
 
     return $array;
 }
+
+function take()
+{
+    // @todo
+}
+
+function drop()
+{
+    // @todo
+}

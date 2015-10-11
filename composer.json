@@ -1,0 +1,12 @@
+{
+    "name": "ihor/nspl",
+    "autoload": {
+      "files": ["autoload.php"]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.0",
+        "athletic/athletic": "~0.1"
+    },
+    "require": {
+    }
+}

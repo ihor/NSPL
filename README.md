@@ -137,7 +137,7 @@ Alias for pipe
 
 **Lambdas**
 
-Class *f* provides all these functions as lambdas in its static variables.
+Class *f* provides all these functions as lambdas in its static properties
 
 
 #### nspl/op

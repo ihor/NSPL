@@ -1,0 +1,19 @@
+<phpunit bootstrap="./bootstrap.php">
+    <testsuite name="All Tests">
+        <directory>.</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../nspl</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <!--<log type="coverage-html" target="logs/coverage" />-->
+        <!--<log type="coverage-crap4j" target="logs/crap4j.xml" />-->
+        <!--<log type="coverage-clover" target="logs/clover.xml" />-->
+        <!--<log type="junit" target="logs/phpunit.xml" logIncompleteSkipped="true" />-->
+    </logging>
+
+</phpunit>

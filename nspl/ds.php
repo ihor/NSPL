@@ -12,3 +12,12 @@ function getType($var)
 {
     return is_object($var) ? get_class($var) : gettype($var);
 }
+
+/**
+ * @param mixed $var
+ * @return bool
+ */
+function isList($var)
+{
+    return is_array($var) && array_values($var) === $var;
+}

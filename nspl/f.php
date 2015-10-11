@@ -245,7 +245,7 @@ class f
     static public $partial;
     static public $rpartial;
     static public $ppartial;
-    static public $memoize;
+    static public $memoized;
     static public $compose;
     static public $pipe;
     static public $curried;
@@ -256,11 +256,11 @@ class f
 f::$map = function($function, $sequence) { return f\map($function, $sequence); };
 f::$reduce = function($function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
 f::$filter = function($function, $sequence) { return f\filter($function, $sequence); };
-f::$apply = function($function, array $args = array()) { return call_user_func_array($function, $args); };
+f::$apply = function($function, array $args = array()) { return f\apply($function, $args); };
 f::$partial = function($function) { return call_user_func_array('\nspl\f\partial', array_slice(func_get_args(), 1)); };
 f::$rpartial = function($function) { return call_user_func_array('\nspl\f\lpartial', array_slice(func_get_args(), 1)); };
 f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', array_slice(func_get_args(), 1)); };
-f::$memoize = function($function) { return f\memoized($function); };
+f::$memoized = function($function) { return f\memoized($function); };
 f::$compose = function($f, $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
 f::$pipe = function($args, array $functions) { return f\pipe($args, $functions); };
 f::$curried = function($function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };

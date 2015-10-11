@@ -7,7 +7,7 @@ use nspl\ds;
 use nspl\op;
 
 /**
- * Adds $list2 values to the end of $list1
+ * Adds $list2 items to the end of $list1
  *
  * @param array $list1
  * @param array $list2
@@ -15,15 +15,11 @@ use nspl\op;
  */
 function extend(array $list1, array $list2)
 {
-    do {
-        $list1[] = current($list2);
-    } while (next($list2));
-
-    return $list1;
+    return array_merge($list1, $list2);
 }
 
 /**
- * Zips passed lists
+ * Zips two or more lists
  *
  * @param array $list1
  * @param array $list2
@@ -31,21 +27,22 @@ function extend(array $list1, array $list2)
  */
 function zip(array $list1, array $list2)
 {
-    $arrays = func_get_args();
-    $arraysNum = count($arrays);
+    $lists = func_get_args();
+    $count = func_num_args();
 
+    $i = 0;
     $result = array();
-    $finished = false;
     do {
         $zipped = array();
-        for ($i = 0; $i < $arraysNum; ++$i) {
-            $zipped[] = current($arrays[$i]);
-            if (!next($arrays[$i])) {
-                $finished = true;
+        for ($j = 0; $j < $count; ++$j) {
+            if (!isset($lists[$j][$i]) && !array_key_exists($i, $lists[$j])) {
+                break 2;
             }
+            $zipped[] = $lists[$j][$i];
         }
         $result[] = $zipped;
-    } while (!$finished);
+        ++$i;
+    } while (true);
 
     return $result;
 }
@@ -53,24 +50,40 @@ function zip(array $list1, array $list2)
 /**
  * Flattens multidimensional list
  *
- * @param array $multidimensionalList
+ * @param array $list
  * @return array
  */
-function flatten(array $multidimensionalList)
+function flatten(array $list)
 {
-    return call_user_func_array('array_merge', array_map('array_values', $multidimensionalList));
+    $result = array();
+    $lenght = count($list);
+    for ($i = 0; $i < $lenght; ++$i) {
+        if (is_array($list[$i])) {
+            $flattened = flatten($list[$i]);
+            $subLenght = count($flattened);
+            for ($j = 0; $j < $subLenght; ++$j) {
+                $result[] = $flattened[$j];
+            }
+        }
+        else {
+            $result[] = $list[$i];
+        }
+    }
+
+    return $result;
 }
 
 /**
- * Returns sorted copy of passed sequence
+ * Returns sorted copy of passed array
  *
- * @param array $sequence
+ * @param array $array
  * @param bool $reversed
- * @param callable $cmp Custom comparison function of two arguments which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
+ * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
+ *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted($sequence, $reversed = false, $cmp = null, $key = null)
+function sorted(array $array, $reversed = false, $key = null, $cmp = null)
 {
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
@@ -86,18 +99,99 @@ function sorted($sequence, $reversed = false, $cmp = null, $key = null)
         $cmp = f\compose(op::$neg, $cmp);
     }
 
-    $array = (array) $sequence;
+    $isList = ds\isList($array);
     uasort($array, $cmp);
 
-    return $array;
+    return $isList ? array_values($array) : $array;
 }
 
-function take()
+/**
+ * Returns first N list items
+ *
+ * @param array $list
+ * @param int $N
+ * @param int $step
+ * @return array
+ */
+function take(array $list, $N, $step = 1)
 {
-    // @todo
+    if (1 === $step) {
+        return array_values(array_slice($list, 0, $N));
+    }
+
+    $result = array();
+    $lenght = min(count($list), $N * $step);
+    for ($i = 0; $i < $lenght; $i += $step) {
+        $result[] = $list[$i];
+    }
+
+    return $result;
 }
 
-function drop()
+/**
+ * Returns the first list item
+ *
+ * @param array $list
+ * @return array
+ */
+function first(array $list)
 {
-    // @todo
+    if (!$list) {
+        throw new \InvalidArgumentException('Can not return the first item of an empty list');
+    }
+
+    return current(take($list, 1));
+}
+
+/**
+ * Returns the first list item (alias for first())
+ *
+ * @param array $list
+ * @return array
+ */
+function head(array $list)
+{
+    return first($list);
+}
+
+/**
+ * Drops first N list items
+ *
+ * @param array $list
+ * @param int $N
+ * @return array
+ */
+function drop(array $list, $N)
+{
+    return array_slice($list, $N);
+}
+
+/**
+ * Returns the last list item
+ *
+ * @param array $list
+ * @return array
+ */
+function last(array $list)
+{
+    if (!$list) {
+        throw new \InvalidArgumentException('Can not return the last item of an empty list');
+    }
+
+    return $list[count($list) - 1];
+}
+
+/**
+ * Returns all list items except the first one
+ *
+ * @param array $list
+ * @return array
+ */
+function tail(array $list)
+{
+    if (!$list) {
+        throw new \InvalidArgumentException('Can not return the tail of an empty list');
+    }
+
+    return drop($list, 1);
 }

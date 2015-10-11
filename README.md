@@ -1,6 +1,7 @@
 Non-standard PHP library
 ========================
-Sometimes I'm not happy with PHP API and write my own implementations or port something from other languages (like Python) to PHP. I decided to start collecting those implementations in Non-standard PHP library.
+An attempt to improve standard PHP API inspired by Python and functional programming.
+
 
 Installation
 ------------
@@ -184,45 +185,30 @@ Provides some missing array functions.
 
 **extend(array $list1, array $list2)**
 
-Adds $list2 values to the end of $list1
+Adds $list2 items to the end of $list1
 ```php
 extend([1, 2, 3], [4, 5, 6]);
 ```
 
 **zip(array $list1, array $list2)**
 
-Zips passed lists
+Zips two or more lists
 ```php
 assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
 ```
 
-**flatten(array $multidimensionalList)**
+**flatten(array $list)**
 
 Flattens multidimensional list
 ```php
-print_r(
-    flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-);
-```
-```
-Array
-(
-    [0] => 1
-    [1] => 2
-    [2] => 3
-    [3] => 4
-    [4] => 5
-    [5] => 6
-    [6] => 7
-    [7] => 8
-    [8] => 9
-)
+assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
 ```
 
-**sorted($sequence, $reversed = false, $cmp = null, $key = null)**
+**sorted(array $array, $reversed = false, $key = null, $cmp = null)**
 
-Returns sorted copy of passed sequence
+Returns sorted copy of the passed array
 $key is a function of one argument that is used to extract a comparison key from each element
+$cmp is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 sorted([2, 3, 1]);
 sorted(['c', 'a', 'b'], true);
@@ -230,7 +216,46 @@ sorted(['c', 'a', 'b'], true);
 sorted($users, false, function($u1, $u2) { return $u1->getId() - $u2->getId(); });
 // Which is the same as
 use function nspl\op\methodCaller;
-sorted($users, false, null, methodCaller('getId'));
+sorted($users, false, methodCaller('getId'));
+```
+
+**take(array $list, $N, $step = 1)**
+
+Returns first N list items
+```php
+assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
+```
+
+**first(array $list)**
+
+Returns the first list item
+```php
+assert(1 === first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+**head(array $list)**
+
+Returns the first list item (alias for first())
+
+**drop(array $list, $N)**
+
+Drops first N list items
+```php
+assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
+```
+
+**last(array $list)**
+
+Returns the last list item
+```php
+assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+**tail(array $list)**
+
+Returns all list items except the first one
+```php
+assert([2, 3, 4, 5, 6, 7, 8, 9] === tail([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
 #### nspl/ds

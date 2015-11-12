@@ -14,6 +14,16 @@ class ArrayObject implements \ArrayAccess, \Iterator
      */
     protected $valid = true;
 
+    /**
+     * @return $this
+     */
+    public static function create()
+    {
+        $result = new static();
+        $result->array = func_get_args();
+        return $result;
+    }
+
     public function __construct()
     {
         $this->array = func_get_args();
@@ -158,7 +168,6 @@ class ArrayObject implements \ArrayAccess, \Iterator
     }
     //endregion
 
-    //region Magic methods
     /**
      * @return string
      */
@@ -166,7 +175,6 @@ class ArrayObject implements \ArrayAccess, \Iterator
     {
         return json_encode($this->array);
     }
-    //endregion
 
     /**
      * @return array
@@ -185,5 +193,5 @@ class ArrayObject implements \ArrayAccess, \Iterator
  */
 function arrayobject()
 {
-    return new ArrayObject();
+    return call_user_func_array(array('\nspl\ds\ArrayObject', 'create'), func_get_args());
 }

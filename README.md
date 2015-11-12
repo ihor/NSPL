@@ -19,31 +19,38 @@ Here I assume that described functions are imported with *use function*.
 
 #### nspl/f
 
-Provides functions that work with other functions. Simplifies functional programming in PHP.
+Provides the most popular higher-order functions: functions that act on or return other functions.
+
 
 **map($function, $sequence)**
+
+Applies function of one argument to each sequence item.
 ```php
-map('strtoupper', ['a', 'b', 'c']);
+assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
 ```
 
 **reduce($function, $sequence, $initial = 0)**
+
+Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
 ```php
-reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]);
+assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 ```
 
 **filter($function, $sequence)**
+
+Returns list items that satisfy the predicate
 ```php
-filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]);
+assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 **apply($function, array $args = [])**
 
-Applies a function to arguments and returns the result
+Applies given function to arguments and returns the result
 ```php
-apply('range', [1, 10, 2]);
+assert([1, 3, 5, 7, 9] === apply('range', [1, 10, 2]));
 ```
 
-**partial($function)**
+**partial($function, $arg1)**
 
 Returns new partial function which will behave like $function with predefined *left* arguments passed to partial
 ```php
@@ -51,20 +58,18 @@ $sum = function($a, $b) { return $a + $b; };
 $inc = partial($sum, 1);
 ```
 
-**rpartial($function)**
+**rpartial($function, $arg1)**
 
 Returns new partial function which will behave like $function with predefined *right* arguments passed to rpartial
 ```php
 $cube = rpartial('pow', 3);
 ```
 
-**ppartial($function)**
+**ppartial($function, array $args)**
 
 Returns new partial function which will behave like $function with predefined *positional* arguments passed to ppartial
 ```php
-$concatThreeStrings = function($s1, $s2, $s3) { return $s1 . $s2 . $s3; };
-$greet = ppartial($concatThreeStrings, array(0 => 'Hello ', 2 => '!'));
-assert('Hello world!' === $greet('world'));
+$oddNumbers = ppartial('range', array(0 => 1, 2 => 2));
 ```
 
 **memoized($function)**
@@ -88,14 +93,13 @@ Hello world!
 
 **compose($f, $g)**
 
-Returns composition of the last function in arguments list with functions that take one argument
+Returns new function which applies each given function to the result of another from right to left
 compose(f, g, h) is the same as f(g(h(x)))
 ```php
 $underscoreToCamelcase = compose(
     'lcfirst',
-    partial('str_replace', ' ', ''),
-    'ucwords',
-    partial('str_replace', '_', ' ')
+    partial('str_replace', '_', ''),
+    rpartial('ucwords', '_')
 );
 ```
 
@@ -104,25 +108,28 @@ $underscoreToCamelcase = compose(
 Passes args to composition of functions (functions have to be in the reversed order)
 ```php
 pipe('underscore_to_camelcase', [
-    partial('str_replace', '_', ' '),
-    'ucwords',
-    partial('str_replace', ' ', ''),
+    rpartial('ucwords', '_'),
+    partial('str_replace', '_', ''),
     'lcfirst'
 ])
 ```
 
 **I($args, array $functions)**
 
+Alias for pipe.
+
+*The following two functions were added for fun and don't have much practical usage in PHP.*
+
 **curried($function, $withOptionalArgs = false)**
 
-Returns you a curried version of function. If you are going to curry a function which read args with func_get_args() then pass number of args as the 2nd argument.
+Returns you a curried version of function. If you are going to curry a function which reads args with func_get_args() then pass number of args as the 2nd argument.
 
 If the second argument is true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
 ```php
 $curriedStrReplace = curried('str_replace');
 $replaceUnderscores = $curriedStrReplace('_');
 $replaceUnderscoresWithSpaces = $replaceUnderscores(' ');
-echo $replaceUnderscoresWithSpaces('Hello_world!');
+assert('Hello world!' === $replaceUnderscoresWithSpaces('Hello_world!'));
 ```
 
 **uncurried($function)**
@@ -133,11 +140,13 @@ $curriedStrReplace = curried('str_replace');
 $strReplace = uncurried($curriedStrReplace);
 ```
 
-Alias for pipe
-
 **Lambdas**
 
-Class *f* provides all these functions as lambdas in its static properties
+Class *f* provides all these functions as lambdas in its static properties which have the same names as the functions.
+```php
+$incListItems = partial(f::$map, function($v) { return $v + 1; });
+$filterNumbers = partial(f::$filter, 'is_numeric');
+```
 
 
 #### nspl/op
@@ -181,7 +190,7 @@ $userIds = map(methodCaller('getId'), $users);
 
 #### nspl/a
 
-Provides some missing array functions.
+Provides missing array functions and nicer API for existing ones.
 
 **extend(array $list1, array $list2)**
 
@@ -233,10 +242,6 @@ Returns the first list item
 assert(1 === first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
-**head(array $list)**
-
-Returns the first list item (alias for first())
-
 **drop(array $list, $N)**
 
 Drops first N list items
@@ -251,11 +256,11 @@ Returns the last list item
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
-**tail(array $list)**
+**Lambdas**
 
-Returns all list items except the first one
+Class *f* provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
-assert([2, 3, 4, 5, 6, 7, 8, 9] === tail([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+$firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
 ```
 
 #### nspl/ds

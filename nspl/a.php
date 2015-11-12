@@ -144,17 +144,6 @@ function first(array $list)
 }
 
 /**
- * Returns the first list item (alias for first())
- *
- * @param array $list
- * @return array
- */
-function head(array $list)
-{
-    return first($list);
-}
-
-/**
  * Drops first N list items
  *
  * @param array $list
@@ -181,17 +170,28 @@ function last(array $list)
     return $list[count($list) - 1];
 }
 
-/**
- * Returns all list items except the first one
- *
- * @param array $list
- * @return array
- */
-function tail(array $list)
-{
-    if (!$list) {
-        throw new \InvalidArgumentException('Can not return the tail of an empty list');
-    }
+// @todo Add pop key
 
-    return drop($list, 1);
+namespace nspl;
+
+class a
+{
+    static public $extend;
+    static public $zip;
+    static public $flatten;
+    static public $sorted;
+    static public $take;
+    static public $first;
+    static public $drop;
+    static public $last;
+
 }
+
+a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
+a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
+a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
+a::$sorted = function(array $array, $reversed = false, $key = null, $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
+a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
+a::$first = function(array $list) { return \nspl\a\first($list); };
+a::$drop = function(array $list, $N) { return \nspl\a\drop($list, $N); };
+a::$last = function(array $list) { return \nspl\a\last($list); };

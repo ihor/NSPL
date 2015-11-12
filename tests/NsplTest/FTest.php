@@ -65,10 +65,10 @@ class FTest extends \PHPUnit_Framework_TestCase
     public function testApply()
     {
         $this->assertEquals([1, 3, 5, 7, 9], apply('range', [1, 10, 2]));
-        $this->assertEquals(time(), apply('time'));
+        $this->assertEquals(time(), apply('time'), '', 0.1);
 
         $this->assertEquals([1, 3, 5, 7, 9], call_user_func(f::$apply, 'range', [1, 10, 2]));
-        $this->assertEquals(time(), call_user_func(f::$apply, 'time'));
+        $this->assertEquals(time(), call_user_func(f::$apply, 'time'), '', 0.1);
     }
 
     public function testPartial()
@@ -81,7 +81,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = partial('time', null);
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
 
         $sqrList = call_user_func(f::$partial, 'array_map', function($v) { return $v * $v; });
         $this->assertEquals([1, 4, 9], $sqrList([1, 2, 3]));
@@ -91,7 +91,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = call_user_func(f::$partial, 'time', null);
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
     }
 
     public function testRpartial()
@@ -103,7 +103,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = rpartial('time', null);
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
 
         $cube = call_user_func(f::$rpartial, 'pow', 3);
         $this->assertEquals(27, $cube(3));
@@ -112,7 +112,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = call_user_func(f::$rpartial, 'time', null);
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
     }
 
     public function testPpartial()
@@ -125,7 +125,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = ppartial('time', array(0 => null));
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
 
         $oddNumbers = call_user_func(f::$ppartial, 'range', array(0 => 1, 2 => 2));
         $this->assertEquals([1], $oddNumbers(1));
@@ -135,7 +135,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = call_user_func(f::$ppartial, 'time', array(0 => null));
-        $this->assertEquals(time(), $noArgFuncPartial());
+        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
     }
 
     public function testMemoized()

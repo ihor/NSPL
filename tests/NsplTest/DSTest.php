@@ -9,7 +9,7 @@ use function \nspl\ds\defaultarray;
 use function \nspl\ds\getType;
 use function \nspl\ds\isList;
 
-class DSTest extends \PHPUnit_Framework_TestCase
+class DsTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetType()
     {

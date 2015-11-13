@@ -30,6 +30,7 @@ class op
     static public $gt;
 
     static public $and;
+    static public $mand;
     static public $or;
     static public $xor;
     static public $not;
@@ -108,12 +109,21 @@ op::$ge = function($a, $b) { return $a >= $b; };
 op::$gt = function($a, $b) { return $a > $b; };
 
 op::$and = function($a, $b) { return $a && $b; };
+op::$mand = function($a, $b) {
+    if ($a) {
+        return (bool) $b;
+    }
+
+    return !$b;
+};
 op::$or = function($a, $b) { return $a || $b; };
 op::$xor = function($a, $b) { return $a xor $b; };
 op::$not = function($a) { return !$a; };
 
 op::$concat = function($a, $b) { return $a . $b; };
 
-function itemGetter($key) { return op::itemGetter($key); }
-function propertyGetter($property) { return op::propertyGetter($property); }
-function methodCaller($method, array $args = array()) { return op::methodCaller($method, $args); }
+namespace nspl\op;
+
+function itemGetter($key) { return \nspl\op::itemGetter($key); }
+function propertyGetter($property) { return \nspl\op::propertyGetter($property); }
+function methodCaller($method, array $args = array()) { return \nspl\op::methodCaller($method, $args); }

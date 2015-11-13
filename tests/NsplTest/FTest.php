@@ -147,6 +147,7 @@ class FTest extends \PHPUnit_Framework_TestCase
             ++$calculationsPerformed;
             return $arg1;
         };
+        $object = (object) array('name' => 'Hello wordl', 'answer' => 42);
 
         $memoized = memoized($f);
 
@@ -167,10 +168,6 @@ class FTest extends \PHPUnit_Framework_TestCase
         $result = $memoized(null, ['b']);
         $this->assertEquals(null, $result);
         $this->assertEquals(3, $calculationsPerformed);
-
-        $object = new \StdClass();
-        $object->name = 'Hello world';
-        $object->answer = 42;
 
         $result = $memoized($object, true);
         $result = $memoized($object, true);
@@ -197,10 +194,6 @@ class FTest extends \PHPUnit_Framework_TestCase
         $result = $memoized(null, ['b']);
         $this->assertEquals(null, $result);
         $this->assertEquals(3, $calculationsPerformed);
-
-        $object = new \StdClass();
-        $object->name = 'Hello world';
-        $object->answer = 42;
 
         $result = $memoized($object, true);
         $result = $memoized($object, true);

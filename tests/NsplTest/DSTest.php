@@ -1,5 +1,7 @@
 <?php
 
+namespace NsplTest;
+
 use \nspl\ds\ArrayObject;
 use \nspl\ds\DefaultArray;
 use function \nspl\ds\arrayobject;
@@ -17,7 +19,7 @@ class DSTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('double', getType(1.0));
         $this->assertEquals('array', getType([]));
         $this->assertEquals('string', getType('hello world'));
-        $this->assertEquals('stdClass', getType(new StdClass()));
+        $this->assertEquals('stdClass', getType(new \StdClass()));
     }
 
     public function testIsList()
@@ -25,7 +27,7 @@ class DSTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isList(1));
         $this->assertFalse(isList(array(1 => 'a')));
         $this->assertFalse(isList(array(0 => 'a', 2 => 'c')));
-        $this->assertFalse(isList(new StdClass()));
+        $this->assertFalse(isList(new \StdClass()));
         $this->assertTrue(isList([]));
         $this->assertTrue(isList([1]));
         $this->assertTrue(isList([1, 2, 3]));

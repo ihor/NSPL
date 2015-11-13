@@ -1,5 +1,7 @@
 <?php
 
+namespace NsplTest;
+
 use \nspl\f;
 use function \nspl\f\map;
 use function \nspl\f\reduce;
@@ -166,7 +168,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $result);
         $this->assertEquals(3, $calculationsPerformed);
 
-        $object = new StdClass();
+        $object = new \StdClass();
         $object->name = 'Hello world';
         $object->answer = 42;
 
@@ -196,7 +198,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $result);
         $this->assertEquals(3, $calculationsPerformed);
 
-        $object = new StdClass();
+        $object = new \StdClass();
         $object->name = 'Hello world';
         $object->answer = 42;
 

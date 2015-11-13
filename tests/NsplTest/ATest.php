@@ -1,5 +1,7 @@
 <?php
 
+namespace NsplTest;
+
 use \nspl\a;
 use function \nspl\a\extend;
 use function \nspl\a\zip;

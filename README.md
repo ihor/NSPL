@@ -158,11 +158,40 @@ use function nspl\f\reduce;
 
 reduce(op::$sum, [1, 2, 3]);
 ```
-which is shorter and nicer than:
+which is shorter than:
 ```php
 reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]);
 ```
-I'm not going to list standard PHP operators, you can easily find any of them with autocompletion in your favourite IDE. I'm listing only non-standard ones. All functions are presented as static variables of class *op* except cases when we need to pass some arguments to receive the desired function (like itemGetter). In these cases they are presented as static functions of class *op* and have aliases as functions in namespace *op*.
+Function    | Operation
+------------|-----------------------------------------------
+op::$sum    | +
+op::$sub    | -
+op::$mul    | *
+op::$div    | /
+op::$mod    | %
+op::$inc    | ++
+op::$dec    | --
+op::$neg    | -
+op::$band   | &
+op::$bxor   | ^
+op::$bor    | |
+op::$bnot   | ~
+op::$lshift | <<
+op::$rshift | >>
+op::$lt     | <
+op::$le     | <=
+op::$eq     | ==
+op::$idnt   | ===
+op::$ne     | !=
+op::$nidnt  | !==
+op::$ge     | >
+op::$gt     | >=
+op::$and    | &&
+op::$mand   | The same as && except: false && false = true
+op::$or     | ||
+op::$xor    | xor
+op::$not    | !
+op::$concat | .
 
 **itemGetter($key)**
 Returns a function that returns key value for a given array

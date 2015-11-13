@@ -269,7 +269,11 @@ Provides non-standard data structures and methods to work with them.
 
 **getType($var)**
 
-Returns variable type or its class name if it is an object
+Returns the variable type or its class name if it is an object
+
+**isList($var)**
+
+Returns true if the variable is a list
 
 **ArrayObject**
 

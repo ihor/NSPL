@@ -3,7 +3,7 @@
 namespace nspl\ds;
 
 /**
- * Returns variable type or its class name if it is an object
+ * Returns the variable type or its class name if it is an object
  *
  * @param mixed $var
  * @return string
@@ -14,6 +14,8 @@ function getType($var)
 }
 
 /**
+ * Returns true if the variable is a list
+ *
  * @param mixed $var
  * @return bool
  */

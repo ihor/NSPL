@@ -1,6 +1,6 @@
 <?php
 
-namespace rnd;
+namespace nspl\rnd;
 
 /**
  * @param array $array

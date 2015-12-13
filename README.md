@@ -8,7 +8,7 @@ Installation
 Define the following requirement in your composer.json file:
 ```
 "require": {
-    "ihor/nspl": "1.0"
+    "ihor/nspl": "0.1"
 }
 ```
 
@@ -343,3 +343,19 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 **defaultarray($default)**
 
 Returns new DefaultArray
+
+#### nspl/rnd
+
+Provides useful pseudo-random number generators
+
+**choice(array $sequence)**
+
+Returns a random element from a non-empty sequence
+
+**weightedChoice(array $pairs)**
+
+Returns a random element from a non-empty sequence of items with associated weights
+
+**sample(array $population, $length)**
+
+Returns a k length list of unique elements chosen from the population sequence

@@ -2,71 +2,69 @@
 
 namespace nspl\rnd;
 
+use function \nspl\ds\isList;
+
 /**
- * @param array $array
+ * Returns a k length list of unique elements chosen from the population sequence
+ *
+ * @param array $population
  * @param int $length
  * @return array
  */
-function sample(array $array, $length)
+function sample(array $population, $length)
 {
-    if (!$array || !$length) {
+    if (!$length) {
         return array();
     }
 
-    $keys = (array) array_rand($array, $length);
+    if ($length > count($population)) {
+        throw new \InvalidArgumentException('Sample is larger than population');
+    }
+
+    $keys = (array) array_rand($population, $length);
     $result = array();
     foreach ($keys as $key) {
-        $result[$key] = $array[$key];
+        $result[$key] = $population[$key];
     }
 
     return $result;
 }
 
 /**
- * @param array $array
+ * Returns a random element from a non-empty sequence
+ *
+ * @param array $sequence
  * @return mixed
  */
-function choice(array $array)
+function choice(array $sequence)
 {
-    return current(sample($array, 1));
+    if (!$sequence) {
+        throw new \InvalidArgumentException('Sequence is empty');
+    }
+
+    return $sequence[array_rand($sequence)];
 }
 
 /**
- * @param array $weights
- * @param int $length
+ * Returns a random element from a non-empty sequence of items with associated weights
+ *
+ * @param array $weightPairs List of pairs [[item, weight], ...]
  * @return mixed
  */
-function weightedSample(array $weights, $length)
+function weightedChoice(array $weightPairs)
 {
-    if (!$weights || !$length) {
-        return array();
+    if (!$weightPairs) {
+        throw new \InvalidArgumentException('Weight pairs are empty');
     }
 
-    $result = array();
+    $total = array_reduce($weightPairs, function($sum, $v) { return $sum + $v[1]; });
+    $r = mt_rand(1, $total);
 
-    $count = 0;
-    $total = array_sum($weights);
-    while ($length >= $count) {
-        $r = mt_rand(1, $total);
-
-        reset($weights);
-        $acc = current($weights);
-        while ($acc < $r && next($weights)) {
-            $acc += current($weights);
-        }
-
-        $result[] = key($weights);
-        ++$count;
+    reset($weightPairs);
+    $acc = current($weightPairs)[1];
+    while ($acc < $r && next($weightPairs)) {
+        $acc += current($weightPairs)[1];
     }
 
-    return $result;
-}
-
-/**
- * @param array $array
- * @return mixed
- */
-function weightedChoice(array $array)
-{
-    return current(weightedSample($array, 1));
+    return current($weightPairs)[0];
 }

@@ -193,8 +193,8 @@ function I($args, array $functions)
 }
 
 /**
- * Returns you a curried version of function
- * If you are going to curry a function which reads args with func_get_args() then pass number of args as the 2nd argument.
+ * Returns you a curried version of the function
+ * If you are going to curry a function which reads args with func_get_args() then pass a number of args as the 2nd argument.
  *
  * @param callable $function
  * @param bool $withOptionalArgs If true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.

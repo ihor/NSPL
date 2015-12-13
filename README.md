@@ -1,6 +1,6 @@
 Non-standard PHP library
 ========================
-An attempt to improve standard PHP API inspired by Python and functional programming.
+An attempt to improve standard PHP API inspired by Python.
 
 
 Installation
@@ -15,7 +15,7 @@ Define the following requirement in your composer.json file:
 Usage
 -----
 
-Here I assume that described functions are imported with *use function*.
+Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
 
 #### nspl/f
 
@@ -116,13 +116,13 @@ pipe('underscore_to_camelcase', [
 
 **I($args, array $functions)**
 
-Alias for pipe.
+Alias for the pipe.
 
 *The following two functions were added for fun and don't have much practical usage in PHP.*
 
 **curried($function, $withOptionalArgs = false)**
 
-Returns you a curried version of function. If you are going to curry a function which reads args with func_get_args() then pass number of args as the 2nd argument.
+Returns you a curried version of the function. If you are going to curry a function which reads args with func_get_args() then pass a number of args as the 2nd argument.
 
 If the second argument is true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
 ```php
@@ -321,7 +321,7 @@ Returns new ArrayObject
 
 **DefaultArray**
 
-Array with default value for missing keys. If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
+Array with a default value for missing keys. If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
 It turns this code
 ```php
 $a = array();

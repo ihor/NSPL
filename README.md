@@ -17,6 +17,24 @@ Usage
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
 
+#### nspl
+
+**all($sequence)**
+
+Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+
+```php
+assert(true === any([true, true, true]);
+```
+
+**any($sequence)**
+
+Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+
+```php
+assert(true === any([true, false, false]);
+```
+
 #### nspl/f
 
 Provides the most popular higher-order functions: functions that act on or return other functions.
@@ -152,6 +170,8 @@ $filterNumbers = partial(f::$filter, 'is_numeric');
 #### nspl/op
 
 Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. For example:
+
+
 ```php
 use nspl\op;
 use function nspl\f\reduce;
@@ -220,6 +240,7 @@ $userIds = map(methodCaller('getId'), $users);
 #### nspl/a
 
 Provides missing array functions and nicer API for existing ones.
+
 
 **extend(array $list1, array $list2)**
 
@@ -303,6 +324,7 @@ $firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
 
 Provides non-standard data structures and methods to work with them.
 
+
 **getType($var)**
 
 Returns the variable type or its class name if it is an object
@@ -347,6 +369,7 @@ Returns new DefaultArray
 #### nspl/rnd
 
 Provides useful pseudo-random number generators
+
 
 **choice(array $sequence)**
 

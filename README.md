@@ -257,6 +257,13 @@ use function nspl\op\methodCaller;
 sorted($users, false, methodCaller('getId'));
 ```
 
+**pairs(array $array, $valueKey = false)**
+
+Returns list of (key, value) pairs. If $valueKey is true then convert array to (value, key) pairs.
+```php
+assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
+```
+
 **take(array $list, $N, $step = 1)**
 
 Returns first N list items

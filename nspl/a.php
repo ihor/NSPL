@@ -74,6 +74,29 @@ function flatten(array $list)
 }
 
 /**
+ * Returns list of (key, value) pairs
+ * @param array $array
+ * @param bool $valueKey If true then convert array to (value, key) pairs
+ * @return array
+ */
+function pairs(array $array, $valueKey = false)
+{
+    if (!$array) {
+        return array();
+    }
+
+    $result = array();
+    reset($array);
+    do {
+        $result[] = $valueKey
+            ? array(current($array), key($array))
+            : array(key($array), current($array));
+    } while (next($array));
+
+    return $result;
+}
+
+/**
  * Returns sorted copy of passed array
  *
  * @param array $array
@@ -179,6 +202,7 @@ class a
     static public $extend;
     static public $zip;
     static public $flatten;
+    static public $pairs;
     static public $sorted;
     static public $take;
     static public $first;
@@ -190,6 +214,7 @@ class a
 a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
 a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
 a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
+a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
 a::$sorted = function(array $array, $reversed = false, $key = null, $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
 a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
 a::$first = function(array $list) { return \nspl\a\first($list); };

@@ -6,6 +6,7 @@ use \nspl\a;
 use function \nspl\a\extend;
 use function \nspl\a\zip;
 use function \nspl\a\flatten;
+use function \nspl\a\pairs;
 use function \nspl\a\sorted;
 use function \nspl\a\take;
 use function \nspl\a\first;
@@ -61,6 +62,17 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(a::$flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
         $this->assertEquals([1], call_user_func(a::$flatten, [1]));
         $this->assertEquals([], call_user_func(a::$flatten, []));
+    }
+
+    public function testPairs()
+    {
+        $this->assertEquals([[0, 'a'], [1, 'b'], [2, 'c']], pairs(['a', 'b', 'c']));
+        $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
+        $this->assertEquals([], pairs([]));
+
+        $this->assertEquals([[0, 'a'], [1, 'b'], [2, 'c']], call_user_func(a::$pairs, (['a', 'b', 'c'])));
+        $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], call_user_func(a::$pairs, (array('a' => 'hello', 'b' => 'world', 'c' => 42))));
+        $this->assertEquals([], call_user_func(a::$pairs, ([])));
     }
 
     public function testSorted()

@@ -86,12 +86,11 @@ function pairs(array $array, $valueKey = false)
     }
 
     $result = array();
-    reset($array);
-    do {
+    foreach ($array as $key => $value) {
         $result[] = $valueKey
             ? array(current($array), key($array))
             : array(key($array), current($array));
-    } while (next($array));
+    }
 
     return $result;
 }

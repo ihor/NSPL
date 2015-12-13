@@ -88,8 +88,8 @@ function pairs(array $array, $valueKey = false)
     $result = array();
     foreach ($array as $key => $value) {
         $result[] = $valueKey
-            ? array(current($array), key($array))
-            : array(key($array), current($array));
+            ? array($value, $key)
+            : array($key, $value);
     }
 
     return $result;

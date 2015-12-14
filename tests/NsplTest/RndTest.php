@@ -23,7 +23,7 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($appearances as $item => $rate) {
-            $this->assertEquals(30000, $rate, '', 300);
+            $this->assertEquals(30000, $rate, '', 500);
         }
 
         $this->assertEquals([], sample(['a', 'b', 'c'], 0));

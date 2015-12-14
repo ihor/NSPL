@@ -12,6 +12,7 @@ use function \nspl\a\take;
 use function \nspl\a\first;
 use function \nspl\a\drop;
 use function \nspl\a\last;
+use function \nspl\a\moveElement;
 
 class ATest extends \PHPUnit_Framework_TestCase
 {
@@ -196,6 +197,41 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testLastForEmptyList()
     {
         last([]);
+    }
+
+    public function testMoveElement()
+    {
+        $this->assertEquals([2, 0, 1], moveElement([0, 1, 2], 2, 0));
+        $this->assertEquals([0, 2, 1], moveElement([0, 1, 2], 1, 2));
+        $this->assertEquals([0, 1, 2], moveElement([0, 1, 2], 1, 1));
+
+        $this->assertEquals([2, 0, 1], call_user_func(a::$moveElement, [0, 1, 2], 2, 0));
+        $this->assertEquals([0, 2, 1], call_user_func(a::$moveElement, [0, 1, 2], 1, 2));
+        $this->assertEquals([0, 1, 2], call_user_func(a::$moveElement, [0, 1, 2], 1, 1));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testMoveElementToInNotList()
+    {
+        moveElement(array(1 => 'a', 2 => 'b', 3 => 'c'), 1, 2);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testMoveElementToInvalidPosition()
+    {
+        moveElement([0, 1, 2], 0, 3);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testMoveElementFromInvalidPosition()
+    {
+        moveElement([0, 1, 2], 3, 0);
     }
 
 }

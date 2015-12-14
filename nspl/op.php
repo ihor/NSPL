@@ -44,16 +44,15 @@ class op
      */
     static public function itemGetter($key)
     {
-        $returnList = false;
         if (func_num_args() > 1) {
-            $key = func_get_args();
-            $returnList = true;
+            $keys = func_get_args();
+            return function($array) use ($keys) {
+                return array_map(function($k) use ($array) { return $array[$k]; }, $keys);
+            };
         }
 
-        return function($array) use ($key, $returnList) {
-            return $returnList
-                ? array_map(function($k) use ($array) { return $array[$k]; }, $key)
-                : $array[$key];
+        return function($array) use ($key) {
+            return $array[$key];
         };
     }
 
@@ -64,6 +63,18 @@ class op
      */
     static public function propertyGetter($property)
     {
+        if (func_num_args() > 1) {
+            $properties = func_get_args();
+            return function($object) use ($properties) {
+                $result = array();
+                foreach ($properties as $property) {
+                    $result[$property] = $object->{$property};
+                }
+
+                return $result;
+            };
+        }
+
         return function($object) use ($property) {
             return $object->{$property};
         };
@@ -124,6 +135,6 @@ op::$concat = function($a, $b) { return $a . $b; };
 
 namespace nspl\op;
 
-function itemGetter($key) { return \nspl\op::itemGetter($key); }
-function propertyGetter($property) { return \nspl\op::propertyGetter($property); }
+function itemGetter($key) { return call_user_func_array(['\nspl\op', 'itemGetter'], func_get_args()); }
+function propertyGetter($property) { return call_user_func_array(['\nspl\op', 'propertyGetter'], func_get_args()); }
 function methodCaller($method, array $args = array()) { return \nspl\op::methodCaller($method, $args); }

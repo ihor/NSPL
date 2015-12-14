@@ -190,9 +190,11 @@ class OpTest extends \PHPUnit_Framework_TestCase
     {
         $first = itemGetter(0);
         $second = itemGetter(1);
+        $firstAndSecond = itemGetter(0, 1);
 
         $this->assertEquals(1, $first([1, 2]));
         $this->assertEquals(2, $second([1, 2]));
+        $this->assertEquals([1, 2], $firstAndSecond([1, 2, 3]));
 
         $users = [
             array('name' => 'John', 'age' => 18),
@@ -213,6 +215,14 @@ class OpTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['John', 'Jack', 'Sarah'], map(propertyGetter('name'), $users));
         $this->assertEquals([18, 20, 19], map(propertyGetter('age'), $users));
+        $this->assertEquals(
+            [
+                array('name' => 'John', 'age' => 18),
+                array('name' => 'Jack', 'age' => 20),
+                array('name' => 'Sarah', 'age' => 19),
+            ],
+            map(propertyGetter('name', 'age'), $users)
+        );
     }
 
     public function testMethodCaller()

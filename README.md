@@ -17,7 +17,7 @@ Usage
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
 
-#### nspl
+### nspl
 
 **all($sequence)**
 
@@ -35,7 +35,8 @@ Returns true if all elements of the $sequence are true (or if the $sequence is e
 assert(true === any([true, false, false]);
 ```
 
-#### nspl/f
+
+### nspl\f
 
 Provides the most popular higher-order functions: functions that act on or return other functions.
 
@@ -167,7 +168,7 @@ $filterNumbers = partial(f::$filter, 'is_numeric');
 ```
 
 
-#### nspl/op
+### nspl\op
 
 Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. For example:
 
@@ -237,7 +238,8 @@ Returns a function that returns method result for a given object on predefined a
 $userIds = map(methodCaller('getId'), $users);
 ```
 
-#### nspl/a
+
+### nspl\a
 
 Provides missing array functions and nicer API for existing ones.
 
@@ -320,7 +322,8 @@ Class *f* provides all these functions as lambdas in its static properties which
 $firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
 ```
 
-#### nspl/ds
+
+### nspl\ds
 
 Provides non-standard data structures and methods to work with them.
 
@@ -366,7 +369,8 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 
 Returns new DefaultArray
 
-#### nspl/rnd
+
+### nspl\rnd
 
 Provides useful pseudo-random number generators
 

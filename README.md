@@ -13,11 +13,20 @@ Define the following requirement in your composer.json file:
 ```
 
 Usage
------
+=====
+
+Nspl contains the following modules:
+- [nspl](#nspl): provides generic functions
+- [nspl\f](#nsplf): Provides the most popular higher-order functions: functions that act on or return other functions
+- [nspl\op](#nsplop): Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions
+- [nspl\a](#nspla): Provides missing array functions
+- [nspl\ds](#nsplds): Provides non-standard data structures and methods to work with them
+- [nspl\rnd](#nsplrnd): Provides useful pseudo-random number generators
+
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
 
-### nspl
+## nspl
 
 **all($sequence)**
 
@@ -36,7 +45,7 @@ assert(true === any([true, false, false]);
 ```
 
 
-### nspl\f
+## nspl\f
 
 Provides the most popular higher-order functions: functions that act on or return other functions.
 
@@ -168,7 +177,7 @@ $filterNumbers = partial(f::$filter, 'is_numeric');
 ```
 
 
-### nspl\op
+## nspl\op
 
 Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. For example:
 
@@ -239,9 +248,9 @@ $userIds = map(methodCaller('getId'), $users);
 ```
 
 
-### nspl\a
+## nspl\a
 
-Provides missing array functions and nicer API for existing ones.
+Provides missing array functions
 
 
 **extend(array $list1, array $list2)**
@@ -323,9 +332,9 @@ $firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
 ```
 
 
-### nspl\ds
+## nspl\ds
 
-Provides non-standard data structures and methods to work with them.
+Provides non-standard data structures and methods to work with them
 
 
 **getType($var)**
@@ -370,7 +379,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 Returns new DefaultArray
 
 
-### nspl\rnd
+## nspl\rnd
 
 Provides useful pseudo-random number generators
 

@@ -388,9 +388,9 @@ Provides useful pseudo-random number generators
 
 Returns a random element from a non-empty sequence
 
-**weightedChoice(array $pairs)**
+**weightedChoice(array $weightPairs)**
 
-Returns a random element from a non-empty sequence of items with associated weights
+Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 
 **sample(array $population, $length)**
 

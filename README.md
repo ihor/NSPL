@@ -204,7 +204,7 @@ op::$dec    | --
 op::$neg    | -
 op::$band   | &
 op::$bxor   | ^
-op::$bor    | |
+op::$bor    | &#124;
 op::$bnot   | ~
 op::$lshift | <<
 op::$rshift | >>
@@ -218,7 +218,7 @@ op::$ge     | >
 op::$gt     | >=
 op::$and    | &&
 op::$mand   | The same as && except: false && false = true
-op::$or     | ||
+op::$or     | &#124;&#124;
 op::$xor    | xor
 op::$not    | !
 op::$concat | .

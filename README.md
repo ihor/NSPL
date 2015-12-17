@@ -32,7 +32,7 @@ Here I assume that described functions are imported with [use function](http://p
 
 ## nspl
 
-**all($sequence)**
+##### all($sequence)
 
 Returns true if all elements of the $sequence are true (or if the $sequence is empty)
 

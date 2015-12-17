@@ -10,5 +10,6 @@
         "athletic/athletic": "~0.1"
     },
     "require": {
+        "php": ">=5.4.0"
     }
 }

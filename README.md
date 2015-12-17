@@ -8,7 +8,7 @@ Installation
 Define the following requirement in your composer.json file:
 ```
 "require": {
-    "ihor/nspl": "0.1"
+    "ihor/nspl": "1.0"
 }
 ```
 

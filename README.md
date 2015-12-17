@@ -16,12 +16,12 @@ Usage
 =====
 
 Nspl contains the following modules:
-- [nspl](#nspl): provides generic functions
-- [nspl\f](#nsplf): Provides the most popular higher-order functions: functions that act on or return other functions
-- [nspl\op](#nsplop): Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions
-- [nspl\a](#nspla): Provides missing array functions
-- [nspl\ds](#nsplds): Provides non-standard data structures and methods to work with them
-- [nspl\rnd](#nsplrnd): Provides useful pseudo-random number generators
+- [nspl](#nspl) - provides generic functions
+- [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions
+- [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions
+- [nspl\a](#nspla) - provides missing array functions
+- [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
+- [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
 
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).

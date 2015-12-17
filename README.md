@@ -1,6 +1,6 @@
 Non-standard PHP library
 ========================
-An attempt to improve standard PHP API inspired by Python.
+Nspl is inspired by Python and makes solving day to day routine tasks easier.
 
 
 Installation
@@ -18,7 +18,7 @@ Usage
 Nspl contains the following modules:
 - [nspl](#nspl) - provides generic functions
 - [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions
-- [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions
+- [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module 
 - [nspl\a](#nspla) - provides missing array functions
 - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
 - [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
@@ -170,7 +170,7 @@ $strReplace = uncurried($curriedStrReplace);
 
 **Lambdas**
 
-Class *f* provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class *nspl\f* provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
 $incListItems = partial(f::$map, function($v) { return $v + 1; });
 $filterNumbers = partial(f::$filter, 'is_numeric');
@@ -179,7 +179,7 @@ $filterNumbers = partial(f::$filter, 'is_numeric');
 
 ## nspl\op
 
-Provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. For example:
+Class *nspl\op* provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
 
 
 ```php
@@ -326,7 +326,7 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 **Lambdas**
 
-Class *f* provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class *nspl\a* provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
 $firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
 ```

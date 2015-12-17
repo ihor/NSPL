@@ -1,6 +1,6 @@
 {
     "name": "ihor/nspl",
-    "description": "An attempt to improve standard PHP API inspired by Python.",
+    "description": "Nspl is inspired by Python and makes solving day to day routine tasks easier.",
     "license": "MIT",
     "autoload": {
       "files": ["autoload.php"]

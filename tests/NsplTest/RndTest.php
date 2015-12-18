@@ -19,7 +19,7 @@ class RndTest extends \PHPUnit_Framework_TestCase
 
         $sample = sample($list, 3, true);
         foreach ($sample as $k => $element) {
-            assertTrue($list[$k] === $element);
+            $this->assertTrue($list[$k] === $element);
         }
 
         $this->assertEquals([], sample(['a', 'b', 'c'], 0));

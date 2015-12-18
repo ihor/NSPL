@@ -10,7 +10,7 @@ class DefaultArray extends ArrayObject
     private $default;
 
     /**
-     * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
+     * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the array for the key, and returned.
      *
      * @param mixed|callable $default
      * @param array|null $data Provides initial data

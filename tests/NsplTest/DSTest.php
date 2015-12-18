@@ -98,6 +98,16 @@ class DsTest extends \PHPUnit_Framework_TestCase
 
         $array = defaultarray(function() { return time(); });
         $this->assertEquals(time(), $array['apples'], '', 0.1);
+
+        $array = new DefaultArray(10, array('apples' => 20, 'bananas' => 30));
+        $this->assertEquals(10, $array['oranges']);
+        $this->assertEquals(20, $array['apples']);
+        $this->assertEquals(30, $array['bananas']);
+
+        $array = defaultarray(10, array('apples' => 20, 'bananas' => 30));
+        $this->assertEquals(10, $array['oranges']);
+        $this->assertEquals(20, $array['apples']);
+        $this->assertEquals(30, $array['bananas']);
     }
 
 }

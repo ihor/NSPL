@@ -365,8 +365,8 @@ Returns new ArrayObject
 
 ##### DefaultArray
 
-Array with a default value for missing keys. If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
-It turns this code
+Array with a default value for missing keys. If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the array for the key, and returned.
+Using DefaultArray turns this code:
 ```php
 $a = array();
 foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
@@ -376,7 +376,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
     ++$a[$v];
 }
 ```
-into this
+into this:
 ```php
 $a = new DefaultArray(0);
 foreach([1, 2, 1, 1, 3, 3, 3] as $v) {

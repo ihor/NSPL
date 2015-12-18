@@ -396,6 +396,11 @@ Returns a random element from a non-empty sequence
 
 Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 
-##### sample(array $population, $length)
+##### sample(array $population, $length, $preserveKeys = false)
 
 Returns a k length list of unique elements chosen from the population sequence
+
+Roadmap
+=======
+
+TODO

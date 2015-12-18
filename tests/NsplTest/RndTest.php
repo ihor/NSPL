@@ -4,6 +4,7 @@ namespace NsplTest;
 
 use \nspl\a;
 
+use function \nspl\ds\isList;
 use function \nspl\rnd\sample;
 use function \nspl\rnd\choice;
 use function \nspl\rnd\weightedChoice;
@@ -13,6 +14,15 @@ class RndTest extends \PHPUnit_Framework_TestCase
     public function testSample()
     {
         $list = ['a', 'b', 'c', 'd', 'e'];
+
+        $this->assertTrue(isList(sample($list, 3)));
+
+        $sample = sample($list, 3, true);
+        foreach ($sample as $k => $element) {
+            assertTrue($list[$k] === $element);
+        }
+
+        $this->assertEquals([], sample(['a', 'b', 'c'], 0));
 
         $appearances = array_fill_keys($list, 0);
         for ($i = 0; $i < 50000; ++$i) {
@@ -25,8 +35,6 @@ class RndTest extends \PHPUnit_Framework_TestCase
         foreach ($appearances as $item => $rate) {
             $this->assertEquals(30000, $rate, '', 500);
         }
-
-        $this->assertEquals([], sample(['a', 'b', 'c'], 0));
     }
 
     /**

@@ -9,9 +9,10 @@ use function \nspl\ds\isList;
  *
  * @param array $population
  * @param int $length
+ * @param bool $preserveKeys
  * @return array
  */
-function sample(array $population, $length)
+function sample(array $population, $length, $preserveKeys = false)
 {
     if (!$length) {
         return array();
@@ -27,7 +28,7 @@ function sample(array $population, $length)
         $result[$key] = $population[$key];
     }
 
-    return $result;
+    return $preserveKeys ? $result : array_values($result);
 }
 
 /**

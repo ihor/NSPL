@@ -384,7 +384,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 }
 ```
 
-##### defaultarray($default)
+##### defaultarray($default, $data = array())
 
 Returns new DefaultArray
 

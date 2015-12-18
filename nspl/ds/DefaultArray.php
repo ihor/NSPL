@@ -13,10 +13,12 @@ class DefaultArray extends ArrayObject
      * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
      *
      * @param mixed|callable $default
+     * @param array|null $data Provides initial data
      */
-    public function __construct($default)
+    public function __construct($default, $data = array())
     {
         $this->default = $default;
+        $this->array = (array) $data;
     }
 
     private function getDefault()
@@ -54,9 +56,10 @@ class DefaultArray extends ArrayObject
  * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
  *
  * @param mixed|callable $default
+ * @param array|null $data
  * @return DefaultArray
  */
-function defaultarray($default)
+function defaultarray($default, $data = array())
 {
-    return new DefaultArray($default);
+    return new DefaultArray($default, $data);
 }

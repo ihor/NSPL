@@ -226,6 +226,12 @@ op::$or     | &#124;&#124;
 op::$xor    | xor
 op::$not    | !
 op::$concat | .
+op::$int    | (int)
+op::$bool   | (bool)
+op::$float  | (float)
+op::$str    | (string)
+op::$array  | (array)
+op::$object | (object)
 
 ##### itemGetter($key)
 Returns a function that returns key value for a given array

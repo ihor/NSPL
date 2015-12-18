@@ -37,6 +37,13 @@ class op
 
     static public $concat;
 
+    static public $int;
+    static public $bool;
+    static public $float;
+    static public $str;
+    static public $array;
+    static public $object;
+
     /**
      * Returns a function that returns key value for a given array
      * @param string $key Array key. Optionally it takes several keys as arguments and returns list of values
@@ -132,6 +139,14 @@ op::$xor = function($a, $b) { return $a xor $b; };
 op::$not = function($a) { return !$a; };
 
 op::$concat = function($a, $b) { return $a . $b; };
+
+op::$int = function($a) { return (int) $a; };
+op::$bool = function($a) { return (bool) $a; };
+op::$float = function($a) { return (float) $a; };
+op::$str = function($a) { return (string) $a; };
+op::$array = function($a) { return (array) $a; };
+op::$object = function($a) { return (object) $a; };
+
 
 namespace nspl\op;
 

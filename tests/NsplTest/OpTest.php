@@ -186,6 +186,49 @@ class OpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('12', call_user_func(op::$concat, 1, 2));
     }
 
+    public function testInt()
+    {
+        $this->assertSame(1, call_user_func(op::$int, '1'));
+        $this->assertSame(1, call_user_func(op::$int, 1.0));
+    }
+
+    public function testBool()
+    {
+        $this->assertSame(true, call_user_func(op::$bool, '1'));
+        $this->assertSame(false, call_user_func(op::$bool, 0));
+    }
+
+    public function testFloat()
+    {
+        $this->assertSame(1.0, call_user_func(op::$float, '1'));
+        $this->assertSame(1.0, call_user_func(op::$float, 1));
+    }
+
+    public function testStr()
+    {
+        $this->assertSame('1', call_user_func(op::$str, 1));
+    }
+
+    public function testArray()
+    {
+        $this->assertSame([1], call_user_func(op::$array, 1));
+
+        $object = new \StdClass();
+        $object->hello = 'world';
+        $object->answer = 42;
+
+        $this->assertSame(array('hello' => 'world', 'answer' => 42), call_user_func(op::$array, $object));
+    }
+
+    public function testObject()
+    {
+        $object = new \StdClass();
+        $object->hello = 'world';
+        $object->answer = 42;
+
+        $this->assertEquals($object, call_user_func(op::$object, array('hello' => 'world', 'answer' => 42)));
+    }
+
     public function testItemGetter()
     {
         $first = itemGetter(0);

@@ -34,7 +34,7 @@ $pairs = zip([1, 2, 3], ['a', 'b', 'c']);
 ```
 If your PHP version is less than 5.6 you should import parent namespace and use functions with the namespace prefix:
 ```php
-use namespace nspl\a;
+use nspl\a;
 $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 ```
 

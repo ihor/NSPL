@@ -30,7 +30,7 @@ Nspl contains the following modules:
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
 ```php
 use function nspl\a\zip;
-$pairs = zip([1, 2, 3], ['a', 'b', 'c'])Update;
+$pairs = zip([1, 2, 3], ['a', 'b', 'c']);
 ```
 If your PHP version is less than 5.6 you should import parent namespace and use functions with the namespace prefix:
 ```php

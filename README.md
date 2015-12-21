@@ -27,7 +27,16 @@ Nspl contains the following modules:
 - [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
 
 
-Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
+Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
+```php
+use function nspl\a\zip;
+$pairs = zip([1, 2, 3], ['a', 'b', 'c'])Update;
+```
+If your PHP version is less than 5.6 you should import parent namespace and use functions with the namespace prefix:
+```php
+use namespace nspl\a;
+$pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
+```
 
 ## nspl\f
 

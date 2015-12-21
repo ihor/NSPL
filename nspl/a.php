@@ -7,6 +7,40 @@ use nspl\ds;
 use nspl\op;
 
 /**
+ * Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+ *
+ * @param array|\Traversable $sequence
+ * @return bool
+ */
+function all($sequence)
+{
+    foreach ($sequence as $value) {
+        if (!$value) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Returns true if any element of the $sequence is true. If the $sequence is empty, returns false.
+ *
+ * @param array|\Traversable $sequence
+ * @return bool
+ */
+function any($sequence)
+{
+    foreach ($sequence as $value) {
+        if ($value) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Adds $list2 items to the end of $list1
  *
  * @param array $list1
@@ -75,11 +109,11 @@ function flatten(array $list)
 
 /**
  * Returns list of (key, value) pairs
- * @param array $array
+ * @param array|\Traversable $array
  * @param bool $valueKey If true then convert array to (value, key) pairs
  * @return array
  */
-function pairs(array $array, $valueKey = false)
+function pairs($array, $valueKey = false)
 {
     if (!$array) {
         return array();
@@ -140,8 +174,8 @@ function take(array $list, $N, $step = 1)
     }
 
     $result = array();
-    $lenght = min(count($list), $N * $step);
-    for ($i = 0; $i < $lenght; $i += $step) {
+    $length = min(count($list), $N * $step);
+    for ($i = 0; $i < $length; $i += $step) {
         $result[] = $list[$i];
     }
 

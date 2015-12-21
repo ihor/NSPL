@@ -20,7 +20,6 @@ Usage
 =====
 
 Nspl contains the following modules:
-- [nspl](#nspl) - provides generic functions
 - [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions
 - [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module 
 - [nspl\a](#nspla) - provides missing array functions
@@ -29,25 +28,6 @@ Nspl contains the following modules:
 
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php).
-
-## nspl
-
-##### all($sequence)
-
-Returns true if all elements of the $sequence are true (or if the $sequence is empty)
-
-```php
-assert(true === any([true, true, true]);
-```
-
-##### any($sequence)
-
-Returns true if all elements of the $sequence are true (or if the $sequence is empty)
-
-```php
-assert(true === any([true, false, false]);
-```
-
 
 ## nspl\f
 
@@ -262,6 +242,21 @@ $userIds = map(methodCaller('getId'), $users);
 
 Provides missing array functions
 
+##### all($sequence)
+
+Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+
+```php
+assert(true === any([true, true, true]);
+```
+
+##### any($sequence)
+
+Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+
+```php
+assert(true === any([true, false, false]);
+```
 
 ##### extend(array $list1, array $list2)
 

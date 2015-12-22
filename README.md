@@ -251,17 +251,17 @@ $userIds = map(methodCaller('getId'), $users);
 
 Provides missing array functions
 
-##### all($sequence)
+##### all($sequence, $predicate)
 
-Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty). If predicate was not passed return true if all elements of the $sequence are true.
 
 ```php
-assert(true === any([true, true, true]);
+assert(true === all([true, true, true]);
 ```
 
-##### any($sequence)
+##### any($sequence, $predicate)
 
-Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if any element of the $sequence is true. If the $sequence is empty, returns false.
 
 ```php
 assert(true === any([true, false, false]);

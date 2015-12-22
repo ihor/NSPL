@@ -29,6 +29,9 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(all([null, true, 1, 'a', [1], new \StdClass()]));
         $this->assertFalse(all([true, 1, 'a', [], new \StdClass()]));
         $this->assertFalse(all([true, 1, '', [1], new \StdClass()]));
+
+        $this->assertTrue(all([19, 20, 21], function($v) { return $v > 18; }));
+        $this->assertFalse(all([19, 20, 21], function($v) { return $v < 18; }));
     }
 
     public function testAny()
@@ -44,6 +47,9 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(any([null, [], false]));
         $this->assertFalse(any([null, false, '']));
         $this->assertFalse(any([0, false, false]));
+
+        $this->assertTrue(any([18, 19, 20], function($v) { return $v === 18; }));
+        $this->assertFalse(any([19, 20, 21], function($v) { return $v === 18; }));
     }
 
 

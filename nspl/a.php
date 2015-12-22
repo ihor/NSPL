@@ -7,15 +7,17 @@ use nspl\ds;
 use nspl\op;
 
 /**
- * Returns true if all elements of the $sequence are true (or if the $sequence is empty)
+ * Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty).
+ * If predicate was not passed return true if all elements of the $sequence are true.
  *
  * @param array|\Traversable $sequence
+ * @param callable $predicate
  * @return bool
  */
-function all($sequence)
+function all($sequence, $predicate = null)
 {
     foreach ($sequence as $value) {
-        if (!$value) {
+        if ($predicate && !call_user_func($predicate, $value) || !$predicate && !$value) {
             return false;
         }
     }
@@ -24,15 +26,17 @@ function all($sequence)
 }
 
 /**
- * Returns true if any element of the $sequence is true. If the $sequence is empty, returns false.
+ * Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if
+ * any element of the $sequence is true. If the $sequence is empty, returns false.
  *
  * @param array|\Traversable $sequence
+ * @param callable $predicate
  * @return bool
  */
-function any($sequence)
+function any($sequence, $predicate = null)
 {
     foreach ($sequence as $value) {
-        if ($value) {
+        if ($predicate && call_user_func($predicate, $value) || !$predicate && $value) {
             return true;
         }
     }

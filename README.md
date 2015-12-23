@@ -106,6 +106,7 @@ $memoized = memoized($f);
 echo $memoized('Hello world!') . "\n";
 echo $memoized('Hello world!') . "\n";
 ```
+which outputs
 ```
 Performing heavy calculations with 'Hello world!'
 Hello world!
@@ -128,11 +129,11 @@ $underscoreToCamelcase = compose(
 
 Passes args to composition of functions (functions have to be in the reversed order)
 ```php
-pipe('underscore_to_camelcase', [
+assert('underscoreToCamelcase' === pipe('underscore_to_camelcase', [
     rpartial('ucwords', '_'),
     partial('str_replace', '_', ''),
     'lcfirst'
-])
+]))
 ```
 
 ##### I($args, array $functions)
@@ -179,12 +180,9 @@ Class *nspl\op* provides lambda-functions that perform standard PHP operations a
 use nspl\op;
 use function nspl\f\reduce;
 
-reduce(op::$sum, [1, 2, 3]);
+assert(6 === reduce(op::$sum, [1, 2, 3]));
 ```
-which is shorter than:
-```php
-reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]);
-```
+
 Function    | Operation
 ------------|-----------------------------------------------
 op::$sum    | +
@@ -271,7 +269,7 @@ assert(true === any([true, false, false]);
 
 Adds $list2 items to the end of $list1
 ```php
-extend([1, 2, 3], [4, 5, 6]);
+assert([1, 2, 3, 4, 5, 6] === extend([1, 2, 3], [4, 5, 6]));
 ```
 
 ##### zip(array $list1, array $list2)
@@ -294,13 +292,13 @@ Returns sorted copy of the passed array
 $key is a function of one argument that is used to extract a comparison key from each element
 $cmp is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
-sorted([2, 3, 1]);
-sorted(['c', 'a', 'b'], true);
+assert([1, 2, 3] === sorted([2, 3, 1]));
+assert(['a', 'b', 'c'] === sorted(['c', 'a', 'b'], true));
 
-sorted($users, false, function($u1, $u2) { return $u1->getId() - $u2->getId(); });
+$usersSortedByName = sorted($users, false, function($u1, $u2) { return $u1->getName() - $u2->getName(); });
 // Which is the same as
 use function nspl\op\methodCaller;
-sorted($users, false, methodCaller('getId'));
+$usersSortedByName = sorted($users, false, methodCaller('getName'));
 ```
 
 ##### pairs(array $array, $valueKey = false)
@@ -342,7 +340,7 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 Class *nspl\a* provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
-$firstItems = array_map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']];
+assert([1, 2, 3] === map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 ```
 
 

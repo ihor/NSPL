@@ -108,7 +108,7 @@ function ppartial($function, array $args)
         $position = 0;
         do {
             if (!isset($args[$position]) && !array_key_exists($position, $args)) {
-                $args[$position] = array_pop($_args);
+                $args[$position] = array_shift($_args);
             }
             ++$position;
         } while($_args);

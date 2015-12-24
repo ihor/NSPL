@@ -129,6 +129,10 @@ class FTest extends \PHPUnit_Framework_TestCase
         $noArgFuncPartial = ppartial('time', array(0 => null));
         $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
 
+        $f = function($a, $b, $c) { return $a . $b . $c; };
+        $f1 = ppartial($f, array(0 => 'a'));
+        $this->assertEquals('abc', call_user_func($f1, 'b', 'c'));
+
         $oddNumbers = call_user_func(f::$ppartial, 'range', array(0 => 1, 2 => 2));
         $this->assertEquals([1], $oddNumbers(1));
         $this->assertEquals([1, 3, 5], $oddNumbers(6));

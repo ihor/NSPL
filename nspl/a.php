@@ -172,6 +172,40 @@ function sorted(array $array, $reversed = false, $key = null, $cmp = null)
 }
 
 /**
+ * Returns indexed list of items
+ *
+ * @param array $list List of arrays or objects
+ * @param int|string|callable $by An array key or a function
+ * @param bool $keepLast If true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
+ * @param callable|null $transform A function that transforms list item after indexing
+ * @return array
+ */
+function indexed(array $list, $by, $keepLast = true, $transform = null)
+{
+    $indexIsCallable = is_callable($by);
+
+    $result = array();
+    foreach ($list as $item) {
+        if ($indexIsCallable || isset($item[$by]) || array_key_exists($by, $item)) {
+            $index = $indexIsCallable ? call_user_func($by, $item) : $item[$by];
+
+            if ($keepLast) {
+                $result[$index] = $transform ? call_user_func($transform, $item) : $item;;
+                continue;
+            }
+
+            if (!isset($result[$index])) {
+                $result[$index] = [];
+            }
+
+            $result[$index][] = $transform ? call_user_func($transform, $item) : $item;;
+        }
+    }
+
+    return $result;
+}
+
+/**
  * Returns first N list items
  *
  * @param array $list
@@ -274,6 +308,7 @@ class a
     static public $flatten;
     static public $pairs;
     static public $sorted;
+    static public $indexed;
     static public $take;
     static public $first;
     static public $drop;
@@ -287,6 +322,7 @@ a::$zip = function(array $list1, array $list2) { return call_user_func_array('\n
 a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
 a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
 a::$sorted = function(array $array, $reversed = false, $key = null, $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
+a::$indexed = function(array $listOfArrays, $by, $keepLast = true, $transform = null) { return \nspl\a\indexed($listOfArrays, $by, $keepLast, $transform); };
 a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
 a::$first = function(array $list) { return \nspl\a\first($list); };
 a::$drop = function(array $list, $N) { return \nspl\a\drop($list, $N); };

@@ -10,6 +10,7 @@ use function \nspl\a\zip;
 use function \nspl\a\flatten;
 use function \nspl\a\pairs;
 use function \nspl\a\sorted;
+use function \nspl\a\indexed;
 use function \nspl\a\take;
 use function \nspl\a\first;
 use function \nspl\a\drop;
@@ -174,6 +175,85 @@ class ATest extends \PHPUnit_Framework_TestCase
         $list = [3, 1, 2];
         $this->assertEquals([1, 2, 3], call_user_func(a::$sorted, $list));
         $this->assertEquals([3, 1, 2], $list);
+    }
+
+    public function testIndexed()
+    {
+        $animals = [
+            array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+            array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+        ];
+
+        $this->assertEquals(array(
+            9 => array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+            10 => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            11 => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+        ), indexed($animals, 'id'));
+
+        $this->assertEquals(array(
+            'cat' => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            'dog' => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+        ), indexed($animals, 'type'));
+
+        $this->assertEquals(array(
+            'cat' => [
+                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            ],
+            'dog' => [
+                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            ],
+        ), indexed($animals, 'type', false));
+
+        $this->assertEquals(array(
+            3 => [
+                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            ],
+        ), indexed($animals, function($animal) { return strlen($animal['type']); }, false));
+
+        $this->assertEquals(array(
+            'Snowball' => 'cat',
+            'Santa\'s Little Helper' => 'dog',
+            'Fluffy' => 'cat',
+        ), indexed($animals, 'name', true, function($animal) { return $animal['type']; }));
+
+        $this->assertEquals(array(
+            9 => array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+            10 => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            11 => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+        ), call_user_func(a::$indexed, $animals, 'id'));
+
+        $this->assertEquals(array(
+            'cat' => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            'dog' => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+        ), call_user_func(a::$indexed, $animals, 'type'));
+
+        $this->assertEquals(array(
+            'cat' => [
+                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            ],
+            'dog' => [
+                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            ],
+        ), call_user_func(a::$indexed, $animals, 'type', false));
+
+        $this->assertEquals(array(
+            3 => [
+                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+            ],
+        ), call_user_func(a::$indexed, $animals, function($animal) { return strlen($animal['type']); }, false));
+
+        $this->assertEquals(array(
+            'Snowball' => 'cat',
+            'Santa\'s Little Helper' => 'dog',
+            'Fluffy' => 'cat',
+        ), call_user_func(a::$indexed, $animals, 'name', true, function($animal) { return $animal['type']; }));
     }
 
     public function testTake()

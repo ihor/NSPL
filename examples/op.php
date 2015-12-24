@@ -7,7 +7,7 @@ use function nspl\op\itemGetter;
 use function nspl\op\propertyGetter;
 
 use function nspl\f\map;
-use function nspl\f\rp; // alias for rpartial
+use function nspl\f\rpartial as rp;
 
 use function nspl\a\all;
 use function nspl\a\any;

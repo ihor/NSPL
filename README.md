@@ -125,18 +125,19 @@ $underscoreToCamelcase = compose(
 );
 ```
 
-##### pipe($args, array $functions)
+##### pipe($input, $function1, $function2)
 
-Passes args to composition of functions (functions have to be in the reversed order)
+Passes $input to composition of functions (functions have to be in the reversed order)
 ```php
-assert('underscoreToCamelcase' === pipe('underscore_to_camelcase', [
+assert('underscoreToCamelcase' === pipe(
+    'underscore_to_camelcase', 
     rpartial('ucwords', '_'),
     partial('str_replace', '_', ''),
     'lcfirst'
-]))
+))
 ```
 
-##### I($args, array $functions)
+##### I($input, $function1, $function2)
 
 Alias for the pipe.
 

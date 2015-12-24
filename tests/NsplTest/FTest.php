@@ -226,35 +226,29 @@ class FTest extends \PHPUnit_Framework_TestCase
 
     public function testPipe()
     {
-        $this->assertEquals(
-            'underscoreToCamelcase',
-            pipe('underscore_to_camelcase', [
-                rpartial('ucwords', '_'),
-                partial('str_replace', '_', ''),
-                'lcfirst'
-            ])
-        );
+        $this->assertEquals('underscoreToCamelcase', pipe(
+            'underscore_to_camelcase',
+            rpartial('ucwords', '_'),
+            partial('str_replace', '_', ''),
+            'lcfirst'
+        ));
 
-        $this->assertEquals(
-            'underscoreToCamelcase',
-            call_user_func(f::$pipe, 'underscore_to_camelcase', [
-                rpartial('ucwords', '_'),
-                partial('str_replace', '_', ''),
-                'lcfirst'
-            ])
-        );
+        $this->assertEquals('underscoreToCamelcase', call_user_func(f::$pipe,
+            'underscore_to_camelcase',
+            rpartial('ucwords', '_'),
+            partial('str_replace', '_', ''),
+            'lcfirst'
+        ));
     }
 
     public function testI()
     {
-        $this->assertEquals(
-            'underscoreToCamelcase',
-            I('underscore_to_camelcase', [
-                rpartial('ucwords', '_'),
-                partial('str_replace', '_', ''),
-                'lcfirst'
-            ])
-        );
+        $this->assertEquals('underscoreToCamelcase', I(
+            'underscore_to_camelcase',
+            rpartial('ucwords', '_'),
+            partial('str_replace', '_', ''),
+            'lcfirst'
+        ));
     }
 
     public function testCurried()

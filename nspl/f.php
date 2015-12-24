@@ -161,35 +161,33 @@ function compose($f, $g)
 /**
  * Passes args to composition of functions (functions have to be in the reversed order)
  *
- * @param mixed $args
- * @param callable[] $functions
+ * @param mixed $input
+ * @param callable $function1
+ * @param callable $function2
  * @return mixed
  */
-function pipe($args, array $functions)
+function pipe($input, $function1, $function2)
 {
-    if (!is_array($args)) {
-        $args = (array) $args;
-    }
+    $functions = func_get_args();
+    unset($functions[0]);
 
-    return call_user_func_array(
-        call_user_func_array(
-            \nspl\f::$compose,
-            array_reverse($functions)
-        ),
-        $args
+    return call_user_func(
+        call_user_func_array(\nspl\f::$compose, array_reverse($functions)),
+        $input
     );
 }
 
 /**
  * Alias for @see pipe()
  *
- * @param mixed $args
- * @param callable[] $functions
+ * @param mixed $input
+ * @param callable $function1
+ * @param callable $function2
  * @return mixed
  */
-function I($args, array $functions)
+function I($input, $function1, $function2)
 {
-    return pipe($args, $functions);
+    return call_user_func_array('\nspl\f\pipe', func_get_args());
 }
 
 /**
@@ -269,6 +267,6 @@ f::$rpartial = function($function) { return call_user_func_array('\nspl\f\rparti
 f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', func_get_args()); };
 f::$memoized = function($function) { return f\memoized($function); };
 f::$compose = function($f, $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
-f::$pipe = function($args, array $functions) { return f\pipe($args, $functions); };
+f::$pipe = function($input, $function1, $function2) { return call_user_func_array('\nspl\f\pipe', func_get_args()); };
 f::$curried = function($function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };
 f::$uncurried = function($function) { return f\uncurried($function); };

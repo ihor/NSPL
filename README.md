@@ -255,7 +255,7 @@ Provides missing array functions
 Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty). If predicate was not passed return true if all elements of the $sequence are true.
 
 ```php
-assert(true === all([true, true, true]);
+assert(true === all([true, true, true]));
 ```
 
 ##### any($sequence, $predicate)
@@ -263,7 +263,14 @@ assert(true === all([true, true, true]);
 Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if any element of the $sequence is true. If the $sequence is empty, returns false.
 
 ```php
-assert(true === any([true, false, false]);
+assert(true === any([true, false, false]));
+```
+
+##### getByKey(array $array, $key, $default = null)
+
+Returns array value by key if it exists otherwise returns the default value
+```php
+assert(-1 === getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
 ```
 
 ##### extend(array $list1, array $list2)

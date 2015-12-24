@@ -45,6 +45,19 @@ function any($sequence, $predicate = null)
 }
 
 /**
+ * Returns array value by key if it exists otherwise returns the default value
+ *
+ * @param array $array
+ * @param int|string $key
+ * @param mixed $default
+ * @return mixed
+ */
+function getByKey(array $array, $key, $default = null)
+{
+    return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
+}
+
+/**
  * Adds $list2 items to the end of $list1
  *
  * @param array $list1
@@ -303,6 +316,9 @@ namespace nspl;
 
 class a
 {
+    static public $all;
+    static public $any;
+    static public $getByKey;
     static public $extend;
     static public $zip;
     static public $flatten;
@@ -317,6 +333,9 @@ class a
 
 }
 
+a::$all = function($sequence, $predicate = null) { return \nspl\a\all($sequence, $predicate); };
+a::$any = function($sequence, $predicate = null) { return \nspl\a\any($sequence, $predicate); };
+a::$getByKey = function(array $array, $key, $default = null) { return \nspl\a\getByKey($array, $key, $default); };
 a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
 a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
 a::$flatten = function(array $list) { return \nspl\a\flatten($list); };

@@ -5,6 +5,7 @@ namespace NsplTest;
 use \nspl\a;
 use function \nspl\a\all;
 use function \nspl\a\any;
+use function \nspl\a\getByKey;
 use function \nspl\a\extend;
 use function \nspl\a\zip;
 use function \nspl\a\flatten;
@@ -33,6 +34,19 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(all([19, 20, 21], function($v) { return $v > 18; }));
         $this->assertFalse(all([19, 20, 21], function($v) { return $v < 18; }));
+
+        $this->assertTrue(call_user_func(a::$all, [true, true, true]));
+        $this->assertTrue(call_user_func(a::$all, [true, 1, 'a', [1], new \StdClass()]));
+        $this->assertTrue(call_user_func(a::$all, []));
+
+        $this->assertFalse(call_user_func(a::$all, [true, true, false]));
+        $this->assertFalse(call_user_func(a::$all, [true, 0, 'a', [1], new \StdClass()]));
+        $this->assertFalse(call_user_func(a::$all, [null, true, 1, 'a', [1], new \StdClass()]));
+        $this->assertFalse(call_user_func(a::$all, [true, 1, 'a', [], new \StdClass()]));
+        $this->assertFalse(call_user_func(a::$all, [true, 1, '', [1], new \StdClass()]));
+
+        $this->assertTrue(call_user_func(a::$all, [19, 20, 21], function($v) { return $v > 18; }));
+        $this->assertFalse(call_user_func(a::$all, [19, 20, 21], function($v) { return $v < 18; }));
     }
 
     public function testAny()
@@ -51,8 +65,31 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(any([18, 19, 20], function($v) { return $v === 18; }));
         $this->assertFalse(any([19, 20, 21], function($v) { return $v === 18; }));
+
+        $this->assertTrue(call_user_func(a::$any, [true, false, false]));
+        $this->assertTrue(call_user_func(a::$any, [false, 1, false]));
+        $this->assertTrue(call_user_func(a::$any, [false, false, [1]]));
+        $this->assertTrue(call_user_func(a::$any, ['a', false, false]));
+        $this->assertTrue(call_user_func(a::$any, [false, new \StdClass(), false]));
+
+        $this->assertFalse(call_user_func(a::$any, []));
+        $this->assertFalse(call_user_func(a::$any, [null, false, false]));
+        $this->assertFalse(call_user_func(a::$any, [null, [], false]));
+        $this->assertFalse(call_user_func(a::$any, [null, false, '']));
+        $this->assertFalse(call_user_func(a::$any, [0, false, false]));
+
+        $this->assertTrue(call_user_func(a::$any, [18, 19, 20], function($v) { return $v === 18; }));
+        $this->assertFalse(call_user_func(a::$any, [19, 20, 21], function($v) { return $v === 18; }));
     }
 
+    public function testGetByKey()
+    {
+        $this->assertEquals(2, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals(-1, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+
+        $this->assertEquals(2, call_user_func(a::$getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals(-1, call_user_func(a::$getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+    }
 
     public function testExtend()
     {

@@ -79,6 +79,10 @@ $sum = function($a, $b) { return $a + $b; };
 $inc = partial($sum, 1);
 ```
 
+##### p($function, $arg1)
+
+Alias for the partial
+
 ##### rpartial($function, $arg1)
 
 Returns new partial function which will behave like $function with predefined *right* arguments passed to rpartial
@@ -86,12 +90,20 @@ Returns new partial function which will behave like $function with predefined *r
 $cube = rpartial('pow', 3);
 ```
 
+##### rp($function, $arg1)
+
+Alias for the rpartial
+
 ##### ppartial($function, array $args)
 
 Returns new partial function which will behave like $function with predefined *positional* arguments passed to ppartial
 ```php
 $oddNumbers = ppartial('range', array(0 => 1, 2 => 2));
 ```
+
+##### pp($function, array $args)
+
+Alias for the ppartial
 
 ##### memoized($function)
 
@@ -139,7 +151,7 @@ assert('underscoreToCamelcase' === pipe(
 
 ##### I($input, $function1, $function2)
 
-Alias for the pipe.
+Alias for the pipe
 
 *The following two functions were added for fun and don't have much practical usage in PHP.*
 

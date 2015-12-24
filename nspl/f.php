@@ -118,6 +118,46 @@ function ppartial($function, array $args)
 }
 
 /**
+ * Alias for @see partial()
+ *
+ * @param callable $function
+ * @param mixed $arg1
+ * @param mixed $arg2
+ * @param mixed ...
+ * @return callable
+ */
+function p($function, $arg1)
+{
+    return call_user_func_array('\nspl\f\partial', func_get_args());
+}
+
+/**
+ * Alias for @see rpartial()
+ *
+ * @param callable $function
+ * @param mixed $arg1
+ * @param mixed $arg2
+ * @param mixed ...
+ * @return callable
+ */
+function rp($function, $arg1)
+{
+    return call_user_func_array('\nspl\f\rpartial', func_get_args());
+}
+
+/**
+ * Alias for @see ppartial()
+ *
+ * @param callable $function
+ * @param array $args Predefined positional args (position => value)
+ * @return callable
+ */
+function pp($function, array $args)
+{
+    return call_user_func_array('\nspl\f\ppartial', func_get_args());
+}
+
+/**
  * Returns memoized $function which returns the cached result when the same inputs occur again
  *
  * @param callable $function

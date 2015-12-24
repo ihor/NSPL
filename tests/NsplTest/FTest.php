@@ -10,6 +10,9 @@ use function \nspl\f\apply;
 use function \nspl\f\partial;
 use function \nspl\f\rpartial;
 use function \nspl\f\ppartial;
+use function \nspl\f\p;
+use function \nspl\f\rp;
+use function \nspl\f\pp;
 use function \nspl\f\compose;
 use function \nspl\f\memoized;
 use function \nspl\f\pipe;
@@ -96,6 +99,13 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
     }
 
+    public function testP()
+    {
+        $sqrList = p('array_map', function($v) { return $v * $v; });
+        $this->assertEquals([1, 4, 9], $sqrList([1, 2, 3]));
+        $this->assertEquals([], $sqrList([]));
+    }
+
     public function testRpartial()
     {
         $cube = rpartial('pow', 3);
@@ -115,6 +125,12 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $noArgFuncPartial = call_user_func(f::$rpartial, 'time', null);
         $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+    }
+
+    public function testRp()
+    {
+        $cube = rp('pow', 3);
+        $this->assertEquals(27, $cube(3));
     }
 
     public function testPpartial()
@@ -138,6 +154,13 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $noArgFuncPartial = call_user_func(f::$ppartial, 'time', array(0 => null));
         $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+    }
+
+    public function testPp()
+    {
+        $oddNumbers = pp('range', array(0 => 1, 2 => 2));
+        $this->assertEquals([1], $oddNumbers(1));
+        $this->assertEquals([1, 3, 5], $oddNumbers(6));
     }
 
     public function testMemoized()

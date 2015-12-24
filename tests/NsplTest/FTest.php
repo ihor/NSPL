@@ -7,6 +7,7 @@ use function \nspl\f\map;
 use function \nspl\f\reduce;
 use function \nspl\f\filter;
 use function \nspl\f\apply;
+use function \nspl\f\flipped;
 use function \nspl\f\partial;
 use function \nspl\f\rpartial;
 use function \nspl\f\ppartial;
@@ -71,6 +72,17 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 3, 5, 7, 9], call_user_func(f::$apply, 'range', [1, 10, 2]));
         $this->assertEquals(time(), call_user_func(f::$apply, 'time'), '', 0.1);
+    }
+
+    public function testFlipped()
+    {
+        $f = function($a, $b, $c) { return $a . $b . $c; };
+
+        $flippedF = flipped($f);
+        $this->assertEquals('cba', $flippedF('a', 'b', 'c'));
+
+        $flippedF = call_user_func(f::$flipped, $f);
+        $this->assertEquals('cba', $flippedF('a', 'b', 'c'));
     }
 
     public function testPartial()

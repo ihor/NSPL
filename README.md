@@ -71,6 +71,10 @@ Applies given function to arguments and returns the result
 assert([1, 3, 5, 7, 9] === apply('range', [1, 10, 2]));
 ```
 
+##### flipped($function)
+
+Returns function which accepts arguments in the reversed order
+
 ##### partial($function, $arg1)
 
 Returns new partial function which will behave like $function with predefined *left* arguments passed to partial

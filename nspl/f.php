@@ -58,6 +58,18 @@ function apply($function, $args = array())
 }
 
 /**
+ * Returns function which accepts arguments in the reversed order
+ *
+ * @param callable $function
+ * @return callable
+ */
+function flipped($function) {
+    return function() use ($function) {
+        return call_user_func_array($function, array_reverse(func_get_args()));
+    };
+}
+
+/**
  * Returns new function which will behave like $function with
  * predefined left arguments passed to partial
  *
@@ -247,6 +259,7 @@ class f
     static public $reduce;
     static public $filter;
     static public $apply;
+    static public $flipped;
     static public $partial;
     static public $rpartial;
     static public $ppartial;
@@ -262,6 +275,7 @@ f::$map = function($function, $sequence) { return f\map($function, $sequence); }
 f::$reduce = function($function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
 f::$filter = function($function, $sequence) { return f\filter($function, $sequence); };
 f::$apply = function($function, array $args = array()) { return f\apply($function, $args); };
+f::$flipped = function($function) { return f\flipped($function); };
 f::$partial = function($function) { return call_user_func_array('\nspl\f\partial', func_get_args()); };
 f::$rpartial = function($function) { return call_user_func_array('\nspl\f\rpartial', func_get_args()); };
 f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', func_get_args()); };

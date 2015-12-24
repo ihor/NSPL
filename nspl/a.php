@@ -68,6 +68,12 @@ function zip(array $list1, array $list2)
     $lists = func_get_args();
     $count = func_num_args();
 
+    for ($j = 0; $j < $count; ++$j) {
+        if (!ds\isList($lists[$j])) {
+            $lists[$j] = array_values($lists[$j]);
+        }
+    }
+
     $i = 0;
     $result = array();
     do {
@@ -93,6 +99,8 @@ function zip(array $list1, array $list2)
  */
 function flatten(array $list)
 {
+    $list = array_values($list);
+
     $result = array();
     $lenght = count($list);
     for ($i = 0; $i < $lenght; ++$i) {

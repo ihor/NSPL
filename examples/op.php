@@ -7,7 +7,7 @@ use function nspl\op\itemGetter;
 use function nspl\op\propertyGetter;
 
 use function nspl\f\map;
-use function nspl\f\rpartial;
+use function nspl\f\rp; // alias for rpartial
 
 use function nspl\a\all;
 use function nspl\a\any;
@@ -45,6 +45,6 @@ foreach ($sorted as $user) {
 
 
 // 4. Check if all numbers are positive
-$allPositive = all([1, 2, 3, 4, 5], rpartial(op::$gt, 0));
+$allPositive = all([1, 2, 3, 4, 5], rp(op::$gt, 0));
 
 echo $allPositive ? "All numbers are positive\n" : "At least one number was not positive\n";

@@ -89,6 +89,28 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testWeightedChoiceWithNonIntegerWeights()
+    {
+        $weights = [
+            'a' => 0.15,
+            'b' => 0.15,
+            'c' => 0.10,
+            'd' => 0.40,
+            'e' => 0.20,
+        ];
+
+        $pairs = a\pairs($weights);
+
+        $appearances = array_fill_keys(array_keys($weights), 0);
+        for ($i = 0; $i < 50000; ++$i) {
+            ++$appearances[weightedChoice($pairs)];
+        }
+
+        foreach ($appearances as $item => $rate) {
+            $this->assertEquals(50000 * $weights[$item], $rate, '', 300);
+        }
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */

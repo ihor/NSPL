@@ -47,7 +47,8 @@ function choice(array $sequence)
 }
 
 /**
- * Returns a random element from a non-empty sequence of items with associated weights
+ * Returns a random element from a non-empty sequence of items with associated weights.
+ * Weights can have up to 6 numbers after decimal point.
  *
  * @param array $weightPairs List of pairs [[item, weight], ...]
  * @return mixed
@@ -58,13 +59,15 @@ function weightedChoice(array $weightPairs)
         throw new \InvalidArgumentException('Weight pairs are empty');
     }
 
+    $multiplier = 1000000;
+
     $total = array_reduce($weightPairs, function($sum, $v) { return $sum + $v[1]; });
-    $r = mt_rand(1, $total);
+    $r = mt_rand(1, $total * $multiplier);
 
     reset($weightPairs);
-    $acc = current($weightPairs)[1];
+    $acc = current($weightPairs)[1] * $multiplier;
     while ($acc < $r && next($weightPairs)) {
-        $acc += current($weightPairs)[1];
+        $acc += current($weightPairs)[1] * $multiplier;
     }
 
     return current($weightPairs)[0];

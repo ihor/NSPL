@@ -249,6 +249,7 @@ Returns a function that returns method result for a given object on predefined a
 $userIds = map(methodCaller('getId'), $users);
 ```
 
+Check \nspl\op examples [here](https://github.com/ihor/Nspl/blob/master/examples/op.php).
 
 ## nspl\a
 
@@ -435,6 +436,8 @@ Returns a random element from a non-empty sequence of items with associated weig
 ##### sample(array $population, $length, $preserveKeys = false)
 
 Returns a k length list of unique elements chosen from the population sequence
+
+Check \nspl\rnd examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
 
 Roadmap
 =======

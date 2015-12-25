@@ -433,6 +433,18 @@ Returns a random element from a non-empty sequence
 
 Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 
+```php
+use function \nspl\rnd\weightedChoice;
+use function \nspl\a\pairs;
+
+$nextPet = weightedChoice([['cat', 20], ['hamster', 30], ['dog', 50]]);
+$nextFavouriteColor = weightedChoice(pairs(array(
+    'red' => 0.2,
+    'green' => 0.3,
+    'blue' => 0.5,
+)));
+```
+
 ##### sample(array $population, $length, $preserveKeys = false)
 
 Returns a k length list of unique elements chosen from the population sequence

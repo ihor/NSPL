@@ -112,23 +112,8 @@ function zip(array $list1, array $list2)
  */
 function flatten(array $list)
 {
-    $list = array_values($list);
-
     $result = array();
-    $lenght = count($list);
-    for ($i = 0; $i < $lenght; ++$i) {
-        if (is_array($list[$i])) {
-            $flattened = flatten($list[$i]);
-            $subLenght = count($flattened);
-            for ($j = 0; $j < $subLenght; ++$j) {
-                $result[] = $flattened[$j];
-            }
-        }
-        else {
-            $result[] = $list[$i];
-        }
-    }
-
+    array_walk_recursive($list, function($a) use (&$result) { $result[] = $a; });
     return $result;
 }
 
@@ -253,7 +238,12 @@ function first(array $list)
         throw new \InvalidArgumentException('Can not return the first item of an empty list');
     }
 
-    return current(take($list, 1));
+    if (isset($list[0]) || array_key_exists(0, $list)) {
+        return $list[0];
+    }
+
+    reset($list);
+    return current($list);
 }
 
 /**

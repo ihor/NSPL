@@ -179,7 +179,7 @@ class ArrayObject implements \ArrayAccess, \Iterator
     /**
      * @return array
      */
-    public function __toArray()
+    public function toArray()
     {
         return $this->array;
     }

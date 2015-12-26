@@ -64,11 +64,13 @@ function weightedChoice(array $weightPairs)
     $total = array_reduce($weightPairs, function($sum, $v) { return $sum + $v[1]; });
     $r = mt_rand(1, $total * $multiplier);
 
-    reset($weightPairs);
-    $acc = current($weightPairs)[1] * $multiplier;
-    while ($acc < $r && next($weightPairs)) {
-        $acc += current($weightPairs)[1] * $multiplier;
+    $acc = 0;
+    foreach ($weightPairs as $pair) {
+        $acc += $pair[1] * $multiplier;
+        if ($acc >= $r) {
+            return $pair[0];
+        }
     }
 
-    return current($weightPairs)[0];
+    return $pair[0];
 }

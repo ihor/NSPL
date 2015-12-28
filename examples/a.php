@@ -47,6 +47,7 @@ $users = map(op::$object, [
     array('id' => 3, 'name' => 'Sarah', 'age' => 25),
     array('id' => 4, 'name' => 'Norah', 'age' => 20),
     array('id' => 5, 'name' => 'Michael', 'age' => 30),
+    array('id' => 6, 'name' => 'Bob', 'age' => 30),
 ]);
 
 $usersSortedByName = sorted($users, false, op::propertyGetter('name'));
@@ -58,6 +59,7 @@ foreach ($usersSortedByName as $user) {
 
 // 5. Index users by ids
 $usersIndexedByIds = indexed($users, op::propertyGetter('id'));
+// In case of array it would be indexed($users, 'id')
 
 echo "Users indexed by id:\n";
 foreach ($usersIndexedByIds as $id => $user) {
@@ -74,13 +76,21 @@ foreach ($usersAgeByName as $name => $age) {
 }
 
 
-// 7. Get all numbers less than 20 which are divisible by 3
+// 7. Get users with unique age
+$usersWithUniqueAge = array_values(indexed($users, op::propertyGetter('age')));
+echo "Users with unique age:\n";
+foreach ($usersWithUniqueAge as $user) {
+    echo sprintf("    %s is %s y.o.\n", $user->name, $user->age);
+}
+
+
+// 8. Get all numbers less than 20 which are divisible by 3
 $numbers = take(range(3, 20), 20, 3);
 
 echo sprintf("Numbers less than 20 which are divisible by 3: %s\n", implode(', ', $numbers));
 
 
-// 8. Re-order pets rating
+// 9. Re-order pets rating
 $petsRating = moveElement(['dog', 'hamster', 'cat'], 2, 1);
 
 echo "New pets rating:\n";

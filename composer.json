@@ -1,7 +1,7 @@
 {
   "name": "ihor/nspl",
   "description": "Nspl is inspired by Python and makes solving day to day routine tasks easier",
-  "keywords": ["functional", "programming", "partial application", "memoize", "weighted random", "zip", "flatten", "defaultarray"],
+  "keywords": ["functional", "programming", "higher-order", "partial application", "curry", "memoize", "weighted random", "list", "zip", "flatten", "defaultarray"],
   "license": "MIT",
   "authors": [
     {

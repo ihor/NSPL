@@ -20,7 +20,7 @@ Usage
 =====
 
 Nspl contains the following modules:
-- [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions
+- [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code in functional programming paradigm.
 - [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module 
 - [nspl\a](#nspla) - provides missing array functions
 - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
@@ -169,7 +169,7 @@ $strReplace = uncurried($curriedStrReplace);
 
 ##### Lambdas
 
-Class *nspl\f* provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class ```nspl\f``` provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
 $incListItems = partial(f::$map, function($v) { return $v + 1; });
 $filterNumbers = partial(f::$filter, 'is_numeric');
@@ -178,7 +178,7 @@ $filterNumbers = partial(f::$filter, 'is_numeric');
 
 ## nspl\op
 
-Class *nspl\op* provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
+Class ```nspl\op``` provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
 
 
 ```php
@@ -275,7 +275,9 @@ assert(true === any([true, false, false]));
 
 Returns array value by key if it exists otherwise returns the default value
 ```php
-assert(-1 === getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+$data = array('a' => 1, 'b' => 2, 'c' => 3);
+assert(2 === getByKey($data, 'b', -1));
+assert(-1 === getByKey($data, 'd', -1));
 ```
 
 ##### extend(array $list1, array $list2)
@@ -312,6 +314,13 @@ $usersSortedByName = sorted($users, false, function($u1, $u2) { return $u1->getN
 // Which is the same as
 use function nspl\op\methodCaller;
 $usersSortedByName = sorted($users, false, methodCaller('getName'));
+```
+
+##### keySorted(array $array, $reversed = false)
+
+Returns copy of passed array sorted by keys
+```php
+assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 3, 'a' => 1));
 ```
 
 ##### indexed(array $list, $by, $keepLast = true, $transform = null)
@@ -367,10 +376,12 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 ##### Lambdas
 
-Class *nspl\a* provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class ```nspl\a``` provides all these functions as lambdas in its static properties which have the same names as the functions.
 ```php
 assert([1, 2, 3] === map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 ```
+
+Check ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).
 
 
 ## nspl\ds

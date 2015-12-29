@@ -11,6 +11,7 @@ use function \nspl\a\zip;
 use function \nspl\a\flatten;
 use function \nspl\a\pairs;
 use function \nspl\a\sorted;
+use function \nspl\a\keySorted;
 use function \nspl\a\indexed;
 use function \nspl\a\take;
 use function \nspl\a\first;
@@ -212,6 +213,15 @@ class ATest extends \PHPUnit_Framework_TestCase
         $list = [3, 1, 2];
         $this->assertEquals([1, 2, 3], call_user_func(a::$sorted, $list));
         $this->assertEquals([3, 1, 2], $list);
+    }
+
+    public function keySorted()
+    {
+        $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), keySorted(array('b' => 2, 'c' => 3, 'a' => 1)));
+        $this->assertEquals(array('c' => 3, 'b' => 2, 'a' => 1), keySorted(array('b' => 2, 'c' => 3, 'a' => 1), true));
+
+        $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), call_user_func(a::$keySorted, array('b' => 2, 'c' => 3, 'a' => 1)));
+        $this->assertEquals(array('c' => 3, 'b' => 2, 'a' => 1), call_user_func(a::$keySorted, array('b' => 2, 'c' => 3, 'a' => 1), true));
     }
 
     public function testIndexed()

@@ -170,6 +170,25 @@ function sorted(array $array, $reversed = false, $key = null, $cmp = null)
 }
 
 /**
+ * Returns copy of passed array sorted by keys
+ *
+ * @param array $array
+ * @param bool $reversed
+ * @return array
+ */
+function keySorted(array $array, $reversed = false)
+{
+    if ($reversed) {
+        krsort($array);
+    }
+    else {
+        ksort($array);
+    }
+
+    return $array;
+}
+
+/**
  * Returns indexed list of items
  *
  * @param array $list List of arrays or objects
@@ -314,6 +333,7 @@ class a
     static public $flatten;
     static public $pairs;
     static public $sorted;
+    static public $keySorted;
     static public $indexed;
     static public $take;
     static public $first;
@@ -331,6 +351,7 @@ a::$zip = function(array $list1, array $list2) { return call_user_func_array('\n
 a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
 a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
 a::$sorted = function(array $array, $reversed = false, $key = null, $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
+a::$keySorted = function(array $array, $reversed = false) { return \nspl\a\sorted($array, $reversed); };
 a::$indexed = function(array $listOfArrays, $by, $keepLast = true, $transform = null) { return \nspl\a\indexed($listOfArrays, $by, $keepLast, $transform); };
 a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
 a::$first = function(array $list) { return \nspl\a\first($list); };

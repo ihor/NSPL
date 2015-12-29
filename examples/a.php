@@ -7,12 +7,14 @@ use function nspl\a\all;
 use function nspl\a\any;
 use function nspl\a\getByKey;
 use function nspl\a\sorted;
+use function nspl\a\keySorted;
 use function nspl\a\indexed;
 use function nspl\a\take;
 use function nspl\a\moveElement;
 
 use nspl\op;
 use function nspl\op\itemGetter;
+use function nspl\op\propertyGetter;
 
 use function nspl\f\map;
 use function nspl\f\reduce;
@@ -50,7 +52,7 @@ $users = map(op::$object, [
     array('id' => 6, 'name' => 'Bob', 'age' => 30),
 ]);
 
-$usersSortedByName = sorted($users, false, op::propertyGetter('name'));
+$usersSortedByName = sorted($users, false, propertyGetter('name'));
 echo "Users sorted by name:\n";
 foreach ($usersSortedByName as $user) {
     echo sprintf("    %s\n", $user->name);
@@ -58,7 +60,7 @@ foreach ($usersSortedByName as $user) {
 
 
 // 5. Index users by ids
-$usersIndexedByIds = indexed($users, op::propertyGetter('id'));
+$usersIndexedByIds = indexed($users, propertyGetter('id'));
 // In case of array it would be indexed($users, 'id')
 
 echo "Users indexed by id:\n";
@@ -68,7 +70,7 @@ foreach ($usersIndexedByIds as $id => $user) {
 
 
 // 6. Create a map (name => age) from users data
-$usersAgeByName = indexed($users, op::propertyGetter('name'), true, op::propertyGetter('age'));
+$usersAgeByName = indexed($users, propertyGetter('name'), true, propertyGetter('age'));
 
 echo "Users age:\n";
 foreach ($usersAgeByName as $name => $age) {
@@ -76,21 +78,31 @@ foreach ($usersAgeByName as $name => $age) {
 }
 
 
-// 7. Get users with unique age
-$usersWithUniqueAge = array_values(indexed($users, op::propertyGetter('age')));
+// 7. Get users with unique age (unique values in multidimensional array)
+$usersWithUniqueAge = array_values(indexed($users, propertyGetter('age')));
+
 echo "Users with unique age:\n";
 foreach ($usersWithUniqueAge as $user) {
     echo sprintf("    %s is %s y.o.\n", $user->name, $user->age);
 }
 
 
-// 8. Get all numbers less than 20 which are divisible by 3
+// 8. Group users by age range
+$usersByAgeRange = keySorted(indexed($users, function($user) { return floor($user->age / 10) * 10; }, false));
+
+echo "Users by age range:\n";
+foreach ($usersByAgeRange as $age => $usersGroup) {
+    echo sprintf("    %s-%s: %s\n", $age, $age + 9, implode(', ', map(propertyGetter('name'), $usersGroup)));
+}
+
+
+// 9. Get all numbers less than 20 which are divisible by 3
 $numbers = take(range(3, 20), 20, 3);
 
 echo sprintf("Numbers less than 20 which are divisible by 3: %s\n", implode(', ', $numbers));
 
 
-// 9. Re-order pets rating
+// 10. Re-order pets rating
 $petsRating = moveElement(['dog', 'hamster', 'cat'], 2, 1);
 
 echo "New pets rating:\n";

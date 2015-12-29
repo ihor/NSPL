@@ -329,8 +329,8 @@ assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 
 Returns indexed list of items
 
 *$by* is an array key or a function  
-If *$keepLast* is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
-$transform is a function that transforms list item after indexing
+If *$keepLast* is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
+*$transform* is a function that transforms list item after indexing
 
 ```php
 $indexedById = indexed([

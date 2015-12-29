@@ -305,8 +305,8 @@ assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 Returns sorted copy of the passed array
 
-$key is a function of one argument that is used to extract a comparison key from each element  
-$cmp is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
+*$key* is a function of one argument that is used to extract a comparison key from each element  
+*$cmp* is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 assert([1, 2, 3] === sorted([2, 3, 1]));
 assert(['a', 'b', 'c'] === sorted(['c', 'a', 'b'], true));
@@ -328,8 +328,8 @@ assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 
 
 Returns indexed list of items
 
-$by is an array key or a function  
-If $keepLast is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
+*$by* is an array key or a function  
+If *$keepLast8 is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
 $transform is a function that transforms list item after indexing
 
 ```php

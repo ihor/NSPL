@@ -431,6 +431,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 
 Returns new DefaultArray
 
+Check ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/ds.php).
 
 ## nspl\rnd
 

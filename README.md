@@ -175,6 +175,8 @@ $incListItems = partial(f::$map, function($v) { return $v + 1; });
 $filterNumbers = partial(f::$filter, 'is_numeric');
 ```
 
+Check ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/f.php).
+
 
 ## nspl\op
 

@@ -43,39 +43,39 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 Provides the most popular higher-order functions: functions that act on or return other functions.
 
 
-##### map(callable $function, $sequence)
+##### map($function, $sequence)
 
 Applies function of one argument to each sequence item.
 ```php
 assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
 ```
 
-##### reduce(callable $function, $sequence, $initial = 0)
+##### reduce($function, $sequence, $initial = 0)
 
 Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
 ```php
 assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 ```
 
-##### filter(callable $function, $sequence)
+##### filter($function, $sequence)
 
 Returns list items that satisfy the predicate
 ```php
 assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
-##### apply(callable $function, array $args = [])
+##### apply($function, array $args = [])
 
 Applies given function to arguments and returns the result
 ```php
 assert([1, 3, 5, 7, 9] === apply('range', [1, 10, 2]));
 ```
 
-##### flipped(callable $function)
+##### flipped($function)
 
 Returns function which accepts arguments in the reversed order
 
-##### partial(callable $function, $arg1)
+##### partial($function, $arg1)
 
 Returns new partial function which will behave like $function with predefined *left* arguments passed to partial
 ```php
@@ -83,21 +83,21 @@ $sum = function($a, $b) { return $a + $b; };
 $inc = partial($sum, 1);
 ```
 
-##### rpartial(callable $function, $arg1)
+##### rpartial($function, $arg1)
 
 Returns new partial function which will behave like $function with predefined *right* arguments passed to rpartial
 ```php
 $cube = rpartial('pow', 3);
 ```
 
-##### ppartial(callable $function, array $args)
+##### ppartial($function, array $args)
 
 Returns new partial function which will behave like $function with predefined *positional* arguments passed to ppartial
 ```php
 $oddNumbers = ppartial('range', array(0 => 1, 2 => 2));
 ```
 
-##### memoized(callable $function)
+##### memoized($function)
 
 Returns memoized $function which returns the cached result when the same inputs occur again
 ```php
@@ -117,7 +117,7 @@ Hello world!
 Hello world!
 ```
 
-##### compose(callable $f, callable $g)
+##### compose($f, $g)
 
 Returns new function which applies each given function to the result of another from right to left
 compose(f, g, h) is the same as f(g(h(x)))
@@ -129,7 +129,7 @@ $underscoreToCamelcase = compose(
 );
 ```
 
-##### pipe($input, callable $function1, callable $function2)
+##### pipe($input, $function1, $function2)
 
 Passes $input to composition of functions (functions have to be in the reversed order)
 ```php
@@ -141,13 +141,13 @@ assert('underscoreToCamelcase' === pipe(
 ))
 ```
 
-##### I($input, callable $function1, callable $function2)
+##### I($input, $function1, $function2)
 
 Alias for the pipe
 
 *The following two functions were added for fun and don't have much practical usage in PHP.*
 
-##### curried(callable $function, $withOptionalArgs = false)
+##### curried($function, $withOptionalArgs = false)
 
 Returns you a curried version of the function. If you are going to curry a function which reads args with func_get_args() then pass a number of args as the 2nd argument.
 
@@ -159,7 +159,7 @@ $replaceUnderscoresWithSpaces = $replaceUnderscores(' ');
 assert('Hello world!' === $replaceUnderscoresWithSpaces('Hello_world!'));
 ```
 
-##### uncurried(callable $function)
+##### uncurried($function)
 
 Returns uncurried version of curried function
 ```php

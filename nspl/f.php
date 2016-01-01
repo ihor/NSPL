@@ -12,7 +12,7 @@ use nspl\ds;
  * @param array|\Traversable $sequence
  * @return array
  */
-function map($function, $sequence)
+function map(callable $function, $sequence)
 {
     return array_map($function, (array) $sequence);
 }
@@ -26,7 +26,7 @@ function map($function, $sequence)
  * @param mixed $initial
  * @return array
  */
-function reduce($function, $sequence, $initial = 0)
+function reduce(callable $function, $sequence, $initial = 0)
 {
     return array_reduce((array) $sequence, $function, $initial);
 }
@@ -38,7 +38,7 @@ function reduce($function, $sequence, $initial = 0)
  * @param array|\Traversable $sequence
  * @return array
  */
-function filter($predicate, $sequence)
+function filter(callable $predicate, $sequence)
 {
     $isList = ds\isList($sequence);
     $filtered = array_filter((array) $sequence, $predicate);
@@ -52,7 +52,7 @@ function filter($predicate, $sequence)
  * @param array $args
  * @return mixed
  */
-function apply($function, $args = array())
+function apply(callable $function, $args = array())
 {
     return call_user_func_array($function, $args);
 }
@@ -63,7 +63,7 @@ function apply($function, $args = array())
  * @param callable $function
  * @return callable
  */
-function flipped($function) {
+function flipped(callable $function) {
     return function() use ($function) {
         return call_user_func_array($function, array_reverse(func_get_args()));
     };
@@ -79,7 +79,7 @@ function flipped($function) {
  * @param mixed ...
  * @return callable
  */
-function partial($function, $arg1)
+function partial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
@@ -97,7 +97,7 @@ function partial($function, $arg1)
  * @param mixed ...
  * @return callable
  */
-function rpartial($function, $arg1)
+function rpartial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
@@ -113,7 +113,7 @@ function rpartial($function, $arg1)
  * @param array $args Predefined positional args (position => value)
  * @return callable
  */
-function ppartial($function, array $args)
+function ppartial(callable $function, array $args)
 {
     return function() use ($function, $args) {
         $_args = func_get_args();
@@ -135,7 +135,7 @@ function ppartial($function, array $args)
  * @param callable $function
  * @return callable
  */
-function memoized($function)
+function memoized(callable $function)
 {
     return function() use ($function) {
         static $memory = array();
@@ -157,7 +157,7 @@ function memoized($function)
  * @param callable $g
  * @return callable
  */
-function compose($f, $g)
+function compose(callable $f, callable $g)
 {
     $functions = func_get_args();
     return function() use ($functions) {
@@ -178,7 +178,7 @@ function compose($f, $g)
  * @param callable $function2
  * @return mixed
  */
-function pipe($input, $function1, $function2)
+function pipe($input, callable $function1, callable $function2)
 {
     $functions = func_get_args();
     unset($functions[0]);
@@ -197,7 +197,7 @@ function pipe($input, $function1, $function2)
  * @param callable $function2
  * @return mixed
  */
-function I($input, $function1, $function2)
+function I($input, callable $function1, callable $function2)
 {
     return call_user_func_array('\nspl\f\pipe', func_get_args());
 }
@@ -210,7 +210,7 @@ function I($input, $function1, $function2)
  * @param bool $withOptionalArgs If true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
  * @return callable
  */
-function curried($function, $withOptionalArgs = false)
+function curried(callable $function, $withOptionalArgs = false)
 {
     if (is_bool($withOptionalArgs)) {
         $reflection = new \ReflectionFunction($function);
@@ -239,7 +239,7 @@ function curried($function, $withOptionalArgs = false)
  * @param callable $function Curried function
  * @return callable
  */
-function uncurried($function)
+function uncurried(callable $function)
 {
     return function() use ($function) {
         foreach (func_get_args() as $arg) {
@@ -271,16 +271,16 @@ class f
 
 }
 
-f::$map = function($function, $sequence) { return f\map($function, $sequence); };
-f::$reduce = function($function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
-f::$filter = function($function, $sequence) { return f\filter($function, $sequence); };
-f::$apply = function($function, array $args = array()) { return f\apply($function, $args); };
-f::$flipped = function($function) { return f\flipped($function); };
-f::$partial = function($function) { return call_user_func_array('\nspl\f\partial', func_get_args()); };
-f::$rpartial = function($function) { return call_user_func_array('\nspl\f\rpartial', func_get_args()); };
-f::$ppartial = function($function) { return call_user_func_array('\nspl\f\ppartial', func_get_args()); };
-f::$memoized = function($function) { return f\memoized($function); };
-f::$compose = function($f, $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
-f::$pipe = function($input, $function1, $function2) { return call_user_func_array('\nspl\f\pipe', func_get_args()); };
-f::$curried = function($function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };
-f::$uncurried = function($function) { return f\uncurried($function); };
+f::$map = function(callable $function, $sequence) { return f\map($function, $sequence); };
+f::$reduce = function(callable $function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
+f::$filter = function(callable $function, $sequence) { return f\filter($function, $sequence); };
+f::$apply = function(callable $function, array $args = array()) { return f\apply($function, $args); };
+f::$flipped = function(callable $function) { return f\flipped($function); };
+f::$partial = function(callable $function) { return call_user_func_array('\nspl\f\partial', func_get_args()); };
+f::$rpartial = function(callable $function) { return call_user_func_array('\nspl\f\rpartial', func_get_args()); };
+f::$ppartial = function(callable $function) { return call_user_func_array('\nspl\f\ppartial', func_get_args()); };
+f::$memoized = function(callable $function) { return f\memoized($function); };
+f::$compose = function(callable $f, callable $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
+f::$pipe = function($input, callable $function1, callable $function2) { return call_user_func_array('\nspl\f\pipe', func_get_args()); };
+f::$curried = function(callable $function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };
+f::$uncurried = function(callable $function) { return f\uncurried($function); };

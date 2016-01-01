@@ -43,7 +43,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 Provides the most popular higher-order functions: functions that act on or return other functions.
 
 
-##### map(callable $function, $sequence)
+##### ```php map(callable $function, $sequence)```
 
 Applies function of one argument to each sequence item.
 ```php

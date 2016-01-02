@@ -18,7 +18,7 @@ composer require ihor/nspl
 ```
 
 #### Manually
-Checkout the code and include *autoload.php*:
+Checkout the code and include ```autoload.php```:
 ```php
 include 'path/to/nspl/autoload.php';
 ```

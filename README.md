@@ -12,7 +12,7 @@ Define the following requirement in your composer.json file:
     "ihor/nspl": "~1.0"
 }
 ```
-or simply execute the following the command line:
+or simply execute the following in the command line:
 ```
 composer require ihor/nspl
 ```

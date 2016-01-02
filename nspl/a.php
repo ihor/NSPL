@@ -14,7 +14,7 @@ use nspl\op;
  * @param callable $predicate
  * @return bool
  */
-function all($sequence, $predicate = null)
+function all($sequence, callable $predicate = null)
 {
     foreach ($sequence as $value) {
         if ($predicate && !call_user_func($predicate, $value) || !$predicate && !$value) {
@@ -33,7 +33,7 @@ function all($sequence, $predicate = null)
  * @param callable $predicate
  * @return bool
  */
-function any($sequence, $predicate = null)
+function any($sequence, callable $predicate = null)
 {
     foreach ($sequence as $value) {
         if ($predicate && call_user_func($predicate, $value) || !$predicate && $value) {
@@ -147,7 +147,7 @@ function pairs($array, $valueKey = false)
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted(array $array, $reversed = false, $key = null, $cmp = null)
+function sorted(array $array, $reversed = false, callable $key = null, callable $cmp = null)
 {
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
@@ -197,7 +197,7 @@ function keySorted(array $array, $reversed = false)
  * @param callable|null $transform A function that transforms list item after indexing
  * @return array
  */
-function indexed(array $list, $by, $keepLast = true, $transform = null)
+function indexed(array $list, $by, $keepLast = true, callable $transform = null)
 {
     $indexIsCallable = is_callable($by);
 
@@ -343,16 +343,16 @@ class a
 
 }
 
-a::$all = function($sequence, $predicate = null) { return \nspl\a\all($sequence, $predicate); };
-a::$any = function($sequence, $predicate = null) { return \nspl\a\any($sequence, $predicate); };
+a::$all = function($sequence, callable $predicate = null) { return \nspl\a\all($sequence, $predicate); };
+a::$any = function($sequence, callable $predicate = null) { return \nspl\a\any($sequence, $predicate); };
 a::$getByKey = function(array $array, $key, $default = null) { return \nspl\a\getByKey($array, $key, $default); };
 a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
 a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
 a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
 a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
-a::$sorted = function(array $array, $reversed = false, $key = null, $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
+a::$sorted = function(array $array, $reversed = false, $key = null, callable $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
 a::$keySorted = function(array $array, $reversed = false) { return \nspl\a\sorted($array, $reversed); };
-a::$indexed = function(array $listOfArrays, $by, $keepLast = true, $transform = null) { return \nspl\a\indexed($listOfArrays, $by, $keepLast, $transform); };
+a::$indexed = function(array $listOfArrays, $by, $keepLast = true, callable $transform = null) { return \nspl\a\indexed($listOfArrays, $by, $keepLast, $transform); };
 a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
 a::$first = function(array $list) { return \nspl\a\first($list); };
 a::$drop = function(array $list, $N) { return \nspl\a\drop($list, $N); };

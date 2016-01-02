@@ -5,15 +5,22 @@ Nspl is inspired by Python and makes solving day to day routine tasks easier.
 
 Installation
 ------------
+##### Using [composer](https://getcomposer.org)
 Define the following requirement in your composer.json file:
 ```
 "require": {
-    "ihor/nspl": "1.0"
+    "ihor/nspl": "~1.0"
 }
 ```
 or simply execute the following the command line:
 ```
 composer require ihor/nspl
+```
+
+##### Manually
+Checkout the code and include autoload.php:
+```php
+include 'path/to/nspl/autoload.php';
 ```
 
 Usage

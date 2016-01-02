@@ -1,5 +1,5 @@
-Non-standard PHP library
-========================
+Non-standard PHP library (NSPL)
+===============================
 Nspl is inspired by Python and makes solving day to day routine tasks easier.
 
 

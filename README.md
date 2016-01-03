@@ -84,7 +84,7 @@ Returns function which accepts arguments in the reversed order
 
 ##### partial($function, $arg1)
 
-Returns new partial function which will behave like $function with predefined *left* arguments passed to partial
+Returns new partial function which will behave like ```$function``` with predefined *left* arguments passed to partial
 ```php
 $sum = function($a, $b) { return $a + $b; };
 $inc = partial($sum, 1);
@@ -92,21 +92,21 @@ $inc = partial($sum, 1);
 
 ##### rpartial($function, $arg1)
 
-Returns new partial function which will behave like $function with predefined *right* arguments passed to rpartial
+Returns new partial function which will behave like ```$function``` with predefined *right* arguments passed to rpartial
 ```php
 $cube = rpartial('pow', 3);
 ```
 
 ##### ppartial($function, array $args)
 
-Returns new partial function which will behave like $function with predefined *positional* arguments passed to ppartial
+Returns new partial function which will behave like ```$function``` with predefined *positional* arguments passed to ppartial
 ```php
 $oddNumbers = ppartial('range', array(0 => 1, 2 => 2));
 ```
 
 ##### memoized($function)
 
-Returns memoized $function which returns the cached result when the same inputs occur again
+Returns memoized ```$function``` which returns the cached result when the same inputs occur again
 ```php
 $f = function($arg) {
     echo sprintf("Performing heavy calculations with '%s'\n", $arg);
@@ -127,7 +127,7 @@ Hello world!
 ##### compose($f, $g)
 
 Returns new function which applies each given function to the result of another from right to left
-compose(f, g, h) is the same as f(g(h(x)))
+```compose(f, g, h)``` is the same as ```f(g(h(x)))```
 ```php
 $underscoreToCamelcase = compose(
     'lcfirst',
@@ -138,7 +138,7 @@ $underscoreToCamelcase = compose(
 
 ##### pipe($input, $function1, $function2)
 
-Passes $input to composition of functions (functions have to be in the reversed order)
+Passes ```$input``` to composition of functions (functions have to be in the reversed order)
 ```php
 assert('underscoreToCamelcase' === pipe(
     'underscore_to_camelcase', 
@@ -156,7 +156,7 @@ Alias for the pipe
 
 ##### curried($function, $withOptionalArgs = false)
 
-Returns you a curried version of the function. If you are going to curry a function which reads args with func_get_args() then pass a number of args as the 2nd argument.
+Returns you a curried version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass a number of args as the 2nd argument.
 
 If the second argument is true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
 ```php
@@ -266,7 +266,7 @@ Provides missing array functions
 
 ##### all($sequence, $predicate)
 
-Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty). If predicate was not passed return true if all elements of the $sequence are true.
+Returns true if all elements of the ```$sequence``` satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all elements of the $sequence are true.
 
 ```php
 assert(true === all([true, true, true]));
@@ -274,7 +274,7 @@ assert(true === all([true, true, true]));
 
 ##### any($sequence, $predicate)
 
-Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if any element of the $sequence is true. If the $sequence is empty, returns false.
+Returns true if any element of the ```$sequence``` satisfies the predicate. If predicate was not passed returns true if any element of the $sequence is true. If the ```$sequence``` is empty, returns false.
 
 ```php
 assert(true === any([true, false, false]));
@@ -291,7 +291,7 @@ assert(-1 === getByKey($data, 'd', -1));
 
 ##### extend(array $list1, array $list2)
 
-Adds $list2 items to the end of $list1
+Adds ```$list2``` items to the end of ```$list1```
 ```php
 assert([1, 2, 3, 4, 5, 6] === extend([1, 2, 3], [4, 5, 6]));
 ```
@@ -314,8 +314,8 @@ assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 Returns sorted copy of the passed array
 
-*$key* is a function of one argument that is used to extract a comparison key from each element  
-*$cmp* is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
+```$key``` is a function of one argument that is used to extract a comparison key from each element  
+```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 assert([1, 2, 3] === sorted([2, 3, 1]));
 assert(['a', 'b', 'c'] === sorted(['c', 'a', 'b'], true));
@@ -337,9 +337,9 @@ assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 
 
 Returns indexed list of items
 
-*$by* is an array key or a function  
-If *$keepLast* is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
-*$transform* is a function that transforms list item after indexing
+```$by``` is an array key or a function  
+If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
+```$transform``` is a function that transforms list item after indexing
 
 ```php
 $indexedById = indexed([
@@ -351,7 +351,7 @@ $indexedById = indexed([
 
 ##### pairs(array $array, $valueKey = false)
 
-Returns list of (key, value) pairs. If $valueKey is true then convert array to (value, key) pairs.
+Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
 ```php
 assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
 ```

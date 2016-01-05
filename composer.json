@@ -1,7 +1,7 @@
 {
   "name": "ihor/nspl",
-  "description": "Nspl is inspired by Python and makes solving day to day routine tasks easier",
-  "keywords": ["functional", "programming", "higher-order", "partial application", "curry", "memoize", "weighted random", "list", "zip", "flatten", "defaultarray"],
+  "description": "Non-standard PHP library (NSPL) contains all functions you always wanted to have in PHP",
+  "keywords": ["functional", "programming", "higher-order", "partial application", "curry", "memoize", "weighted random", "list", "zip", "flatten", "defaultarray", "python"],
   "license": "MIT",
   "authors": [
     {

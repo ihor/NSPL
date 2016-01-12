@@ -152,27 +152,15 @@ assert('underscoreToCamelcase' === pipe(
 
 Alias for the pipe
 
-*The following two functions were added for fun and don't have much practical usage in PHP.*
-
 ##### curried($function, $withOptionalArgs = false)
 
-Returns you a curried version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass a number of args as the 2nd argument.
+Returns a [curried](https://en.wikipedia.org/wiki/Currying) version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass a number of args as the 2nd argument.
 
 If the second argument is true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
-```php
-$curriedStrReplace = curried('str_replace');
-$replaceUnderscores = $curriedStrReplace('_');
-$replaceUnderscoresWithSpaces = $replaceUnderscores(' ');
-assert('Hello world!' === $replaceUnderscoresWithSpaces('Hello_world!'));
-```
 
 ##### uncurried($function)
 
-Returns uncurried version of curried function
-```php
-$curriedStrReplace = curried('str_replace');
-$strReplace = uncurried($curriedStrReplace);
-```
+Returns normal (uncurried) version of a [curried function](https://en.wikipedia.org/wiki/Currying)
 
 ##### Lambdas
 
@@ -266,7 +254,7 @@ Provides missing array functions
 
 ##### all($sequence, $predicate)
 
-Returns true if all elements of the ```$sequence``` satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all elements of the $sequence are true.
+Returns true if all elements of the ```$sequence``` satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all elements of the ```$sequence``` are true.
 
 ```php
 assert(true === all([true, true, true]));
@@ -274,7 +262,7 @@ assert(true === all([true, true, true]));
 
 ##### any($sequence, $predicate)
 
-Returns true if any element of the ```$sequence``` satisfies the predicate. If predicate was not passed returns true if any element of the $sequence is true. If the ```$sequence``` is empty, returns false.
+Returns true if any element of the ```$sequence``` satisfies the predicate. If predicate was not passed returns true if any element of the ```$sequence``` is true. If the ```$sequence``` is empty, returns false.
 
 ```php
 assert(true === any([true, false, false]));
@@ -476,4 +464,4 @@ Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/e
 Roadmap
 =======
 
-TODO
+- Create a roadmap

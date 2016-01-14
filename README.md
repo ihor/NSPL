@@ -372,6 +372,13 @@ Returns the last list item
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
+##### moveElement(array $list, $from, $to)
+
+Moves list element to another position
+```php
+assert([2, 0, 1] == moveElement([0, 1, 2], 2, 0));
+```
+
 ##### Lambdas
 
 Class ```nspl\a``` provides all these functions as lambdas in its static properties which have the same names as the functions.

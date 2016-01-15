@@ -18,15 +18,15 @@ $sortedDesc = sorted([3, 1, 2], true);
 display('2. Sorted in descending order', $sortedDesc);
 
 // 3. Sort array by the result of a given function (order words by length)
-$sortedByLength = sorted(['bc', 'a', 'abc'], false, 'strlen');
+$sortedByLength = sorted(['bc', 'a', 'abc'], 'strlen');
 display('3. Sorted by length', $sortedByLength);
 
 // 4. Sort array by the result of user-defined function (order word by the 1st character)
-$sortedByTheFirstCharacter = sorted(['bc', 'a', 'abc'], false, null, function($v) { return $v[0]; });
+$sortedByTheFirstCharacter = sorted(['bc', 'a', 'abc'], function($v) { return $v[0]; });
 display('4. Sorted by the 1st character', $sortedByTheFirstCharacter);
 
 // 5. Which is the same as
-$sortedByTheFirstCharacter = sorted(['bc', 'a', 'abc'], false, itemGetter(0));
+$sortedByTheFirstCharacter = sorted(['bc', 'a', 'abc'], itemGetter(0));
 display('5. Sorted by the 1st character with nspl\op\itemGetter', $sortedByTheFirstCharacter);
 
 // 6. Sort array with comparison function (order word by the 1st character)
@@ -45,7 +45,7 @@ $users = [
     array('name' => 'Alex', 'age' => 30),
     array('name' => 'Jack', 'age' => 25),
 ];
-$sortedByName = sorted($users, false, itemGetter('name'));
+$sortedByName = sorted($users, itemGetter('name'));
 display('8. Users sorted by name', $sortedByName);
 
 // 9. Sort list of objects by property value (sort list of users by their name)
@@ -54,11 +54,11 @@ $users = [
     new User('Alex', 30),
     new User('Jack', 25),
 ];
-$sortedByName = sorted($users, false, propertyGetter('name'));
+$sortedByName = sorted($users, propertyGetter('name'));
 display('9. Users presented as list of objects sorted by name', $sortedByName);
 
 // 10. Sort list of objects by property value (sort list of users by their name)
-$sortedByAge = sorted($users, false, methodCaller('getAge'));
+$sortedByAge = sorted($users, methodCaller('getAge'));
 display('10. Users presented as list of objects sorted by age', $sortedByAge);
 
 

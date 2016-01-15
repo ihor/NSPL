@@ -166,6 +166,11 @@ class ATest extends \PHPUnit_Framework_TestCase
             sorted(['the', 'answer', 'is', 'forty two'], true, 'strlen')
         );
 
+        $this->assertEquals(
+            ['is', 'the', 'answer', 'forty two'],
+            sorted(['the', 'answer', 'is', 'forty two'], 'strlen')
+        );
+
         $isFruit = function($v) { return in_array($v, ['apple', 'orange']); };
         $this->assertEquals(
             ['apple', 'orange', 'cat'],
@@ -194,6 +199,11 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             ['forty two', 'answer', 'the', 'is'],
             call_user_func(a::$sorted, ['the', 'answer', 'is', 'forty two'], true, 'strlen')
+        );
+
+        $this->assertEquals(
+            ['is', 'the', 'answer', 'forty two'],
+            call_user_func(a::$sorted, ['the', 'answer', 'is', 'forty two'], 'strlen')
         );
 
         $isFruit = function($v) { return in_array($v, ['apple', 'orange']); };

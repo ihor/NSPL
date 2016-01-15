@@ -141,7 +141,7 @@ function pairs($array, $valueKey = false)
  * Returns sorted copy of passed array
  *
  * @param array $array
- * @param bool $descending
+ * @param bool $descending If true then sort array in descending order. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
@@ -153,13 +153,17 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
     }
 
+    if (!is_bool($descending) && !$key) {
+        $key = $descending;
+    }
+
     if ($key) {
         $cmp = function($a, $b) use ($key, $cmp) {
             return call_user_func_array($cmp, array($key($a), $key($b)));
         };
     }
 
-    if ($descending) {
+    if (is_bool($descending) && $descending) {
         $cmp = f\compose(op::$neg, $cmp);
     }
 

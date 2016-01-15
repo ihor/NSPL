@@ -376,7 +376,7 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 Moves list element to another position
 ```php
-assert([2, 0, 1] == moveElement([0, 1, 2], 2, 0));
+assert([2, 0, 1] === moveElement([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
 
 ##### Lambdas

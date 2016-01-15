@@ -135,9 +135,8 @@ function expectsArrayKeyOrCallable($value, $atPosition = null, $otherwiseThrow =
 }
 
 /**
- * Duck-typing
- * @todo
- * @param mixed $object
+ * Checks that passed object has the required method. Is useful when you use duck-typing instead of interfaces
+ * @param object $object
  * @param string $method
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -145,19 +144,18 @@ function expectsArrayKeyOrCallable($value, $atPosition = null, $otherwiseThrow =
 function expectsWithMethod($object, $method, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
     if (!is_object($object) || !method_exists($object, $method)) {
-        _throwExpectsException($object, 'be an object with method ' . $method, $atPosition, $otherwiseThrow);
+        _throwExpectsException($object, 'be an object with public method "' . $method . '"', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
- * Duck-typing
- * @todo
- * @param mixed $object
+ * Checks that passed object has the required methods. Is useful when you use duck-typing instead of interfaces
+ * @param object $object
  * @param string[] $methods
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsWithMethods($object, $methods, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsWithMethods($object, array $methods, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
     $passed = is_object($object);
     if ($passed) {
@@ -170,24 +168,23 @@ function expectsWithMethods($object, $methods, $atPosition = null, $otherwiseThr
     }
 
     if (!$passed) {
-        _throwExpectsException($object, 'be an object with methods ' . implode(', ', $methods), $atPosition, $otherwiseThrow);
+        _throwExpectsException($object, 'be an object with public methods "' . implode('", "', $methods) . '"', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
- * Duck-typing
- * @todo
+ * Checks that passed array has the required keys
  * @param mixed $array
  * @param string[] $keys
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsWithKeys($array, $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsWithKeys($array, array $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
     $passed = is_array($array);
     if ($passed) {
         foreach ($keys as $key) {
-            if (!isset($array[$key]) && !array_key_exists($array, $key)) {
+            if (!isset($array[$key]) && !array_key_exists($key, $array)) {
                 $passed = false;
                 break;
             }
@@ -195,7 +192,7 @@ function expectsWithKeys($array, $keys, $atPosition = null, $otherwiseThrow = '\
     }
 
     if (!$passed) {
-        _throwExpectsException($array, 'be an array with keys ' . implode(', ', $keys), $atPosition, $otherwiseThrow);
+        _throwExpectsException($array, 'to be an array with keys "' . implode('", "', $keys) . '"', $atPosition, $otherwiseThrow, true);
     }
 }
 

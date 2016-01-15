@@ -309,11 +309,13 @@ Returns sorted copy of the passed array
 assert([1, 2, 3] === sorted([2, 3, 1]));
 assert(['a', 'b', 'c'] === sorted(['c', 'a', 'b'], true));
 
-$usersSortedByName = sorted($users, false, function($u1, $u2) { return $u1->getName() - $u2->getName(); });
+$usersSortedByName = sorted($users, function($u1, $u2) { return $u1->getName() - $u2->getName(); });
 // Which is the same as
 use function nspl\op\methodCaller;
-$usersSortedByName = sorted($users, false, methodCaller('getName'));
+$usersSortedByName = sorted($users, methodCaller('getName'));
 ```
+
+Check more ```\nspl\a\sorted``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a_sorted.php).
 
 ##### keySorted(array $array, $reversed = false)
 

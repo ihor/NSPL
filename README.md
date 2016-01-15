@@ -298,7 +298,7 @@ Flattens multidimensional list
 assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
 ```
 
-##### sorted(array $array, $reversed = false, $key = null, $cmp = null)
+##### sorted(array $array, $descending = false, $key = null, $cmp = null)
 
 Returns sorted copy of the passed array
 

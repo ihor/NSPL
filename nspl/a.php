@@ -141,13 +141,13 @@ function pairs($array, $valueKey = false)
  * Returns sorted copy of passed array
  *
  * @param array $array
- * @param bool $reversed
+ * @param bool $descending
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted(array $array, $reversed = false, callable $key = null, callable $cmp = null)
+function sorted(array $array, $descending = false, callable $key = null, callable $cmp = null)
 {
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
@@ -159,7 +159,7 @@ function sorted(array $array, $reversed = false, callable $key = null, callable 
         };
     }
 
-    if ($reversed) {
+    if ($descending) {
         $cmp = f\compose(op::$neg, $cmp);
     }
 

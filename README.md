@@ -477,7 +477,7 @@ Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/e
 Provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
 
 ```nspl\args``` contains the following functions which take the same parameters:  
-```expects*($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')```
+##### expects*($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
 Checks that value is boolean otherwise throws the corresponding exception  
 

@@ -297,6 +297,7 @@ assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
 Flattens multidimensional list
 ```php
 assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
 ```
 
 ##### sorted(array $array, $descending = false, $key = null, $cmp = null)

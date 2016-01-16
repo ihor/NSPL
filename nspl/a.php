@@ -122,7 +122,7 @@ function flatten(array $list, $depth = null)
     $result = array();
     foreach ($list as $value) {
         if ($depth && is_array($value)) {
-            foreach (flatten($value, $depth - 1) as $subValue) {
+            foreach ($depth > 1 ? flatten($value, $depth - 1) : $value as $subValue) {
                 $result[] = $subValue;
             }
         }

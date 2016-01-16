@@ -132,11 +132,15 @@ class ATest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
+        $this->assertEquals([1, [2, [3]], [[4, 5, 6]], 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 1));
+        $this->assertEquals([1, 2, [3], [4, 5, 6], 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
         $this->assertEquals([1], flatten([1]));
         $this->assertEquals([], flatten([]));
 
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(a::$flatten, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(a::$flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
+        $this->assertEquals([1, [2, [3]], [[4, 5, 6]], 7, 8, 9], call_user_func(a::$flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 1));
+        $this->assertEquals([1, 2, [3], [4, 5, 6], 7, 8, 9], call_user_func(a::$flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
         $this->assertEquals([1], call_user_func(a::$flatten, [1]));
         $this->assertEquals([], call_user_func(a::$flatten, []));
     }

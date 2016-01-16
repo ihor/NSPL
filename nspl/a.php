@@ -108,12 +108,29 @@ function zip(array $list1, array $list2)
  * Flattens multidimensional list
  *
  * @param array $list
+ * @param int|null $depth
  * @return array
  */
-function flatten(array $list)
+function flatten(array $list, $depth = null)
 {
+    if (null === $depth) {
+        $result = array();
+        array_walk_recursive($list, function($a) use (&$result) { $result[] = $a; });
+        return $result;
+    }
+
     $result = array();
-    array_walk_recursive($list, function($a) use (&$result) { $result[] = $a; });
+    foreach ($list as $value) {
+        if ($depth && is_array($value)) {
+            foreach (flatten($value, $depth - 1) as $subValue) {
+                $result[] = $subValue;
+            }
+        }
+        else {
+            $result[] = $value;
+        }
+    }
+
     return $result;
 }
 
@@ -352,7 +369,7 @@ a::$any = function($sequence, callable $predicate = null) { return \nspl\a\any($
 a::$getByKey = function(array $array, $key, $default = null) { return \nspl\a\getByKey($array, $key, $default); };
 a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
 a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
-a::$flatten = function(array $list) { return \nspl\a\flatten($list); };
+a::$flatten = function(array $list, $depth = null) { return \nspl\a\flatten($list, $depth); };
 a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
 a::$sorted = function(array $array, $reversed = false, $key = null, callable $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
 a::$keySorted = function(array $array, $reversed = false) { return \nspl\a\sorted($array, $reversed); };

@@ -292,7 +292,7 @@ Zips two or more lists
 assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
 ```
 
-##### flatten(array $list)
+##### flatten(array $list, $depth = null)
 
 Flattens multidimensional list
 ```php

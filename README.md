@@ -32,6 +32,7 @@ Nspl contains the following modules:
 - [nspl\a](#nspla) - provides missing array functions
 - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
 - [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
+- [nspl\args](#nsplargs) - provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules 
 
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
@@ -47,7 +48,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 
 ## nspl\f
 
-Provides the most popular higher-order functions: functions that act on or return other functions.
+Provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code in functional programming paradigm.
 
 
 ##### map($function, $sequence)
@@ -470,6 +471,101 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 Returns a k length list of unique elements chosen from the population sequence
 
 Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
+
+## nspl\args
+
+Provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
+
+```nspl\args``` contains the following functions which take the same parameters:
+```expects*($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')```
+
+Checks that value is boolean otherwise throws the corresponding exception  
+
+If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function.  
+```$otherwiseThrow``` defines exception which will be thrown if given argument is not a boolean value, it can be exception class or exception object.  
+
+- ```expectsBool()``` - checks that argument is boolean otherwise throws the corresponding exception
+- ```expectsInt()``` - checks that argument is an integer otherwise throws the corresponding exception
+- ```expectsFloat()``` - checks that argument is a float otherwise throws the corresponding exception
+- ```expectsNumeric()``` - checks that argument is numeric otherwise throws the corresponding exception
+- ```expectsString()``` - checks that argument is a string otherwise throws the corresponding exception
+- ```expectsArrayKey()``` - checks that argument can be an array key otherwise throws the corresponding exception
+- ```expectsTraversable()``` - checks that argument is an array or traversable otherwise throws the corresponding exception
+- ```expectsArrayAccess()``` - checks that argument is an array or implements array access otherwise throws the corresponding exception
+- ```expectsArrayAccessOrString()``` - checks that argument implements array access or is a string otherwise throws the corresponding exception
+- ```expectsCallable()``` - checks that argument is callable otherwise throws the corresponding exception
+- ```expectsArrayKeyOrCallable()``` - checks that argument can be an array key or is callable otherwise throws the corresponding exception
+
+```php
+use function \nspl\args\expectsNumeric;
+
+function sqr($x)
+{
+    expectsNumeric($x);
+    return $x * $x;
+}
+
+sqr('hello world');
+```
+
+Outputs:
+```
+InvalidArgumentException: Argument 1 passed to sqr() must be numeric, string given in /path/to/example.php on line 17
+
+Call Stack:
+    0.0002     230304   1. {main}() /path/to/example.php:0
+    0.0023     556800   2. sqr() /path/to/example.php:17
+```
+
+```nspl\args``` also contains the following functions which have similar signature:
+
+##### expectsWithMethod($object, $method, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+
+Checks that object has the required method. Is useful when you use duck-typing instead of interfaces
+
+##### expectsWithMethods($object, array $methods, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+
+Checks that object has the required methods. Is useful when you use duck-typing instead of interfaces
+
+##### expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+
+Checks that array has the required keys
+
+```php
+use function \nspl\args\expectsWithMethods;
+
+class Service
+{
+    // ...
+    public function setCache($cache)
+    {
+        expectsWithMethods($cache, ['set', 'get']);
+        $this->cache = $cache;
+    }
+    // ....
+}
+```
+
+##### expects($arg, $hasTo, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+
+Checks that argument satisfies requirements otherwise throws the corresponding exception  
+
+```$hasTo``` is a message which tells what the argument is expected to be. It will be used in the exceptions if the argument is invalid and also provides description for other developers  
+```$satisfy``` is a function which returns true if argument satisfies the requirements otherwise it returns false  
+```php
+use function \nspl\args\expects;
+
+function calculateAge($yearOfBirth)
+{
+    expects($yearOfBirth, 'to be an integer > 1900 and < current year', function($arg) {
+        return is_int($arg) && $arg > 1900 && $arg < (int) date('Y');
+    });
+
+    return (int) date('Y') - $yearOfBirth;
+}
+
+$age = calculateAge(1800);
+```
 
 Roadmap
 =======

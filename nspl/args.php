@@ -6,7 +6,7 @@ use function nspl\ds\getType;
 use function nspl\a\drop;
 
 /**
- * Checks that value is boolean otherwise throws the corresponding exception
+ * Checks that argument is boolean otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -19,7 +19,7 @@ function expectsBool($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgume
 }
 
 /**
- * Checks that value is an integer otherwise throws the corresponding exception
+ * Checks that argument is an integer otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -32,7 +32,7 @@ function expectsInt($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumen
 }
 
 /**
- * Checks that value is a float otherwise throws the corresponding exception
+ * Checks that argument is a float otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -45,7 +45,7 @@ function expectsFloat($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgum
 }
 
 /**
- * Checks that value is numeric otherwise throws the corresponding exception
+ * Checks that argument is numeric otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -58,7 +58,7 @@ function expectsNumeric($arg, $atPosition = null, $otherwiseThrow = '\InvalidArg
 }
 
 /**
- * Checks that value is a string otherwise throws the corresponding exception
+ * Checks that argument is a string otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -71,7 +71,7 @@ function expectsString($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgu
 }
 
 /**
- * Checks that value can be an array key otherwise throws the corresponding exception
+ * Checks that argument can be an array key otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -84,7 +84,7 @@ function expectsArrayKey($arg, $atPosition = null, $otherwiseThrow = '\InvalidAr
 }
 
 /**
- * Checks that value is an array or traversable otherwise throws the corresponding exception
+ * Checks that argument is an array or traversable otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -97,7 +97,7 @@ function expectsTraversable($arg, $atPosition = null, $otherwiseThrow = '\Invali
 }
 
 /**
- * Checks that value is an array or implements array access otherwise throws the corresponding exception
+ * Checks that argument is an array or implements array access otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -110,7 +110,7 @@ function expectsArrayAccess($arg, $atPosition = null, $otherwiseThrow = '\Invali
 }
 
 /**
- * Checks that value implements array access or is a string otherwise throws the corresponding exception
+ * Checks that argument implements array access or is a string otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -123,7 +123,7 @@ function expectsArrayAccessOrString($arg, $atPosition = null, $otherwiseThrow = 
 }
 
 /**
- * Checks that value is callable otherwise throws the corresponding exception
+ * Checks that argument is callable otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -136,7 +136,7 @@ function expectsCallable($arg, $atPosition = null, $otherwiseThrow = '\InvalidAr
 }
 
 /**
- * Checks that value can be an array key or is callable otherwise throws the corresponding exception
+ * Checks that argument can be an array key or is callable otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
@@ -149,7 +149,7 @@ function expectsArrayKeyOrCallable($arg, $atPosition = null, $otherwiseThrow = '
 }
 
 /**
- * Checks that passed object has the required method. Is useful when you use duck-typing instead of interfaces
+ * Checks that object has the required method. Is useful when you use duck-typing instead of interfaces
  * @param object $object
  * @param string $method
  * @param int|null $atPosition If null then calculated automatically
@@ -163,7 +163,7 @@ function expectsWithMethod($object, $method, $atPosition = null, $otherwiseThrow
 }
 
 /**
- * Checks that passed object has the required methods. Is useful when you use duck-typing instead of interfaces
+ * Checks that object has the required methods. Is useful when you use duck-typing instead of interfaces
  * @param object $object
  * @param string[] $methods
  * @param int|null $atPosition If null then calculated automatically
@@ -187,7 +187,7 @@ function expectsWithMethods($object, array $methods, $atPosition = null, $otherw
 }
 
 /**
- * Checks that passed array has the required keys
+ * Checks that array has the required keys
  * @param mixed $array
  * @param string[] $keys
  * @param int|null $atPosition If null then calculated automatically
@@ -211,9 +211,9 @@ function expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwi
 }
 
 /**
- * Checks that value satisfies requirements otherwise throws the corresponding exception
+ * Checks that argument satisfies requirements otherwise throws the corresponding exception
  * @param mixed $arg
- * @param string $hasTo Message which tells what the value is expected to be
+ * @param string $hasTo Message which tells what the argument is expected to be
  * @param callable $satisfy
  * @param int $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object

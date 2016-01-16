@@ -476,13 +476,13 @@ Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/e
 
 Provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
 
-```nspl\args``` contains the following functions which take the same parameters:
+```nspl\args``` contains the following functions which take the same parameters:  
 ```expects*($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')```
 
 Checks that value is boolean otherwise throws the corresponding exception  
 
-If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function.  
-```$otherwiseThrow``` defines exception which will be thrown if given argument is not a boolean value, it can be exception class or exception object.  
+If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function  
+```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be exception class or exception object  
 
 - ```expectsBool()``` - checks that argument is boolean otherwise throws the corresponding exception
 - ```expectsInt()``` - checks that argument is an integer otherwise throws the corresponding exception
@@ -565,6 +565,15 @@ function calculateAge($yearOfBirth)
 }
 
 $age = calculateAge(1800);
+```
+
+Outputs:
+```
+InvalidArgumentException: Argument 1 passed to calculateAge() has to be an integer > 1900 and < current year in /path/to/example.php on line 35
+
+Call Stack:
+    0.0002     230704   1. {main}() /path/to/example.php:0
+    0.0025     561328   2. calculateAge() /path/to/example.php:35
 ```
 
 Roadmap

@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/nspl/nspl.php';
 require_once __DIR__ . '/nspl/a.php';
+require_once __DIR__ . '/nspl/args.php';
 require_once __DIR__ . '/nspl/f.php';
 require_once __DIR__ . '/nspl/ds.php';
 require_once __DIR__ . '/nspl/rnd.php';

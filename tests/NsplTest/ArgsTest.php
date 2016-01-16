@@ -2,8 +2,6 @@
 
 namespace NsplTest;
 
-require_once __DIR__ . '/../../nspl/args.php';
-
 use function \nspl\args\expectsBool;
 use function \nspl\args\expectsInt;
 use function \nspl\args\expectsFloat;
@@ -12,6 +10,7 @@ use function \nspl\args\expectsString;
 use function \nspl\args\expectsArrayKey;
 use function \nspl\args\expectsTraversable;
 use function \nspl\args\expectsArrayAccess;
+use function \nspl\args\expectsArrayAccessOrString;
 use function \nspl\args\expectsArrayKeyOrCallable;
 use function \nspl\args\expectsWithMethod;
 use function \nspl\args\expectsWithMethods;
@@ -153,6 +152,24 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     {
         function expectsArrayAccessNegativeTest($arg1) { expectsArrayAccess($arg1); }
         $this->assertNull(expectsArrayAccessNegativeTest('hello world'));
+    }
+
+    public function testExpectsArrayAccessOrString_Positive()
+    {
+        function expectsArrayAccessOrStringPositiveTest($arg1) { expectsArrayAccessOrString($arg1); }
+        $this->assertNull(expectsArrayAccessOrStringPositiveTest(array('hello', 'world')));
+        $this->assertNull(expectsArrayAccessOrStringPositiveTest(new \ArrayObject(array('hello', 'world'))));
+        $this->assertNull(expectsArrayAccessOrStringPositiveTest('hello world'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsArrayAccessOrStringNegativeTest() must be a string, an array or implement array access, integer given
+     */
+    public function testExpectsArrayAccessOrString_Negative()
+    {
+        function expectsArrayAccessOrStringNegativeTest($arg1) { expectsArrayAccessOrString($arg1); }
+        $this->assertNull(expectsArrayAccessOrStringNegativeTest(1337));
     }
 
     public function testExpectsArrayKeyOrCallable_Positive()

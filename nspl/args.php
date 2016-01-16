@@ -3,134 +3,148 @@
 namespace nspl\args;
 
 use function nspl\ds\getType;
+use function nspl\a\drop;
 
 /**
  * Checks that value is boolean otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsBool($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsBool($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_bool($value)) {
-        _throwExpectsException($value, 'be a boolean', $atPosition, $otherwiseThrow);
+    if (!is_bool($arg)) {
+        _throwExpectsException($arg, 'be a boolean', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value is an integer otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsInt($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsInt($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_int($value)) {
-        _throwExpectsException($value, 'be an integer', $atPosition, $otherwiseThrow);
+    if (!is_int($arg)) {
+        _throwExpectsException($arg, 'be an integer', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value is a float otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsFloat($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsFloat($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_float($value)) {
-        _throwExpectsException($value, 'be a float', $atPosition, $otherwiseThrow);
+    if (!is_float($arg)) {
+        _throwExpectsException($arg, 'be a float', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value is numeric otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsNumeric($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsNumeric($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_numeric($value)) {
-        _throwExpectsException($value, 'be numeric', $atPosition, $otherwiseThrow);
+    if (!is_numeric($arg)) {
+        _throwExpectsException($arg, 'be numeric', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value is a string otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsString($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsString($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_string($value)) {
-        _throwExpectsException($value, 'be a string', $atPosition, $otherwiseThrow);
+    if (!is_string($arg)) {
+        _throwExpectsException($arg, 'be a string', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value can be an array key otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsArrayKey($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsArrayKey($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_int($value) && !is_string($value)) {
-        _throwExpectsException($value, 'be an integer or a string', $atPosition, $otherwiseThrow);
+    if (!is_int($arg) && !is_string($arg)) {
+        _throwExpectsException($arg, 'be an integer or a string', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
- * Checks that value is traversable otherwise throws the corresponding exception
- * @param mixed $value
+ * Checks that value is an array or traversable otherwise throws the corresponding exception
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsTraversable($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsTraversable($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_array($value) && !$value instanceof \Traversable) {
-        _throwExpectsException($value, 'be an array or traversable', $atPosition, $otherwiseThrow);
+    if (!is_array($arg) && !$arg instanceof \Traversable) {
+        _throwExpectsException($arg, 'be an array or traversable', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
- * Checks that value implements array access otherwise throws the corresponding exception
- * @param mixed $value
+ * Checks that value is an array or implements array access otherwise throws the corresponding exception
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsArrayAccess($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsArrayAccess($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_array($value) && !$value instanceof \ArrayAccess) {
-        _throwExpectsException($value, 'be an array or implement array access', $atPosition, $otherwiseThrow);
+    if (!is_array($arg) && !$arg instanceof \ArrayAccess) {
+        _throwExpectsException($arg, 'be an array or implement array access', $atPosition, $otherwiseThrow);
+    }
+}
+
+/**
+ * Checks that value implements array access or is a string otherwise throws the corresponding exception
+ * @param mixed $arg
+ * @param int|null $atPosition If null then calculated automatically
+ * @param string|\Throwable $otherwiseThrow Exception class or exception object
+ */
+function expectsArrayAccessOrString($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (!is_array($arg) && !$arg instanceof \ArrayAccess && !is_string($arg)) {
+        _throwExpectsException($arg, 'be a string, an array or implement array access', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value is callable otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsCallable($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsCallable($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_callable($value)) {
-        _throwExpectsException($value, 'be a callable', $atPosition, $otherwiseThrow);
+    if (!is_callable($arg)) {
+        _throwExpectsException($arg, 'be a callable', $atPosition, $otherwiseThrow);
     }
 }
 
 /**
  * Checks that value can be an array key or is callable otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsArrayKeyOrCallable($value, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsArrayKeyOrCallable($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_int($value) && !is_string($value) && !is_callable($value)) {
-        _throwExpectsException($value, 'be an integer or a string or a callable', $atPosition, $otherwiseThrow);
+    if (!is_int($arg) && !is_string($arg) && !is_callable($arg)) {
+        _throwExpectsException($arg, 'be an integer or a string or a callable', $atPosition, $otherwiseThrow);
     }
 }
 
@@ -179,7 +193,7 @@ function expectsWithMethods($object, array $methods, $atPosition = null, $otherw
  * @param int|null $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expectsWithKeys($array, array $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
     $passed = is_array($array);
     if ($passed) {
@@ -198,21 +212,21 @@ function expectsWithKeys($array, array $keys, $atPosition = null, $otherwiseThro
 
 /**
  * Checks that value satisfies requirements otherwise throws the corresponding exception
- * @param mixed $value
+ * @param mixed $arg
  * @param string $hasTo Message which tells what the value is expected to be
  * @param callable $satisfy
  * @param int $atPosition If null then calculated automatically
  * @param string|\Throwable $otherwiseThrow Exception class or exception object
  */
-function expects($value, $hasTo, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function expects($arg, $hasTo, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!call_user_func($satisfy, $value)) {
-        _throwExpectsException($value, $hasTo, $atPosition, $otherwiseThrow, true);
+    if (!call_user_func($satisfy, $arg)) {
+        _throwExpectsException($arg, $hasTo, $atPosition, $otherwiseThrow, true);
     }
 }
 
 /**
- * @param mixed $value
+ * @param mixed $arg
  * @param string $hadTo
  * @param int $atPosition
  * @param string|\Throwable $exception
@@ -220,9 +234,9 @@ function expects($value, $hasTo, callable $satisfy, $atPosition = null, $otherwi
  * @throws \Throwable
  * @throws string
  */
-function _throwExpectsException($value, $hadTo, $atPosition = null, $exception = '\InvalidArgumentException', $fromExpects = false)
+function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\InvalidArgumentException', $fromExpects = false)
 {
-    list($function, $position, $file, $line) = _getErrorSource($value);
+    list($function, $position, $file, $line) = _getErrorSource($arg);
 
     if (!is_object($exception) || !($exception instanceof \Exception)) {
         // @todo instanceof \Throwable since PHP 7
@@ -235,25 +249,28 @@ function _throwExpectsException($value, $hadTo, $atPosition = null, $exception =
             $function,
             $fromExpects ? 'has' : 'must',
             $hadTo,
-            $fromExpects ? '' : (', ' . getType($value) . ' given')
+            $fromExpects ? '' : (', ' . getType($arg) . ' given')
         ));
     }
 
-    $setter = function($property, $value) { $this->{$property} = $value; };
+    $setter = function($property, $arg) { $this->{$property} = $arg; };
 
     $exceptionSetter = $setter->bindTo($exception, $exception);
     $exceptionSetter('file', $file);
     $exceptionSetter('line', $line);
+
+    $baseExceptionSetter = $setter->bindTo($exception, 'Exception');
+    $baseExceptionSetter('trace', drop($exception->getTrace(), 2));
 
     throw $exception;
 }
 
 /**
  * Returns array containing data about the error source
- * @param mixed $value
+ * @param mixed $arg
  * @return array
  */
-function _getErrorSource($value)
+function _getErrorSource($arg)
 {
     $call = array('function' => 'unknown', 'file' => 'unknown', 'line' => 'unknown');
     foreach (debug_backtrace() as $call) {
@@ -263,8 +280,8 @@ function _getErrorSource($value)
     }
 
     $position = 0;
-    foreach ($call['args'] as $position => $arg) {
-        if ($arg === $value) {
+    foreach ($call['args'] as $position => $_arg) {
+        if ($arg === $_arg) {
             break;
         }
     }

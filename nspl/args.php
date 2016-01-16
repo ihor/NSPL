@@ -6,6 +6,19 @@ use function nspl\ds\getType;
 use function nspl\a\drop;
 
 /**
+ * Checks that argument is not empty otherwise throws the corresponding exception
+ * @param mixed $arg
+ * @param int|null $atPosition If null then calculated automatically
+ * @param string|\Throwable $otherwiseThrow Exception class or exception object
+ */
+function expectsNotEmpty($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (!$arg) {
+        _throwExpectsException($arg, 'not be empty', $atPosition, $otherwiseThrow, true);
+    }
+}
+
+/**
  * Checks that argument is boolean otherwise throws the corresponding exception
  * @param mixed $arg
  * @param int|null $atPosition If null then calculated automatically
@@ -206,7 +219,7 @@ function expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwi
     }
 
     if (!$passed) {
-        _throwExpectsException($array, 'to be an array with keys "' . implode('", "', $keys) . '"', $atPosition, $otherwiseThrow, true);
+        _throwExpectsException($array, 'to be an array with keys "' . implode('", "', $keys) . '"', $atPosition, $otherwiseThrow, false, true);
     }
 }
 
@@ -221,7 +234,7 @@ function expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwi
 function expects($arg, $hasTo, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
     if (!call_user_func($satisfy, $arg)) {
-        _throwExpectsException($arg, $hasTo, $atPosition, $otherwiseThrow, true);
+        _throwExpectsException($arg, $hasTo, $atPosition, $otherwiseThrow, true, true);
     }
 }
 
@@ -230,11 +243,12 @@ function expects($arg, $hasTo, callable $satisfy, $atPosition = null, $otherwise
  * @param string $hadTo
  * @param int $atPosition
  * @param string|\Throwable $exception
+ * @param bool $reportValue
  * @param bool $fromExpects
  * @throws \Throwable
  * @throws string
  */
-function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\InvalidArgumentException', $fromExpects = false)
+function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\InvalidArgumentException', $reportValue = false, $fromExpects = false)
 {
     list($function, $position, $file, $line) = _getErrorSource($arg);
 
@@ -249,7 +263,9 @@ function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '
             $function,
             $fromExpects ? 'has' : 'must',
             $hadTo,
-            $fromExpects ? '' : (', ' . getType($arg) . ' given')
+            $fromExpects
+                ? (($reportValue && is_scalar($arg)) ? (', ' . $arg . ' given') : '')
+                : (($reportValue && is_scalar($arg)) ? (', ' . $arg . ' given') : (', ' . getType($arg) . ' given'))
         ));
     }
 

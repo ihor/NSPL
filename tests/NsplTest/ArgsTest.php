@@ -2,6 +2,7 @@
 
 namespace NsplTest;
 
+use function \nspl\args\expectsNotEmpty;
 use function \nspl\args\expectsBool;
 use function \nspl\args\expectsInt;
 use function \nspl\args\expectsFloat;
@@ -19,6 +20,22 @@ use function \nspl\args\expects;
 
 class ArgsTest extends \PHPUnit_Framework_TestCase
 {
+    public function testExpectsNotEmpty_Positive()
+    {
+        function expectsNotEmptyPositiveTest($arg) { expectsNotEmpty($arg); }
+        $this->assertNull(expectsNotEmptyPositiveTest(true));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsNotEmptyNegativeTest() must not be empty, 0 given
+     */
+    public function testExpectsNotEmpty_Negative()
+    {
+        function expectsNotEmptyNegativeTest($arg) { expectsNotEmpty($arg); }
+        $this->assertNull(expectsNotEmptyNegativeTest(0));
+    }
+
     public function testExpectsBool_Positive()
     {
         function expectsBoolPositiveTest($arg) { expectsBool($arg); }
@@ -255,7 +272,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsNegativeTest() has to be a positive integer
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsNegativeTest() has to be a positive integer, -1 given
      */
     public function testExpects_Negative()
     {

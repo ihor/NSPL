@@ -1,7 +1,7 @@
 {
   "name": "ihor/nspl",
-  "description": "Non-standard PHP library (NSPL) contains all functions you always wanted to have in PHP",
-  "keywords": ["functional", "programming", "higher-order", "partial application", "curry", "memoize", "weighted random", "list", "zip", "flatten", "defaultarray", "python"],
+  "description": "Non-standard PHP library (NSPL) contains all functions you always wanted to have in PHP (functional programming, array functions, argument validation)",
+  "keywords": ["functional", "programming", "higher-order", "partial application", "curry", "memoize", "weighted random", "list", "zip", "flatten", "defaultarray", "python", "itemGetter", "propertyGetter"],
   "license": "MIT",
   "authors": [
     {

@@ -28,13 +28,6 @@ function ge($a, $b) { return $a >= $b; };
 function gt($a, $b) { return $a > $b; };
 
 function and_($a, $b) { return $a && $b; };
-function mand($a, $b) {
-    if ($a) {
-        return (bool) $b;
-    }
-
-    return !$b;
-};
 function or_($a, $b) { return $a || $b; };
 function xor_($a, $b) { return $a xor $b; };
 function not($a) { return !$a; };
@@ -134,7 +127,6 @@ class op
     const gt = '\nspl\op\gt';
 
     const and_ = '\nspl\op\and_';
-    const mand = '\nspl\op\mand';
     const or_ = '\nspl\op\or_';
     const xor_ = '\nspl\op\xor_';
     const not = '\nspl\op\not';

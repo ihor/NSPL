@@ -215,7 +215,6 @@ op::nidnt  | !==
 op::ge     | >
 op::gt     | >=
 op::and_   | &&
-op::mand   | The same as && except: false && false = true
 op::or_    | &#124;&#124;
 op::xor_   | xor
 op::not    | !

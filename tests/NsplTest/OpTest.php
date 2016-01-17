@@ -152,14 +152,6 @@ class OpTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(call_user_func(op::and_, false, true));
     }
 
-    public function testMand()
-    {
-        $this->assertTrue(call_user_func(op::mand, true, true));
-        $this->assertTrue(call_user_func(op::mand, false, false));
-        $this->assertFalse(call_user_func(op::mand, true, false));
-        $this->assertFalse(call_user_func(op::mand, false, true));
-    }
-
     public function testOr()
     {
         $this->assertTrue(call_user_func(op::or_, true, true));

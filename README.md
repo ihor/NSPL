@@ -140,11 +140,11 @@ assert(['hello', 'world', 'foo', 'bar'] === $flatMap(partial('explode', ' '), ['
 
 Passes ```$input``` to composition of functions (functions have to be in the reversed order)
 ```php
+use const \nspl\op\sum;
 use const \nspl\f\filter;
 use const \nspl\f\map;
 use const \nspl\f\reduce;
 use function \nspl\f\partial;
-use const \nspl\op\sum;
 
 // sum of squares of all even numbers less than 20
 $sum = pipe(

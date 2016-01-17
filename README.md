@@ -1,6 +1,12 @@
 Non-standard PHP library (NSPL)
 ===============================
-Nspl is inspired by Python and makes solving day to day routine tasks easier.
+The Non-standard PHP Library (NSPL) is a collection of modules that are meant to solve common day to day problems:
+- [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code with functional programming paradigm.
+- [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module 
+- [nspl\a](#nspla) - provides missing array functions
+- [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
+- [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
+- [nspl\args](#nsplargs) - provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
 
 
 Installation
@@ -25,16 +31,6 @@ include 'path/to/nspl/autoload.php';
 
 Usage
 =====
-
-Nspl contains the following modules:
-- [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code in functional programming paradigm.
-- [nspl\op](#nsplop) - provides lambda-functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module 
-- [nspl\a](#nspla) - provides missing array functions
-- [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
-- [nspl\rnd](#nsplrnd) - provides useful pseudo-random number generators
-- [nspl\args](#nsplargs) - provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules 
-
-
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
 ```php
 use function nspl\a\zip;

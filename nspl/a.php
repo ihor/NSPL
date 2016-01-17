@@ -181,7 +181,7 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
     }
 
     if (is_bool($descending) && $descending) {
-        $cmp = f\compose(op::$neg, $cmp);
+        $cmp = f\compose(op::neg, $cmp);
     }
 
     $isList = ds\isList($array);
@@ -346,36 +346,20 @@ namespace nspl;
 
 class a
 {
-    static public $all;
-    static public $any;
-    static public $getByKey;
-    static public $extend;
-    static public $zip;
-    static public $flatten;
-    static public $pairs;
-    static public $sorted;
-    static public $keySorted;
-    static public $indexed;
-    static public $take;
-    static public $first;
-    static public $drop;
-    static public $last;
-    static public $moveElement;
+    const all = '\nspl\a\all';
+    const any = '\nspl\a\any';
+    const getByKey = '\nspl\a\getByKey';
+    const extend = '\nspl\a\extend';
+    const zip = '\nspl\a\zip';
+    const flatten = '\nspl\a\flatten';
+    const pairs = '\nspl\a\pairs';
+    const sorted = '\nspl\a\sorted';
+    const keySorted = '\nspl\a\keySorted';
+    const indexed = '\nspl\a\indexed';
+    const take = '\nspl\a\take';
+    const first = '\nspl\a\first';
+    const drop = '\nspl\a\drop';
+    const last = '\nspl\a\last';
+    const moveElement = '\nspl\a\moveElement';
 
 }
-
-a::$all = function($sequence, callable $predicate = null) { return \nspl\a\all($sequence, $predicate); };
-a::$any = function($sequence, callable $predicate = null) { return \nspl\a\any($sequence, $predicate); };
-a::$getByKey = function(array $array, $key, $default = null) { return \nspl\a\getByKey($array, $key, $default); };
-a::$extend = function(array $list1, array $list2) { return \nspl\a\extend($list1, $list2); };
-a::$zip = function(array $list1, array $list2) { return call_user_func_array('\nspl\a\zip', func_get_args()); };
-a::$flatten = function(array $list, $depth = null) { return \nspl\a\flatten($list, $depth); };
-a::$pairs = function(array $array) { return \nspl\a\pairs($array); };
-a::$sorted = function(array $array, $reversed = false, $key = null, callable $cmp = null) { return \nspl\a\sorted($array, $reversed, $key, $cmp); };
-a::$keySorted = function(array $array, $reversed = false) { return \nspl\a\sorted($array, $reversed); };
-a::$indexed = function(array $listOfArrays, $by, $keepLast = true, callable $transform = null) { return \nspl\a\indexed($listOfArrays, $by, $keepLast, $transform); };
-a::$take = function(array $list, $N, $step = 1) { return \nspl\a\take($list, $N, $step); };
-a::$first = function(array $list) { return \nspl\a\first($list); };
-a::$drop = function(array $list, $N) { return \nspl\a\drop($list, $N); };
-a::$last = function(array $list) { return \nspl\a\last($list); };
-a::$moveElement = function(array $list, $from, $to) { return \nspl\a\moveElement($list, $from, $to); };

@@ -184,7 +184,7 @@ function pipe($input, callable $function1, callable $function2)
     unset($functions[0]);
 
     return call_user_func(
-        call_user_func_array(\nspl\f::$compose, array_reverse($functions)),
+        call_user_func_array(\nspl\f::compose, array_reverse($functions)),
         $input
     );
 }
@@ -255,32 +255,18 @@ namespace nspl;
 
 class f
 {
-    static public $map;
-    static public $reduce;
-    static public $filter;
-    static public $apply;
-    static public $flipped;
-    static public $partial;
-    static public $rpartial;
-    static public $ppartial;
-    static public $memoized;
-    static public $compose;
-    static public $pipe;
-    static public $curried;
-    static public $uncurried;
+    const map = '\nspl\f\map';
+    const reduce = '\nspl\f\reduce';
+    const filter = '\nspl\f\filter';
+    const apply = '\nspl\f\apply';
+    const flipped = '\nspl\f\flipped';
+    const partial = '\nspl\f\partial';
+    const rpartial = '\nspl\f\rpartial';
+    const ppartial = '\nspl\f\ppartial';
+    const memoized = '\nspl\f\memoized';
+    const compose = '\nspl\f\compose';
+    const pipe = '\nspl\f\pipe';
+    const curried = '\nspl\f\curried';
+    const uncurried = '\nspl\f\uncurried';
 
 }
-
-f::$map = function(callable $function, $sequence) { return f\map($function, $sequence); };
-f::$reduce = function(callable $function, $sequence, $initial = 0) { return f\reduce($function, $sequence, $initial); };
-f::$filter = function(callable $function, $sequence) { return f\filter($function, $sequence); };
-f::$apply = function(callable $function, array $args = array()) { return f\apply($function, $args); };
-f::$flipped = function(callable $function) { return f\flipped($function); };
-f::$partial = function(callable $function) { return call_user_func_array('\nspl\f\partial', func_get_args()); };
-f::$rpartial = function(callable $function) { return call_user_func_array('\nspl\f\rpartial', func_get_args()); };
-f::$ppartial = function(callable $function) { return call_user_func_array('\nspl\f\ppartial', func_get_args()); };
-f::$memoized = function(callable $function) { return f\memoized($function); };
-f::$compose = function(callable $f, callable $g) { return call_user_func_array('\nspl\f\compose', func_get_args()); };
-f::$pipe = function($input, callable $function1, callable $function2) { return call_user_func_array('\nspl\f\pipe', func_get_args()); };
-f::$curried = function(callable $function, $withOptionalArgs = false) { return f\curried($function, $withOptionalArgs); };
-f::$uncurried = function(callable $function) { return f\uncurried($function); };

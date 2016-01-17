@@ -1,155 +1,151 @@
 <?php
 
-namespace nspl;
+namespace nspl\op;
 
-class op
-{
-    static public $sum;
-    static public $sub;
-    static public $mul;
-    static public $div;
-    static public $mod;
-    static public $inc;
-    static public $dec;
-    static public $neg;
+function sum($a, $b) { return $a + $b; };
+function sub($a, $b) { return $a - $b; };
+function mul($a, $b) { return $a * $b; };
+function div($a, $b) { return $a / $b; };
+function mod($a, $b) { return $a % $b; };
+function inc($a) { return ++$a; };
+function dec($a) { return --$a; };
+function neg($a) { return - $a; };
 
-    static public $band;
-    static public $bxor;
-    static public $bor;
-    static public $bnot;
-    static public $lshift;
-    static public $rshift;
+function band($a, $b) { return $a & $b; };
+function bxor($a, $b) { return $a ^ $b; };
+function bor($a, $b) { return $a | $b; };
+function bnot($a) { return ~ $a; };
+function lshift($a, $b) { return $a << $b; };
+function rshift($a, $b) { return $a >> $b; };
 
-    static public $lt;
-    static public $le;
-    static public $eq;
-    static public $idnt;
-    static public $ne;
-    static public $nidnt;
-    static public $ge;
-    static public $gt;
+function lt($a, $b) { return $a < $b; };
+function le($a, $b) { return $a <= $b; };
+function eq($a, $b) { return $a == $b; };
+function idnt($a, $b) { return $a === $b; };
+function ne($a, $b) { return $a != $b; };
+function nidnt($a, $b) { return $a !== $b; };
+function ge($a, $b) { return $a >= $b; };
+function gt($a, $b) { return $a > $b; };
 
-    static public $and;
-    static public $mand;
-    static public $or;
-    static public $xor;
-    static public $not;
-
-    static public $concat;
-
-    static public $int;
-    static public $bool;
-    static public $float;
-    static public $str;
-    static public $array;
-    static public $object;
-
-    /**
-     * Returns a function that returns key value for a given array
-     * @param string $key Array key. Optionally it takes several keys as arguments and returns list of values
-     * @return callable
-     */
-    static public function itemGetter($key)
-    {
-        if (func_num_args() > 1) {
-            $keys = func_get_args();
-            return function($array) use ($keys) {
-                return array_map(function($k) use ($array) { return $array[$k]; }, $keys);
-            };
-        }
-
-        return function($array) use ($key) {
-            return $array[$key];
-        };
-    }
-
-    /**
-     * Returns a function that returns property value for a given object
-     * @param string $property Object property
-     * @return callable
-     */
-    static public function propertyGetter($property)
-    {
-        if (func_num_args() > 1) {
-            $properties = func_get_args();
-            return function($object) use ($properties) {
-                $result = array();
-                foreach ($properties as $property) {
-                    $result[$property] = $object->{$property};
-                }
-
-                return $result;
-            };
-        }
-
-        return function($object) use ($property) {
-            return $object->{$property};
-        };
-    }
-
-    /**
-     * Returns a function that returns method result for a given object on predefined arguments
-     * @param string $method Object method
-     * @param array $args
-     * @return callable
-     */
-    static public function methodCaller($method, array $args = array())
-    {
-        return function($object) use ($method, $args) {
-            return call_user_func_array(array($object, $method), $args);
-        };
-    }
-}
-
-op::$sum = function($a, $b) { return $a + $b; };
-op::$sub = function($a, $b) { return $a - $b; };
-op::$mul = function($a, $b) { return $a * $b; };
-op::$div = function($a, $b) { return $a / $b; };
-op::$mod = function($a, $b) { return $a % $b; };
-op::$inc = function($a) { return ++$a; };
-op::$dec = function($a) { return --$a; };
-op::$neg = function($a) { return - $a; };
-
-op::$band = function($a, $b) { return $a & $b; };
-op::$bxor = function($a, $b) { return $a ^ $b; };
-op::$bor = function($a, $b) { return $a | $b; };
-op::$bnot = function($a) { return ~ $a; };
-op::$lshift = function($a, $b) { return $a << $b; };
-op::$rshift = function($a, $b) { return $a >> $b; };
-
-op::$lt = function($a, $b) { return $a < $b; };
-op::$le = function($a, $b) { return $a <= $b; };
-op::$eq = function($a, $b) { return $a == $b; };
-op::$idnt = function($a, $b) { return $a === $b; };
-op::$ne = function($a, $b) { return $a != $b; };
-op::$nidnt = function($a, $b) { return $a !== $b; };
-op::$ge = function($a, $b) { return $a >= $b; };
-op::$gt = function($a, $b) { return $a > $b; };
-
-op::$and = function($a, $b) { return $a && $b; };
-op::$mand = function($a, $b) {
+function and_($a, $b) { return $a && $b; };
+function mand($a, $b) {
     if ($a) {
         return (bool) $b;
     }
 
     return !$b;
 };
-op::$or = function($a, $b) { return $a || $b; };
-op::$xor = function($a, $b) { return $a xor $b; };
-op::$not = function($a) { return !$a; };
+function or_($a, $b) { return $a || $b; };
+function xor_($a, $b) { return $a xor $b; };
+function not($a) { return !$a; };
 
-op::$concat = function($a, $b) { return $a . $b; };
+function concat($a, $b) { return $a . $b; };
 
-op::$int = function($a) { return (int) $a; };
-op::$bool = function($a) { return (bool) $a; };
-op::$float = function($a) { return (float) $a; };
-op::$str = function($a) { return (string) $a; };
-op::$array = function($a) { return (array) $a; };
-op::$object = function($a) { return (object) $a; };
+function int($a) { return (int) $a; };
+function bool($a) { return (bool) $a; };
+function float($a) { return (float) $a; };
+function str($a) { return (string) $a; };
+function array_($a) { return (array) $a; };
+function object($a) { return (object) $a; };
 
+/**
+ * Returns a function that returns key value for a given array
+ * @param string $key Array key. Optionally it takes several keys as arguments and returns list of values
+ * @return callable
+ */
+function itemGetter($key)
+{
+    if (func_num_args() > 1) {
+        $keys = func_get_args();
+        return function($array) use ($keys) {
+            return array_map(function($k) use ($array) { return $array[$k]; }, $keys);
+        };
+    }
 
-namespace nspl\op;
+    return function($array) use ($key) {
+        return $array[$key];
+    };
+}
 
-function itemGetter($key) { return call_user_func_array(['\nspl\op', 'itemGetter'], func_get_args()); }
-function propertyGetter($property) { return call_user_func_array(['\nspl\op', 'propertyGetter'], func_get_args()); }
-function methodCaller($method, array $args = array()) { return \nspl\op::methodCaller($method, $args); }
+/**
+ * Returns a function that returns property value for a given object
+ * @param string $property Object property
+ * @return callable
+ */
+function propertyGetter($property)
+{
+    if (func_num_args() > 1) {
+        $properties = func_get_args();
+        return function($object) use ($properties) {
+            $result = array();
+            foreach ($properties as $property) {
+                $result[$property] = $object->{$property};
+            }
+
+            return $result;
+        };
+    }
+
+    return function($object) use ($property) {
+        return $object->{$property};
+    };
+}
+
+/**
+ * Returns a function that returns method result for a given object on predefined arguments
+ * @param string $method Object method
+ * @param array $args
+ * @return callable
+ */
+function methodCaller($method, array $args = array())
+{
+    return function($object) use ($method, $args) {
+        return call_user_func_array(array($object, $method), $args);
+    };
+}
+
+namespace nspl;
+
+class op
+{
+    const sum = '\nspl\op\sum';
+    const sub = '\nspl\op\sub';
+    const mul = '\nspl\op\mul';
+    const div = '\nspl\op\div';
+    const mod = '\nspl\op\mod';
+    const inc = '\nspl\op\inc';
+    const dec = '\nspl\op\dec';
+    const neg = '\nspl\op\neg';
+
+    const band = '\nspl\op\band';
+    const bxor = '\nspl\op\bxor';
+    const bor = '\nspl\op\bor';
+    const bnot = '\nspl\op\bnot';
+    const lshift = '\nspl\op\lshift';
+    const rshift = '\nspl\op\rshift';
+
+    const lt = '\nspl\op\lt';
+    const le = '\nspl\op\le';
+    const eq = '\nspl\op\eq';
+    const idnt = '\nspl\op\idnt';
+    const ne = '\nspl\op\ne';
+    const nidnt = '\nspl\op\nidnt';
+    const ge = '\nspl\op\ge';
+    const gt = '\nspl\op\gt';
+
+    const and_ = '\nspl\op\and_';
+    const mand = '\nspl\op\mand';
+    const or_ = '\nspl\op\or_';
+    const xor_ = '\nspl\op\xor_';
+    const not = '\nspl\op\not';
+
+    const concat = '\nspl\op\concat';
+
+    const int = '\nspl\op\int';
+    const bool = '\nspl\op\bool';
+    const float = '\nspl\op\float';
+    const str = '\nspl\op\str';
+    const array_ = '\nspl\op\array_';
+    const object = '\nspl\op\object';
+
+}

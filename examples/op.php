@@ -30,7 +30,7 @@ echo sprintf("User names are: %s (users were presented with array data)\n", impl
 
 
 // 2. Convert list of user presented with array data to list of objects
-$objects = map(op::$object, $users);
+$objects = map(op::object, $users);
 
 echo sprintf("List of users converted to objects consists of types: %s\n", implode(', ', map('\nspl\ds\getType', $objects)));
 
@@ -45,6 +45,6 @@ foreach ($sorted as $user) {
 
 
 // 4. Check if all numbers are positive
-$allPositive = all([1, 2, 3, 4, 5], rpartial(op::$gt, 0));
+$allPositive = all([1, 2, 3, 4, 5], rpartial(op::gt, 0));
 
 echo $allPositive ? "All numbers are positive\n" : "At least one number was not positive\n";

@@ -132,7 +132,7 @@ use function \nspl\f\compose;
 use function \nspl\f\partial;
 use function \nspl\f\rpartial;
 
-$flatMap = compose(rpartial(a::$flatten, 1), f::$map);
+$flatMap = compose(rpartial(a::flatten, 1), f::map);
 assert(['hello', 'world', 'foo', 'bar'] === $flatMap(partial('explode', ' '), ['hello world', 'foo bar']));
 ```
 
@@ -147,9 +147,9 @@ use function \nspl\f\partial;
 // sum of squares of all even numbers less than 20
 $sum = pipe(
     range(1, 20),
-    partial(f::$filter, function($x) { return $x % 2 === 0; }),
-    partial(f::$map, function($x) { return $x * $x; }),
-    partial(f::$reduce, op::$sum)
+    partial(f::filter, function($x) { return $x % 2 === 0; }),
+    partial(f::map, function($x) { return $x * $x; }),
+    partial(f::reduce, op::sum)
 )
 ```
 
@@ -167,12 +167,12 @@ If the second argument is true then curry function with optional args otherwise 
 
 Returns normal (uncurried) version of a [curried function](https://en.wikipedia.org/wiki/Currying)
 
-##### Lambdas
+##### Callbacks
 
-Class ```nspl\f``` provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class ```nspl\f``` provides all these functions as callbacks in its constants which have the same names as the functions.
 ```php
-$incListItems = partial(f::$map, function($v) { return $v + 1; });
-$filterNumbers = partial(f::$filter, 'is_numeric');
+$incListItems = partial(f::map, function($v) { return $v + 1; });
+$filterNumbers = partial(f::filter, 'is_numeric');
 ```
 
 Check ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/f.php).
@@ -187,45 +187,45 @@ Class ```nspl\op``` provides lambda-functions that perform standard PHP operatio
 use nspl\op;
 use function nspl\f\reduce;
 
-assert(6 === reduce(op::$sum, [1, 2, 3]));
+assert(6 === reduce(op::sum, [1, 2, 3]));
 ```
 
-Function    | Operation
-------------|-----------------------------------------------
-op::$sum    | +
-op::$sub    | -
-op::$mul    | *
-op::$div    | /
-op::$mod    | %
-op::$inc    | ++
-op::$dec    | --
-op::$neg    | -
-op::$band   | &
-op::$bxor   | ^
-op::$bor    | &#124;
-op::$bnot   | ~
-op::$lshift | <<
-op::$rshift | >>
-op::$lt     | <
-op::$le     | <=
-op::$eq     | ==
-op::$idnt   | ===
-op::$ne     | !=
-op::$nidnt  | !==
-op::$ge     | >
-op::$gt     | >=
-op::$and    | &&
-op::$mand   | The same as && except: false && false = true
-op::$or     | &#124;&#124;
-op::$xor    | xor
-op::$not    | !
-op::$concat | .
-op::$int    | (int)
-op::$bool   | (bool)
-op::$float  | (float)
-op::$str    | (string)
-op::$array  | (array)
-op::$object | (object)
+Function   | Operation
+-----------|-----------------------------------------------
+op::sum    | +
+op::sub    | -
+op::mul    | *
+op::div    | /
+op::mod    | %
+op::inc    | ++
+op::dec    | --
+op::neg    | -
+op::band   | &
+op::bxor   | ^
+op::bor    | &#124;
+op::bnot   | ~
+op::lshift | <<
+op::rshift | >>
+op::lt     | <
+op::le     | <=
+op::eq     | ==
+op::idnt   | ===
+op::ne     | !=
+op::nidnt  | !==
+op::ge     | >
+op::gt     | >=
+op::and_   | &&
+op::mand   | The same as && except: false && false = true
+op::or_    | &#124;&#124;
+op::xor_   | xor
+op::not    | !
+op::concat | .
+op::int    | (int)
+op::bool   | (bool)
+op::float  | (float)
+op::str    | (string)
+op::array_ | (array)
+op::object | (object)
 
 ##### itemGetter($key)
 Returns a function that returns key value for a given array
@@ -388,11 +388,11 @@ Moves list element to another position
 assert([2, 0, 1] === moveElement([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
 
-##### Lambdas
+##### Callbacks
 
-Class ```nspl\a``` provides all these functions as lambdas in its static properties which have the same names as the functions.
+Class ```nspl\a``` provides all these functions as callbacks in its constants which have the same names as the functions.
 ```php
-assert([1, 2, 3] === map(a::$first, [[1, 'a'], [2, 'b'], [3, 'c']]));
+assert([1, 2, 3] === map(a::first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 ```
 
 Check ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).

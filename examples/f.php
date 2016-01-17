@@ -14,7 +14,7 @@ use nspl\op;
 use function nspl\op\propertyGetter;
 
 
-$users = map(op::$object, [
+$users = map(op::object, [
     array('id' => 1, 'name' => 'John', 'age' => 15),
     array('id' => 2, 'name' => 'Jack', 'age' => 35),
     array('id' => 3, 'name' => 'Sarah', 'age' => 25),
@@ -45,7 +45,7 @@ foreach ($youngerThan25 as $user) {
 
 
 // 4. Get users older than 25
-$isOlderThan25 = compose(rpartial(op::$gt, 25), propertyGetter('age'));
+$isOlderThan25 = compose(rpartial(op::gt, 25), propertyGetter('age'));
 $olderThan25 = filter($isOlderThan25, $users);
 
 echo "These users are older than 25:\n";
@@ -57,7 +57,7 @@ foreach ($olderThan25 as $user) {
 // 5. Memoizing heavy calculations
 $factorial = function($n) {
     echo "Calculating $n!\n";
-    return reduce(op::$mul, range(1, $n), 1);
+    return reduce(op::mul, range(1, $n), 1);
 };
 
 $memoizedFactorial = memoized($factorial);

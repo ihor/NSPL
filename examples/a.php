@@ -24,26 +24,26 @@ use function nspl\f\partial;
 
 // 1. Check all statuses are "ready"
 $statuses = ['ready', 'ready', 'not-ready'];
-$ready = all($statuses, partial(op::$eq, 'ready'));
+$ready = all($statuses, partial(op::eq, 'ready'));
 
 echo $ready ? "Everybody is ready\n" : "Someone is not ready\n";
 
 
 // 2. Check at least someone is "ready"
-$someoneIsReady = any($statuses, partial(op::$eq, 'ready'));
+$someoneIsReady = any($statuses, partial(op::eq, 'ready'));
 
 echo $someoneIsReady ? "Someone is ready\n" : "Everybody is not ready\n";
 
 
 // 3. Get user name from which can be stored as username, user_name or name in data array
 $data = array('id' => 1337, 'name' => 'John', 'gender' => 'male');
-$name = reduce(flipped(partial(a::$getByKey, $data)), ['username', 'user_name', 'name'], '');
+$name = reduce(flipped(partial(a::getByKey, $data)), ['username', 'user_name', 'name'], '');
 
 echo sprintf("User name is %s\n", $name);
 
 
 // 4. Sort list of user objects by their name
-$users = map(op::$object, [
+$users = map(op::object, [
     array('id' => 1, 'name' => 'John', 'age' => 15),
     array('id' => 2, 'name' => 'Jack', 'age' => 35),
     array('id' => 3, 'name' => 'Sarah', 'age' => 25),

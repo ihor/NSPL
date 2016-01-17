@@ -130,23 +130,31 @@ Hello world!
 Returns new function which applies each given function to the result of another from right to left
 ```compose(f, g, h)``` is the same as ```f(g(h(x)))```
 ```php
-$underscoreToCamelcase = compose(
-    'lcfirst',
-    partial('str_replace', '_', ''),
-    rpartial('ucwords', '_')
-);
+use \nspl\a;
+use \nspl\f;
+use function \nspl\f\compose;
+use function \nspl\f\partial;
+use function \nspl\f\rpartial;
+
+$flatMap = compose(rpartial(a::$flatten, 1), f::$map);
+assert(['hello', 'world', 'foo', 'bar'] === $flatMap(partial('explode', ' '), ['hello world', 'foo bar']));
 ```
 
 ##### pipe($input, $function1, $function2)
 
 Passes ```$input``` to composition of functions (functions have to be in the reversed order)
 ```php
-assert('underscoreToCamelcase' === pipe(
-    'underscore_to_camelcase', 
-    rpartial('ucwords', '_'),
-    partial('str_replace', '_', ''),
-    'lcfirst'
-))
+use \nspl\f;
+use \nspl\op;
+use function \nspl\f\partial;
+
+// sum of squares of all even numbers less than 20
+$sum = pipe(
+    range(1, 20),
+    partial(f::$filter, function($x) { return $x % 2 === 0; }),
+    partial(f::$map, function($x) { return $x * $x; }),
+    partial(f::$reduce, op::$sum)
+)
 ```
 
 ##### I($input, $function1, $function2)

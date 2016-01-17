@@ -24,6 +24,7 @@ function all($sequence, callable $predicate = null)
 
     return true;
 }
+const all = '\nspl\a\all';
 
 /**
  * Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if
@@ -43,6 +44,7 @@ function any($sequence, callable $predicate = null)
 
     return false;
 }
+const any = '\nspl\a\any';
 
 /**
  * Returns array value by key if it exists otherwise returns the default value
@@ -56,6 +58,7 @@ function getByKey(array $array, $key, $default = null)
 {
     return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
 }
+const getByKey = '\nspl\a\getByKey';
 
 /**
  * Adds $list2 items to the end of $list1
@@ -68,6 +71,7 @@ function extend(array $list1, array $list2)
 {
     return array_merge($list1, $list2);
 }
+const extend = '\nspl\a\extend';
 
 /**
  * Zips two or more lists
@@ -103,6 +107,7 @@ function zip(array $list1, array $list2)
 
     return $result;
 }
+const zip = '\nspl\a\zip';
 
 /**
  * Flattens multidimensional list
@@ -133,6 +138,7 @@ function flatten(array $list, $depth = null)
 
     return $result;
 }
+const flatten = '\nspl\a\flatten';
 
 /**
  * Returns list of (key, value) pairs
@@ -153,6 +159,7 @@ function pairs($array, $valueKey = false)
 
     return $result;
 }
+const pairs = '\nspl\a\pairs';
 
 /**
  * Returns sorted copy of passed array
@@ -181,7 +188,7 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
     }
 
     if (is_bool($descending) && $descending) {
-        $cmp = f\compose(op::neg, $cmp);
+        $cmp = f\compose(op\neg, $cmp);
     }
 
     $isList = ds\isList($array);
@@ -189,6 +196,7 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
 
     return $isList ? array_values($array) : $array;
 }
+const sorted = '\nspl\a\sorted';
 
 /**
  * Returns copy of passed array sorted by keys
@@ -208,6 +216,7 @@ function keySorted(array $array, $reversed = false)
 
     return $array;
 }
+const keySorted = '\nspl\a\keySorted';
 
 /**
  * Returns indexed list of items
@@ -242,6 +251,7 @@ function indexed(array $list, $by, $keepLast = true, callable $transform = null)
 
     return $result;
 }
+const indexed = '\nspl\a\indexed';
 
 /**
  * Returns first N list items
@@ -265,6 +275,7 @@ function take(array $list, $N, $step = 1)
 
     return $result;
 }
+const take = '\nspl\a\take';
 
 /**
  * Returns the first list item
@@ -285,6 +296,7 @@ function first(array $list)
     reset($list);
     return current($list);
 }
+const first = '\nspl\a\first';
 
 /**
  * Drops first N list items
@@ -297,6 +309,7 @@ function drop(array $list, $N)
 {
     return array_slice($list, $N);
 }
+const drop = '\nspl\a\drop';
 
 /**
  * Returns the last list item
@@ -312,6 +325,7 @@ function last(array $list)
 
     return $list[count($list) - 1];
 }
+const last = '\nspl\a\last';
 
 /**
  * Moves list element to another position
@@ -340,26 +354,4 @@ function moveElement(array $list, $from, $to)
 
     return $list;
 }
-
-
-namespace nspl;
-
-class a
-{
-    const all = '\nspl\a\all';
-    const any = '\nspl\a\any';
-    const getByKey = '\nspl\a\getByKey';
-    const extend = '\nspl\a\extend';
-    const zip = '\nspl\a\zip';
-    const flatten = '\nspl\a\flatten';
-    const pairs = '\nspl\a\pairs';
-    const sorted = '\nspl\a\sorted';
-    const keySorted = '\nspl\a\keySorted';
-    const indexed = '\nspl\a\indexed';
-    const take = '\nspl\a\take';
-    const first = '\nspl\a\first';
-    const drop = '\nspl\a\drop';
-    const last = '\nspl\a\last';
-    const moveElement = '\nspl\a\moveElement';
-
-}
+const moveElement = '\nspl\a\moveElement';

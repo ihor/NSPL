@@ -3,43 +3,107 @@
 namespace nspl\op;
 
 function sum($a, $b) { return $a + $b; };
+const sum = '\nspl\op\sum';
+
 function sub($a, $b) { return $a - $b; };
+const sub = '\nspl\op\sub';
+
 function mul($a, $b) { return $a * $b; };
+const mul = '\nspl\op\mul';
+
 function div($a, $b) { return $a / $b; };
+const div = '\nspl\op\div';
+
 function mod($a, $b) { return $a % $b; };
+const mod = '\nspl\op\mod';
+
 function inc($a) { return ++$a; };
+const inc = '\nspl\op\inc';
+
 function dec($a) { return --$a; };
+const dec = '\nspl\op\dec';
+
 function neg($a) { return - $a; };
+const neg = '\nspl\op\neg';
 
 function band($a, $b) { return $a & $b; };
+const band = '\nspl\op\band';
+
 function bxor($a, $b) { return $a ^ $b; };
+const bxor = '\nspl\op\bxor';
+
 function bor($a, $b) { return $a | $b; };
+const bor = '\nspl\op\bor';
+
 function bnot($a) { return ~ $a; };
+const bnot = '\nspl\op\bnot';
+
 function lshift($a, $b) { return $a << $b; };
+const lshift = '\nspl\op\lshift';
+
 function rshift($a, $b) { return $a >> $b; };
+const rshift = '\nspl\op\rshift';
 
 function lt($a, $b) { return $a < $b; };
+const lt = '\nspl\op\lt';
+
 function le($a, $b) { return $a <= $b; };
+const le = '\nspl\op\le';
+
 function eq($a, $b) { return $a == $b; };
+const eq = '\nspl\op\eq';
+
+
 function idnt($a, $b) { return $a === $b; };
+const idnt = '\nspl\op\idnt';
+
 function ne($a, $b) { return $a != $b; };
+const ne = '\nspl\op\ne';
+
 function nidnt($a, $b) { return $a !== $b; };
+const nidnt = '\nspl\op\nidnt';
+
 function ge($a, $b) { return $a >= $b; };
+const ge = '\nspl\op\ge';
+
 function gt($a, $b) { return $a > $b; };
+const gt = '\nspl\op\gt';
+
 
 function and_($a, $b) { return $a && $b; };
+const and_ = '\nspl\op\and_';
+
 function or_($a, $b) { return $a || $b; };
+const or_ = '\nspl\op\or_';
+
 function xor_($a, $b) { return $a xor $b; };
+const xor_ = '\nspl\op\xor_';
+
 function not($a) { return !$a; };
+const not = '\nspl\op\not';
+
 
 function concat($a, $b) { return $a . $b; };
+const concat = '\nspl\op\concat';
+
 
 function int($a) { return (int) $a; };
+const int = '\nspl\op\int';
+
 function bool($a) { return (bool) $a; };
+const bool = '\nspl\op\bool';
+
 function float($a) { return (float) $a; };
+const float = '\nspl\op\float';
+
 function str($a) { return (string) $a; };
+const str = '\nspl\op\str';
+
 function array_($a) { return (array) $a; };
+const array_ = '\nspl\op\array_';
+
 function object($a) { return (object) $a; };
+const object = '\nspl\op\object';
 
 /**
  * Returns a function that returns key value for a given array
@@ -95,49 +159,4 @@ function methodCaller($method, array $args = array())
     return function($object) use ($method, $args) {
         return call_user_func_array(array($object, $method), $args);
     };
-}
-
-namespace nspl;
-
-class op
-{
-    const sum = '\nspl\op\sum';
-    const sub = '\nspl\op\sub';
-    const mul = '\nspl\op\mul';
-    const div = '\nspl\op\div';
-    const mod = '\nspl\op\mod';
-    const inc = '\nspl\op\inc';
-    const dec = '\nspl\op\dec';
-    const neg = '\nspl\op\neg';
-
-    const band = '\nspl\op\band';
-    const bxor = '\nspl\op\bxor';
-    const bor = '\nspl\op\bor';
-    const bnot = '\nspl\op\bnot';
-    const lshift = '\nspl\op\lshift';
-    const rshift = '\nspl\op\rshift';
-
-    const lt = '\nspl\op\lt';
-    const le = '\nspl\op\le';
-    const eq = '\nspl\op\eq';
-    const idnt = '\nspl\op\idnt';
-    const ne = '\nspl\op\ne';
-    const nidnt = '\nspl\op\nidnt';
-    const ge = '\nspl\op\ge';
-    const gt = '\nspl\op\gt';
-
-    const and_ = '\nspl\op\and_';
-    const or_ = '\nspl\op\or_';
-    const xor_ = '\nspl\op\xor_';
-    const not = '\nspl\op\not';
-
-    const concat = '\nspl\op\concat';
-
-    const int = '\nspl\op\int';
-    const bool = '\nspl\op\bool';
-    const float = '\nspl\op\float';
-    const str = '\nspl\op\str';
-    const array_ = '\nspl\op\array_';
-    const object = '\nspl\op\object';
-
 }

@@ -16,6 +16,7 @@ function map(callable $function, $sequence)
 {
     return array_map($function, (array) $sequence);
 }
+const map = '\nspl\f\map';
 
 /**
  * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
@@ -30,6 +31,7 @@ function reduce(callable $function, $sequence, $initial = 0)
 {
     return array_reduce((array) $sequence, $function, $initial);
 }
+const reduce = '\nspl\f\reduce';
 
 /**
  * Returns sequence items that satisfy the predicate
@@ -44,6 +46,7 @@ function filter(callable $predicate, $sequence)
     $filtered = array_filter((array) $sequence, $predicate);
     return $isList ? array_values($filtered) : $filtered;
 }
+const filter = '\nspl\f\filter';
 
 /**
  * Applies function to arguments and returns the result
@@ -56,6 +59,7 @@ function apply(callable $function, $args = array())
 {
     return call_user_func_array($function, $args);
 }
+const apply = '\nspl\f\apply';
 
 /**
  * Returns function which accepts arguments in the reversed order
@@ -68,6 +72,7 @@ function flipped(callable $function) {
         return call_user_func_array($function, array_reverse(func_get_args()));
     };
 }
+const flipped = '\nspl\f\flipped';
 
 /**
  * Returns new function which will behave like $function with
@@ -86,6 +91,7 @@ function partial(callable $function, $arg1)
         return call_user_func_array($function, a\extend($args, func_get_args()));
     };
 }
+const partial = '\nspl\f\partial';
 
 /**
  * Returns new partial function which will behave like $function with
@@ -104,6 +110,7 @@ function rpartial(callable $function, $arg1)
         return call_user_func_array($function, a\extend(func_get_args(), $args));
     };
 }
+const rpartial = '\nspl\f\rpartial';
 
 /**
  * Returns new partial function which will behave like $function with
@@ -128,6 +135,7 @@ function ppartial(callable $function, array $args)
         return call_user_func_array($function, $args);
     };
 }
+const ppartial = '\nspl\f\ppartial';
 
 /**
  * Returns memoized $function which returns the cached result when the same inputs occur again
@@ -148,6 +156,7 @@ function memoized(callable $function)
         return $memory[$key];
     };
 }
+const memoized = '\nspl\f\memoized';
 
 /**
  * Returns new function which applies each given function to the result of another from right to left
@@ -169,6 +178,7 @@ function compose(callable $f, callable $g)
         return current($args);
     };
 }
+const compose = '\nspl\f\compose';
 
 /**
  * Passes args to composition of functions (functions have to be in the reversed order)
@@ -184,10 +194,11 @@ function pipe($input, callable $function1, callable $function2)
     unset($functions[0]);
 
     return call_user_func(
-        call_user_func_array(\nspl\f::compose, array_reverse($functions)),
+        call_user_func_array(compose, array_reverse($functions)),
         $input
     );
 }
+const pipe = '\nspl\f\pipe';
 
 /**
  * Alias for @see pipe()
@@ -232,6 +243,7 @@ function curried(callable $function, $withOptionalArgs = false)
         }, $numOfArgs - 1);
     };
 }
+const curried = '\nspl\f\curried';
 
 /**
  * Returns uncurried version of curried function
@@ -249,24 +261,4 @@ function uncurried(callable $function)
         return $function;
     };
 }
-
-
-namespace nspl;
-
-class f
-{
-    const map = '\nspl\f\map';
-    const reduce = '\nspl\f\reduce';
-    const filter = '\nspl\f\filter';
-    const apply = '\nspl\f\apply';
-    const flipped = '\nspl\f\flipped';
-    const partial = '\nspl\f\partial';
-    const rpartial = '\nspl\f\rpartial';
-    const ppartial = '\nspl\f\ppartial';
-    const memoized = '\nspl\f\memoized';
-    const compose = '\nspl\f\compose';
-    const pipe = '\nspl\f\pipe';
-    const curried = '\nspl\f\curried';
-    const uncurried = '\nspl\f\uncurried';
-
-}
+const uncurried = '\nspl\f\uncurried';

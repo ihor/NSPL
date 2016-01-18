@@ -5,6 +5,7 @@ namespace nspl\a;
 use nspl\f;
 use nspl\ds;
 use nspl\op;
+use nspl\args;
 
 /**
  * Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty).
@@ -16,6 +17,8 @@ use nspl\op;
  */
 function all($sequence, callable $predicate = null)
 {
+    args\expectsTraversable($sequence);
+
     foreach ($sequence as $value) {
         if ($predicate && !call_user_func($predicate, $value) || !$predicate && !$value) {
             return false;
@@ -36,6 +39,8 @@ const all = '\nspl\a\all';
  */
 function any($sequence, callable $predicate = null)
 {
+    args\expectsTraversable($sequence);
+
     foreach ($sequence as $value) {
         if ($predicate && call_user_func($predicate, $value) || !$predicate && $value) {
             return true;
@@ -49,13 +54,15 @@ const any = '\nspl\a\any';
 /**
  * Returns array value by key if it exists otherwise returns the default value
  *
- * @param array $array
+ * @param array|\ArrayAccess $array
  * @param int|string $key
  * @param mixed $default
  * @return mixed
  */
-function getByKey(array $array, $key, $default = null)
+function getByKey($array, $key, $default = null)
 {
+    args\expectsArrayAccess($array);
+
     return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
 }
 const getByKey = '\nspl\a\getByKey';
@@ -148,6 +155,8 @@ const flatten = '\nspl\a\flatten';
  */
 function pairs($array, $valueKey = false)
 {
+    args\expectsTraversable($array);
+
     if (!$array) {
         return array();
     }
@@ -221,7 +230,7 @@ const keySorted = '\nspl\a\keySorted';
 /**
  * Returns indexed list of items
  *
- * @param array $list List of arrays or objects
+ * @param array|\Traversable $list List of arrays or objects
  * @param int|string|callable $by An array key or a function
  * @param bool $keepLast If true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
  * @param callable|null $transform A function that transforms list item after indexing
@@ -229,6 +238,8 @@ const keySorted = '\nspl\a\keySorted';
  */
 function indexed(array $list, $by, $keepLast = true, callable $transform = null)
 {
+    args\expectsTraversable($list);
+
     $indexIsCallable = is_callable($by);
 
     $result = array();

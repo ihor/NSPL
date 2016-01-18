@@ -277,7 +277,7 @@ Returns true if any element of the ```$sequence``` satisfies the predicate. If p
 assert(true === any([true, false, false]));
 ```
 
-##### getByKey(array $array, $key, $default = null)
+##### getByKey($array, $key, $default = null)
 
 Returns array value by key if it exists otherwise returns the default value
 ```php

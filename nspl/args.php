@@ -2,8 +2,8 @@
 
 namespace nspl\args;
 
-use function nspl\ds\getType;
-use function nspl\a\drop;
+use nspl\ds;
+use nspl\a;
 
 /**
  * Checks that argument is not empty otherwise throws the corresponding exception
@@ -265,7 +265,7 @@ function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '
             $hadTo,
             $fromExpects
                 ? (($reportValue && is_scalar($arg)) ? (', ' . $arg . ' given') : '')
-                : (($reportValue && is_scalar($arg)) ? (', ' . $arg . ' given') : (', ' . getType($arg) . ' given'))
+                : (($reportValue && is_scalar($arg)) ? (', ' . $arg . ' given') : (', ' . ds\getType($arg) . ' given'))
         ));
     }
 
@@ -276,7 +276,7 @@ function _throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '
     $exceptionSetter('line', $line);
 
     $baseExceptionSetter = $setter->bindTo($exception, 'Exception');
-    $baseExceptionSetter('trace', drop($exception->getTrace(), 2));
+    $baseExceptionSetter('trace', a\drop($exception->getTrace(), 2));
 
     throw $exception;
 }

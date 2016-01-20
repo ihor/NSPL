@@ -2,8 +2,6 @@
 
 namespace nspl\rnd;
 
-use function \nspl\ds\isList;
-
 /**
  * Returns a k length list of unique elements chosen from the population sequence
  *

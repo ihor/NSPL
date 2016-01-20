@@ -8,6 +8,7 @@ use function \nspl\ds\arrayobject;
 use function \nspl\ds\defaultarray;
 use function \nspl\ds\getType;
 use function \nspl\ds\isList;
+use function \nspl\ds\traversableToArray;
 
 class DsTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,6 +33,21 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isList([1]));
         $this->assertTrue(isList([1, 2, 3]));
         $this->assertTrue(isList([10, 11, 13]));
+    }
+
+    public function testTraversableToArray()
+    {
+        $this->assertEquals([1, 2, 3], traversableToArray([1, 2, 3]));
+        $this->assertEquals([1, 2, 3], traversableToArray(new ArrayObject(1, 2, 3)));
+        $this->assertEquals([1, 2, 3], traversableToArray(new \ArrayObject([1, 2, 3])));
+
+        $range = function($min, $max)
+        {
+            for ($i = $min; $i <= $max; ++$i) {
+                yield $i;
+            }
+        };
+        $this->assertEquals([1, 2, 3], traversableToArray($range(1, 3)));
     }
 
     public function testArrayObject()

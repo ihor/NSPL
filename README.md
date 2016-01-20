@@ -416,6 +416,10 @@ Returns the variable type or its class name if it is an object
 
 Returns true if the variable is a list
 
+##### traversableToArray($var)
+
+Takes array or traversable and returns an array
+
 ##### ArrayObject
 
 Alternative ArrayObject implementation

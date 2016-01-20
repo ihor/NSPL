@@ -4,6 +4,7 @@ namespace nspl\f;
 
 use nspl\a;
 use nspl\ds;
+use nspl\args;
 
 /**
  * Applies function of one argument to each sequence item
@@ -14,7 +15,8 @@ use nspl\ds;
  */
 function map(callable $function, $sequence)
 {
-    return array_map($function, (array) $sequence);
+    args\expectsTraversable($sequence);
+    return array_map($function, ds\traversableToArray($sequence));
 }
 const map = '\nspl\f\map';
 
@@ -29,7 +31,8 @@ const map = '\nspl\f\map';
  */
 function reduce(callable $function, $sequence, $initial = 0)
 {
-    return array_reduce((array) $sequence, $function, $initial);
+    args\expectsTraversable($sequence);
+    return array_reduce(ds\traversableToArray($sequence), $function, $initial);
 }
 const reduce = '\nspl\f\reduce';
 
@@ -42,8 +45,11 @@ const reduce = '\nspl\f\reduce';
  */
 function filter(callable $predicate, $sequence)
 {
+    args\expectsTraversable($sequence);
+
+    $sequence = ds\traversableToArray($sequence);
     $isList = ds\isList($sequence);
-    $filtered = array_filter((array) $sequence, $predicate);
+    $filtered = array_filter($sequence, $predicate);
     return $isList ? array_values($filtered) : $filtered;
 }
 const filter = '\nspl\f\filter';
@@ -55,7 +61,7 @@ const filter = '\nspl\f\filter';
  * @param array $args
  * @return mixed
  */
-function apply(callable $function, $args = array())
+function apply(callable $function, array $args = array())
 {
     return call_user_func_array($function, $args);
 }

@@ -41,6 +41,9 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['a' => 0, 'b' => 1, 'c' => 2], map('abs', array('a' => 0, 'b' => -1, 'c' => 2)));
         $this->assertEquals([], map('strtoupper', []));
 
+        $range = function($min, $max) { for ($i = $min; $i <= $max; ++$i) yield $i; };
+        $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, $range(1, 3)));
+
         $this->assertEquals(['A', 'B', 'C'], call_user_func(map, 'strtoupper', ['a', 'b', 'c']));
         $this->assertEquals([1, 4, 9], call_user_func(map, function($v) { return $v * $v; }, new \ArrayIterator([1, 2, 3])));
         $this->assertEquals(['a' => 0, 'b' => 1, 'c' => 2], call_user_func(map, 'abs', array('a' => 0, 'b' => -1, 'c' => 2)));

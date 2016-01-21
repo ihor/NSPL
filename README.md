@@ -42,8 +42,9 @@ foreach ($users as $user) {
     }
 }
 
-// define new function as composition of the existing ones (note the inconsistency in array_map and array_reduce parameters)
+// define new function as composition of the existing ones
 $flatMap = function($function, $list) {
+    // note the inconsistency in array_map and array_reduce parameters
     return array_reduce(
         array_map(
             function($item) use ($function) {

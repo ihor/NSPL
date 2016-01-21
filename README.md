@@ -8,6 +8,55 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
 - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
 - [nspl\args](#nsplargs) - provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
 
+NSPL aims to provide compact but clear syntax to make functional PHP code look less verbose. Fast and simple, it is created to be used every day instead of being another functional programming playground for geeks. Look at the following code written with NSPL:
+```php
+// get user ids
+$userIds = map(propertyGetter('id'), $users);
+
+// or sort them by age
+$sortedByAge = sorted($users, methodCaller('getAge'));
+
+// or check if they all are online
+$online = all($users, methodCaller('isOnline'));
+
+// or define new function as composition of the existing ones
+$flatMap = compose(rpartial(flatten, 1), map);
+```
+
+In pure PHP it would look like this:
+```php
+// get user ids
+$userIds = array_map(function($user) { return $user->id; }, $users);
+
+// sort them by age, not the following code modifies the original users array
+usort($users, function($user1, $user2) {
+    return $user1->getAge() - $user2->getAge();
+});
+
+// check if they all are online
+$online = true;
+foreach ($users as $user) {
+    if (!$user->isOnline()) {
+        $online = false;
+        break;
+    }
+}
+
+// define new function as composition of the existing ones
+$flatMap = function($function, $list) {
+    return array_reduce(
+        array_map(
+            function($item) use ($function) {
+                return call_user_func($function, $item);
+            },
+            $list
+        ),
+        'array_merge',
+        []
+    );
+};
+```
+You can see more examples in the [library reference](#reference) below or [here](https://github.com/ihor/Nspl/blob/master/examples).
 
 Installation
 ------------
@@ -29,8 +78,8 @@ Checkout the code and include ```autoload.php```:
 include 'path/to/nspl/autoload.php';
 ```
 
-Usage
-=====
+Reference
+=========
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
 ```php
 use function nspl\a\zip;
@@ -152,7 +201,7 @@ $sum = pipe(
     partial(filter, function($x) { return $x % 2 === 0; }),
     partial(map, function($x) { return $x * $x; }),
     partial(reduce, sum)
-)
+);
 ```
 
 ##### I($input, $function1, $function2)

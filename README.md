@@ -28,7 +28,7 @@ In pure PHP it would look like this:
 // get user ids
 $userIds = array_map(function($user) { return $user->id; }, $users);
 
-// sort them by age, not the following code modifies the original users array
+// sort them by age, note that the following code modifies the original users array
 usort($users, function($user1, $user2) {
     return $user1->getAge() - $user2->getAge();
 });

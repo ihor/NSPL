@@ -42,7 +42,7 @@ foreach ($users as $user) {
     }
 }
 
-// define new function as composition of the existing ones
+// define new function as composition of the existing ones (note the inconsistency in array_map and array_reduce parameters)
 $flatMap = function($function, $list) {
     return array_reduce(
         array_map(

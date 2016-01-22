@@ -363,7 +363,7 @@ assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]]
 
 Returns sorted copy of the passed array
 
-```$descending``` if true then sort array in descending order. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter
+```$descending``` if true then sort array in descending order. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
 ```$key``` is a function of one argument that is used to extract a comparison key from each element  
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php

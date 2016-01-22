@@ -46,16 +46,7 @@ foreach ($users as $user) {
 // define new function as composition of the existing ones
 $flatMap = function($function, $list) {
     // note the inconsistency in array_map and array_reduce parameters
-    return array_reduce(
-        array_map(
-            function($item) use ($function) {
-                return call_user_func($function, $item);
-            },
-            $list
-        ),
-        'array_merge',
-        []
-    );
+    return array_reduce(array_map($function, $list), 'array_merge', []);
 };
 ```
 You can see more examples in the [library reference](#reference) below or [here](https://github.com/ihor/Nspl/blob/master/examples).

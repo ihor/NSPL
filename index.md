@@ -646,3 +646,8 @@ Roadmap
 =======
 
 - Create a roadmap
+
+Feedback
+========
+
+There are no mailing lists or discussion groups yet. Please use GitHub issues and pull request or follow me on Twitter [@IhorBurlachenko](https://twitter.com/IhorBurlachenko)

@@ -359,7 +359,7 @@ Returns sorted copy of the passed array
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 assert([1, 2, 3] === sorted([2, 3, 1]));
-assert(['a', 'b', 'c'] === sorted(['c', 'a', 'b'], true));
+assert(['c', 'b', 'a'] === sorted(['c', 'a', 'b'], true));
 
 $usersSortedByName = sorted($users, function($u) { return $u->getName(); });
 // Which is the same as

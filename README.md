@@ -328,21 +328,21 @@ assert(2 === getByKey($data, 'b', -1));
 assert(-1 === getByKey($data, 'd', -1));
 ```
 
-##### extend(array $list1, array $list2)
+##### extend($sequence1, $sequence2)
 
-Adds ```$list2``` items to the end of ```$list1```
+Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
 ```php
 assert([1, 2, 3, 4, 5, 6] === extend([1, 2, 3], [4, 5, 6]));
 ```
 
-##### zip(array $list1, array $list2)
+##### zip($sequence1, $sequence2)
 
-Zips two or more lists
+Zips two or more sequences
 ```php
 assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
 ```
 
-##### flatten(array $list, $depth = null)
+##### flatten($sequence, $depth = null)
 
 Flattens multidimensional list
 ```php
@@ -350,11 +350,18 @@ assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7,
 assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
 ```
 
-##### sorted(array $array, $descending = false, $key = null, $cmp = null)
+##### pairs($sequence, $valueKey = false)
 
-Returns sorted copy of the passed array
+Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
+```php
+assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
+```
 
-```$descending``` if true then sort array in descending order. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
+##### sorted($sequence, $descending = false, $key = null, $cmp = null)
+
+Returns array which contains sorted items the passed sequence
+
+```$descending``` if true then sort sequence in descending order. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
 ```$key``` is a function of one argument that is used to extract a comparison key from each element  
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
@@ -369,16 +376,16 @@ $usersSortedByName = sorted($users, methodCaller('getName'));
 
 Check more ```\nspl\a\sorted``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a_sorted.php).
 
-##### keySorted(array $array, $reversed = false)
+##### keySorted($sequence, $reversed = false)
 
-Returns copy of passed array sorted by keys
+Returns array which contains sequence items sorted by keys
 ```php
 assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 3, 'a' => 1));
 ```
 
-##### indexed(array $list, $by, $keepLast = true, $transform = null)
+##### indexed($sequence, $by, $keepLast = true, $transform = null)
 
-Returns indexed list of items
+Returns array which contains indexed sequence items
 
 ```$by``` is an array key or a function  
 If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
@@ -392,37 +399,30 @@ $indexedById = indexed([
 ], 'id');
 ```
 
-##### pairs(array $array, $valueKey = false)
+##### take($sequence, $N, $step = 1)
 
-Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
-```php
-assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
-```
-
-##### take(array $list, $N, $step = 1)
-
-Returns first N list items
+Returns first N sequence items
 ```php
 assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
 ```
 
-##### first(array $list)
+##### first($sequence)
 
-Returns the first list item
+Returns the first sequence item
 ```php
 assert(1 === first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
-##### drop(array $list, $N)
+##### drop($sequence, $N)
 
-Drops first N list items
+Drops first N sequence items
 ```php
 assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
 ```
 
-##### last(array $list)
+##### last($sequence)
 
-Returns the last list item
+Returns the last sequence item
 ```php
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```

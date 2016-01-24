@@ -62,37 +62,44 @@ const any = '\nspl\a\any';
 function getByKey($array, $key, $default = null)
 {
     args\expectsArrayAccess($array);
+    args\expectsArrayKey($key);
 
     return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
 }
 const getByKey = '\nspl\a\getByKey';
 
 /**
- * Adds $list2 items to the end of $list1
+ * Returns arrays containing $sequence1 items and $sequence2 items
  *
- * @param array $list1
- * @param array $list2
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
  * @return array
  */
-function extend(array $list1, array $list2)
+function extend($sequence1, $sequence2)
 {
-    return array_merge($list1, $list2);
+    args\expectsTraversable($sequence1);
+    args\expectsTraversable($sequence2, 2);
+
+    return array_merge(ds\traversableToArray($sequence1), ds\traversableToArray(($sequence2)));
 }
 const extend = '\nspl\a\extend';
 
 /**
- * Zips two or more lists
+ * Zips two or more sequences
  *
- * @param array $list1
- * @param array $list2
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
  * @return array
  */
-function zip(array $list1, array $list2)
+function zip($sequence1, $sequence2)
 {
     $lists = func_get_args();
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
+        args\expectsTraversable($lists[$j], $j + 1);
+        $lists[$j] = ds\traversableToArray($lists[$j]);
+
         if (!ds\isList($lists[$j])) {
             $lists[$j] = array_values($lists[$j]);
         }
@@ -119,21 +126,30 @@ const zip = '\nspl\a\zip';
 /**
  * Flattens multidimensional list
  *
- * @param array $list
+ * @param array|\Traversable $sequence
  * @param int|null $depth
  * @return array
  */
-function flatten(array $list, $depth = null)
+function flatten($sequence, $depth = null)
 {
+    args\expectsTraversable($sequence);
+
     if (null === $depth) {
         $result = array();
-        array_walk_recursive($list, function($a) use (&$result) { $result[] = $a; });
+        array_walk_recursive(ds\traversableToArray($sequence), function($item, $key) use (&$result) {
+            if ($item instanceof \Traversable) {
+                $result = array_merge($result, flatten(ds\traversableToArray($item)));
+            }
+            else {
+                $result[] = $item;
+            }
+        });
         return $result;
     }
 
     $result = array();
-    foreach ($list as $value) {
-        if ($depth && is_array($value)) {
+    foreach ($sequence as $value) {
+        if ($depth && (is_array($value) || $value instanceof \Traversable)) {
             foreach ($depth > 1 ? flatten($value, $depth - 1) : $value as $subValue) {
                 $result[] = $subValue;
             }
@@ -149,20 +165,21 @@ const flatten = '\nspl\a\flatten';
 
 /**
  * Returns list of (key, value) pairs
- * @param array|\Traversable $array
+ * @param array|\Traversable $sequence
  * @param bool $valueKey If true then convert array to (value, key) pairs
  * @return array
  */
-function pairs($array, $valueKey = false)
+function pairs($sequence, $valueKey = false)
 {
-    args\expectsTraversable($array);
+    args\expectsTraversable($sequence);
+    args\expectsBool($valueKey);
 
-    if (!$array) {
+    if (!$sequence) {
         return array();
     }
 
     $result = array();
-    foreach ($array as $key => $value) {
+    foreach ($sequence as $key => $value) {
         $result[] = $valueKey ? array($value, $key) : array($key, $value);
     }
 
@@ -171,17 +188,20 @@ function pairs($array, $valueKey = false)
 const pairs = '\nspl\a\pairs';
 
 /**
- * Returns sorted copy of passed array
+ * Returns array which contains sorted items the passed sequence
  *
- * @param array $array
- * @param bool $descending If true then sort array in descending order. If not boolean and $key was not passed then acts as a $key parameter
+ * @param array|\Traversable $array
+ * @param bool $descending If true then sort sequence in descending order. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted(array $array, $descending = false, callable $key = null, callable $cmp = null)
+function sorted($array, $descending = false, callable $key = null, callable $cmp = null)
 {
+    args\expectsTraversable($array);
+    args\expectsBoolOrCallable($descending);
+
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
     }
@@ -200,6 +220,7 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
         $cmp = f\compose(op\neg, $cmp);
     }
 
+    $array = ds\traversableToArray($array);
     $isList = ds\isList($array);
     uasort($array, $cmp);
 
@@ -208,14 +229,18 @@ function sorted(array $array, $descending = false, callable $key = null, callabl
 const sorted = '\nspl\a\sorted';
 
 /**
- * Returns copy of passed array sorted by keys
+ * Returns array which contains sequence items sorted by keys
  *
- * @param array $array
+ * @param array|\Traversable $array
  * @param bool $reversed
  * @return array
  */
-function keySorted(array $array, $reversed = false)
+function keySorted($array, $reversed = false)
 {
+    args\expectsTraversable($array);
+    args\expectsBool($array);
+
+    $array = ds\traversableToArray($array);
     if ($reversed) {
         krsort($array);
     }
@@ -228,22 +253,24 @@ function keySorted(array $array, $reversed = false)
 const keySorted = '\nspl\a\keySorted';
 
 /**
- * Returns indexed list of items
+ * Returns array which contains indexed sequence items
  *
- * @param array|\Traversable $list List of arrays or objects
+ * @param array|\Traversable $sequence List of arrays or objects
  * @param int|string|callable $by An array key or a function
  * @param bool $keepLast If true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
  * @param callable|null $transform A function that transforms list item after indexing
  * @return array
  */
-function indexed(array $list, $by, $keepLast = true, callable $transform = null)
+function indexed($sequence, $by, $keepLast = true, callable $transform = null)
 {
-    args\expectsTraversable($list);
+    args\expectsTraversable($sequence);
+    args\expectsArrayKeyOrCallable($by);
+    args\expectsBool($keepLast);
 
     $indexIsCallable = is_callable($by);
 
     $result = array();
-    foreach ($list as $item) {
+    foreach ($sequence as $item) {
         if ($indexIsCallable || isset($item[$by]) || array_key_exists($by, $item)) {
             $index = $indexIsCallable ? call_user_func($by, $item) : $item[$by];
 
@@ -265,23 +292,43 @@ function indexed(array $list, $by, $keepLast = true, callable $transform = null)
 const indexed = '\nspl\a\indexed';
 
 /**
- * Returns first N list items
+ * Returns first N sequence items
  *
- * @param array $list
+ * @param array|\Traversable $list
  * @param int $N
  * @param int $step
  * @return array
  */
-function take(array $list, $N, $step = 1)
+function take($list, $N, $step = 1)
 {
-    if (1 === $step) {
-        return array_values(array_slice($list, 0, $N));
-    }
+    args\expectsTraversable($list);
+    args\expectsInt($N);
+    args\expectsInt($step);
 
-    $result = array();
-    $length = min(count($list), $N * $step);
-    for ($i = 0; $i < $length; $i += $step) {
-        $result[] = $list[$i];
+    if (is_array($list)) {
+        if (1 === $step) {
+            return array_values(array_slice($list, 0, $N));
+        }
+
+        $result = array();
+        $length = min(count($list), $N * $step);
+        for ($i = 0; $i < $length; $i += $step) {
+            $result[] = $list[$i];
+        }
+    }
+    else {
+        $counter = 0;
+        $result = array();
+        $length = min(count($list), $N * $step);
+        foreach ($list as $item) {
+            if ($counter >= $length) {
+                break;
+            }
+
+            if ($counter++ % $step === 0) {
+                $result[] = $item;
+            }
+        }
     }
 
     return $result;
@@ -289,52 +336,81 @@ function take(array $list, $N, $step = 1)
 const take = '\nspl\a\take';
 
 /**
- * Returns the first list item
+ * Returns the first sequence item
  *
- * @param array $list
+ * @param array|\Traversable $sequence
  * @return array
  */
-function first(array $list)
+function first($sequence)
 {
-    if (!$list) {
+    args\expectsTraversable($sequence);
+
+    if (!$sequence) {
         throw new \InvalidArgumentException('Can not return the first item of an empty list');
     }
 
-    if (isset($list[0]) || array_key_exists(0, $list)) {
-        return $list[0];
+    if (is_array($sequence) && (isset($sequence[0]) || array_key_exists(0, $sequence))) {
+        return $sequence[0];
     }
 
-    reset($list);
-    return current($list);
+    foreach ($sequence as $item) break;
+
+    return $item;
 }
 const first = '\nspl\a\first';
 
 /**
- * Drops first N list items
+ * Drops first N sequence items
  *
- * @param array $list
+ * @param array|\Traversable $sequence
  * @param int $N
  * @return array
  */
-function drop(array $list, $N)
+function drop($sequence, $N)
 {
-    return array_slice($list, $N);
+    args\expectsTraversable($sequence);
+    args\expectsInt($N);
+
+    if (is_array($sequence)) {
+        return array_slice($sequence, $N);
+    }
+    else {
+        $counter = 0;
+        $result = array();
+        foreach ($sequence as $item) {
+            if ($counter++ < $N) {
+                continue;
+            }
+
+            $result[] = $item;
+        }
+
+        return $result;
+    }
 }
 const drop = '\nspl\a\drop';
 
 /**
- * Returns the last list item
+ * Returns the last sequence item
  *
- * @param array $list
+ * @param array|\Traversable $sequence
  * @return array
  */
-function last(array $list)
+function last($sequence)
 {
-    if (!$list) {
+    args\expectsTraversable($sequence);
+
+    if (!$sequence) {
         throw new \InvalidArgumentException('Can not return the last item of an empty list');
     }
 
-    return $list[count($list) - 1];
+    if (is_array($sequence)) {
+        return $sequence[count($sequence) - 1];
+    }
+    else {
+        foreach ($sequence as $item);
+        return $item;
+    }
 }
 const last = '\nspl\a\last';
 
@@ -348,6 +424,9 @@ const last = '\nspl\a\last';
  */
 function moveElement(array $list, $from, $to)
 {
+    args\expectsInt($from);
+    args\expectsInt($to, 3);
+
     if (!ds\isList($list)) {
         throw new \InvalidArgumentException('First argument should be a list');
     }

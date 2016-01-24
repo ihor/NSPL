@@ -162,6 +162,19 @@ function expectsArrayKeyOrCallable($arg, $atPosition = null, $otherwiseThrow = '
 }
 
 /**
+ * Checks that argument is boolean or is callable otherwise throws the corresponding exception
+ * @param mixed $arg
+ * @param int|null $atPosition If null then calculated automatically
+ * @param string|\Throwable $otherwiseThrow Exception class or exception object
+ */
+function expectsBoolOrCallable($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (!is_bool($arg) && !is_callable($arg)) {
+        _throwExpectsException($arg, 'be boolean or callable', $atPosition, $otherwiseThrow);
+    }
+}
+
+/**
  * Checks that object has the required method. Is useful when you use duck-typing instead of interfaces
  * @param object $object
  * @param string $method

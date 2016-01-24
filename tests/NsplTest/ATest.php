@@ -52,17 +52,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(all([19, 20, 21], function($v) { return $v < 18; }));
 
         $this->assertTrue(call_user_func(all, [true, true, true]));
-        $this->assertTrue(call_user_func(all, [true, 1, 'a', [1], new \StdClass()]));
-        $this->assertTrue(call_user_func(all, []));
-
-        $this->assertFalse(call_user_func(all, [true, true, false]));
-        $this->assertFalse(call_user_func(all, [true, 0, 'a', [1], new \StdClass()]));
-        $this->assertFalse(call_user_func(all, [null, true, 1, 'a', [1], new \StdClass()]));
-        $this->assertFalse(call_user_func(all, [true, 1, 'a', [], new \StdClass()]));
-        $this->assertFalse(call_user_func(all, [true, 1, '', [1], new \StdClass()]));
-
-        $this->assertTrue(call_user_func(all, [19, 20, 21], function($v) { return $v > 18; }));
-        $this->assertFalse(call_user_func(all, [19, 20, 21], function($v) { return $v < 18; }));
+        $this->assertEquals('\nspl\a\all', all);
     }
 
     public function testAny()
@@ -83,19 +73,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(any([19, 20, 21], function($v) { return $v === 18; }));
 
         $this->assertTrue(call_user_func(any, [true, false, false]));
-        $this->assertTrue(call_user_func(any, [false, 1, false]));
-        $this->assertTrue(call_user_func(any, [false, false, [1]]));
-        $this->assertTrue(call_user_func(any, ['a', false, false]));
-        $this->assertTrue(call_user_func(any, [false, new \StdClass(), false]));
-
-        $this->assertFalse(call_user_func(any, []));
-        $this->assertFalse(call_user_func(any, [null, false, false]));
-        $this->assertFalse(call_user_func(any, [null, [], false]));
-        $this->assertFalse(call_user_func(any, [null, false, '']));
-        $this->assertFalse(call_user_func(any, [0, false, false]));
-
-        $this->assertTrue(call_user_func(any, [18, 19, 20], function($v) { return $v === 18; }));
-        $this->assertFalse(call_user_func(any, [19, 20, 21], function($v) { return $v === 18; }));
+        $this->assertEquals('\nspl\a\any', any);
     }
 
     public function testGetByKey()
@@ -104,25 +82,27 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(-1, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
 
         $this->assertEquals(2, call_user_func(getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
-        $this->assertEquals(-1, call_user_func(getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+        $this->assertEquals('\nspl\a\getByKey', getByKey);
     }
 
     public function testExtend()
     {
         $this->assertEquals([1, 2, 3, 4, 5, 6], extend([1, 2, 3], [4, 5, 6]));
         $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], extend(new \ArrayIterator([1, 2, 3]), [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], new \ArrayIterator([3, 4, 5])));
         $this->assertEquals([4, 5, 6], extend([], [4, 5, 6]));
         $this->assertEquals([1, 2, 3], extend([1, 2, 3], []));
 
         $this->assertEquals([1, 2, 3, 4, 5, 6], call_user_func(extend, [1, 2, 3], [4, 5, 6]));
-        $this->assertEquals([1, 2, 3, 3, 4, 5], call_user_func(extend, [1, 2, 3], [3, 4, 5]));
-        $this->assertEquals([4, 5, 6], call_user_func(extend, [], [4, 5, 6]));
-        $this->assertEquals([1, 2, 3], call_user_func(extend, [1, 2, 3], []));
+        $this->assertEquals('\nspl\a\extend', extend);
     }
 
     public function testZip()
     {
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], zip([1, 2, 3], ['a', 'b', 'c']));
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], zip(new \ArrayIterator([1, 2, 3]), ['a', 'b', 'c']));
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], zip([1, 2, 3], new \ArrayIterator(['a', 'b', 'c'])));
         $this->assertEquals([[1, 'a'], [2, 'b']], zip([1, 2, 3], ['a', 'b']));
         $this->assertEquals([], zip([], ['a', 'b', 'c']));
         $this->assertEquals([], zip([1, 2, 3], []));
@@ -133,19 +113,13 @@ class ATest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], call_user_func(zip, [1, 2, 3], ['a', 'b', 'c']));
-        $this->assertEquals([[1, 'a'], [2, 'b']], call_user_func(zip, [1, 2, 3], ['a', 'b']));
-        $this->assertEquals([], call_user_func(zip, [], ['a', 'b', 'c']));
-        $this->assertEquals([], call_user_func(zip, [1, 2, 3], []));
-
-        $this->assertEquals(
-            [[1, 'a', ['x']], [2, 'b', ['y']], [3, 'c', ['z']]],
-            call_user_func(zip, [1, 2, 3], ['a', 'b', 'c'], [['x'], ['y'], ['z']])
-        );
+        $this->assertEquals('\nspl\a\zip', zip);
     }
 
     public function testFlatten()
     {
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], flatten(new \ArrayIterator([[1, 2, 3], new \ArrayIterator([4, 5, 6]), [7, 8, 9]])));
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
         $this->assertEquals([1, [2, [3]], [[4, 5, 6]], 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 1));
         $this->assertEquals([1, 2, [3], [4, 5, 6], 7, 8, 9], flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
@@ -153,11 +127,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], flatten([]));
 
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(flatten, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
-        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
-        $this->assertEquals([1, [2, [3]], [[4, 5, 6]], 7, 8, 9], call_user_func(flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 1));
-        $this->assertEquals([1, 2, [3], [4, 5, 6], 7, 8, 9], call_user_func(flatten, [[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
-        $this->assertEquals([1], call_user_func(flatten, [1]));
-        $this->assertEquals([], call_user_func(flatten, []));
+        $this->assertEquals('\nspl\a\flatten', flatten);
     }
 
     public function testPairs()
@@ -174,6 +144,7 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testSorted()
     {
         $this->assertEquals([1, 2, 3], sorted([2, 3, 1]));
+        $this->assertEquals([1, 2, 3], sorted(new \ArrayIterator([2, 3, 1])));
 
         $this->assertEquals(
             array('carrot' => 'c', 'banana' => 'b', 'apple' => 'a'),
@@ -209,48 +180,17 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([3, 1, 2], $list);
 
         $this->assertEquals([1, 2, 3], call_user_func(sorted, [2, 3, 1]));
-
-        $this->assertEquals(
-            array('carrot' => 'c', 'banana' => 'b', 'apple' => 'a'),
-            call_user_func(sorted, array('carrot' => 'c', 'apple' => 'a', 'banana' => 'b'), true)
-        );
-
-        $this->assertEquals(
-            ['forty two', 'answer', 'the', 'is'],
-            call_user_func(sorted, ['the', 'answer', 'is', 'forty two'], true, 'strlen')
-        );
-
-        $this->assertEquals(
-            ['is', 'the', 'answer', 'forty two'],
-            call_user_func(sorted, ['the', 'answer', 'is', 'forty two'], 'strlen')
-        );
-
-        $isFruit = function($v) { return in_array($v, ['apple', 'orange']); };
-        $this->assertEquals(
-            ['apple', 'orange', 'cat'],
-            call_user_func(sorted, ['orange', 'cat', 'apple'], false, null, function($v1, $v2) use ($isFruit) {
-                if (!$isFruit($v1)) return 1;
-                if (!$isFruit($v2)) return -1;
-                return $v1 > $v2;
-            })
-        );
-
-        $this->assertEquals([], call_user_func(sorted, []));
-        $this->assertEquals([1], call_user_func(sorted, [1]));
-        $this->assertEquals(array('b' => null, 'a' => null), call_user_func(sorted, array('b' => null, 'a' => null)));
-
-        $list = [3, 1, 2];
-        $this->assertEquals([1, 2, 3], call_user_func(sorted, $list));
-        $this->assertEquals([3, 1, 2], $list);
+        $this->assertEquals('\nspl\a\sorted', sorted);
     }
 
     public function keySorted()
     {
         $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), keySorted(array('b' => 2, 'c' => 3, 'a' => 1)));
+        $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), keySorted(new \ArrayIterator(array('b' => 2, 'c' => 3, 'a' => 1))));
         $this->assertEquals(array('c' => 3, 'b' => 2, 'a' => 1), keySorted(array('b' => 2, 'c' => 3, 'a' => 1), true));
 
         $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), call_user_func(keySorted, array('b' => 2, 'c' => 3, 'a' => 1)));
-        $this->assertEquals(array('c' => 3, 'b' => 2, 'a' => 1), call_user_func(keySorted, array('b' => 2, 'c' => 3, 'a' => 1), true));
+        $this->assertEquals('\nspl\a\keySorted', keySorted);
     }
 
     public function testIndexed()
@@ -266,6 +206,12 @@ class ATest extends \PHPUnit_Framework_TestCase
             10 => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
             11 => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
         ), indexed($animals, 'id'));
+
+        $this->assertEquals(array(
+            9 => array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
+            10 => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
+            11 => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
+        ), indexed(new \ArrayIterator($animals), 'id'));
 
         $this->assertEquals(array(
             'cat' => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
@@ -302,60 +248,33 @@ class ATest extends \PHPUnit_Framework_TestCase
             11 => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
         ), call_user_func(indexed, $animals, 'id'));
 
-        $this->assertEquals(array(
-            'cat' => array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
-            'dog' => array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
-        ), call_user_func(indexed, $animals, 'type'));
-
-        $this->assertEquals(array(
-            'cat' => [
-                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
-                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
-            ],
-            'dog' => [
-                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
-            ],
-        ), call_user_func(indexed, $animals, 'type', false));
-
-        $this->assertEquals(array(
-            3 => [
-                array('id' => 9, 'type' => 'cat', 'name' => 'Snowball'),
-                array('id' => 10, 'type' => 'dog', 'name' => 'Santa\'s Little Helper'),
-                array('id' => 11, 'type' => 'cat', 'name' => 'Fluffy'),
-            ],
-        ), call_user_func(indexed, $animals, function($animal) { return strlen($animal['type']); }, false));
-
-        $this->assertEquals(array(
-            'Snowball' => 'cat',
-            'Santa\'s Little Helper' => 'dog',
-            'Fluffy' => 'cat',
-        ), call_user_func(indexed, $animals, 'name', true, function($animal) { return $animal['type']; }));
+        $this->assertEquals('\nspl\a\indexed', indexed);
     }
 
     public function testTake()
     {
         $this->assertEquals([1, 2, 3], take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3));
+        $this->assertEquals([1, 2, 3], take(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 3));
         $this->assertEquals([1, 3, 5], take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
+        $this->assertEquals([1, 3, 5], take(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 3, 2));
         $this->assertEquals([1, 4, 7], take([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, 3));
         $this->assertEquals([], take([1, 2, 3, 4, 5, 6, 7, 8, 9], 0));
         $this->assertEquals([], take([], 3));
         $this->assertEquals([], take([], 3, 2));
 
         $this->assertEquals([1, 2, 3], call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3));
-        $this->assertEquals([1, 3, 5], call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
-        $this->assertEquals([1, 4, 7], call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 5, 3));
-        $this->assertEquals([], call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 0));
-        $this->assertEquals([], call_user_func(take, [], 3));
-        $this->assertEquals([], call_user_func(take, [], 3, 2));
+        $this->assertEquals('\nspl\a\take', take);
     }
 
     public function testFirst()
     {
         $this->assertEquals(1, first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals(1, first(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals(1, first(array('hello' => 1, 'world' => 2)));
         $this->assertEquals(1, first([1]));
 
         $this->assertEquals(1, call_user_func(first, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
-        $this->assertEquals(1, call_user_func(first, [1]));
+        $this->assertEquals('\nspl\a\first', first);
     }
 
     /**
@@ -369,20 +288,21 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testDrop()
     {
         $this->assertEquals([7, 8, 9], drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
+        $this->assertEquals([7, 8, 9], drop(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 6));
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 0));
         $this->assertEquals([], drop([], 3));
 
         $this->assertEquals([7, 8, 9], call_user_func(drop, [1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
-        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], call_user_func(drop, [1, 2, 3, 4, 5, 6, 7, 8, 9], 0));
-        $this->assertEquals([], call_user_func(drop, [], 3));
+        $this->assertEquals('\nspl\a\drop', drop);
     }
 
     public function testLast()
     {
         $this->assertEquals(9, last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals(9, last(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
 
         $this->assertEquals(9, call_user_func(last, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
-        $this->assertEquals(9, call_user_func(last, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals('\nspl\a\last', last);
     }
 
     /**
@@ -400,8 +320,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([0, 1, 2], moveElement([0, 1, 2], 1, 1));
 
         $this->assertEquals([2, 0, 1], call_user_func(moveElement, [0, 1, 2], 2, 0));
-        $this->assertEquals([0, 2, 1], call_user_func(moveElement, [0, 1, 2], 1, 2));
-        $this->assertEquals([0, 1, 2], call_user_func(moveElement, [0, 1, 2], 1, 1));
+        $this->assertEquals('\nspl\a\moveElement', moveElement);
     }
 
     /**

@@ -13,6 +13,7 @@ use function \nspl\args\expectsTraversable;
 use function \nspl\args\expectsArrayAccess;
 use function \nspl\args\expectsArrayAccessOrString;
 use function \nspl\args\expectsArrayKeyOrCallable;
+use function \nspl\args\expectsBoolOrCallable;
 use function \nspl\args\expectsWithMethod;
 use function \nspl\args\expectsWithMethods;
 use function \nspl\args\expectsWithKeys;
@@ -191,20 +192,37 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     public function testExpectsArrayKeyOrCallable_Positive()
     {
-        function expectsArrayOrCallablePositiveTest($arg1) { expectsArrayKeyOrCallable($arg1); }
-        $this->assertNull(expectsArrayOrCallablePositiveTest(42));
-        $this->assertNull(expectsArrayOrCallablePositiveTest('answer'));
-        $this->assertNull(expectsArrayOrCallablePositiveTest(function() { return 'answer 42'; }));
+        function expectsArrayKeyOrCallablePositiveTest($arg1) { expectsArrayKeyOrCallable($arg1); }
+        $this->assertNull(expectsArrayKeyOrCallablePositiveTest(42));
+        $this->assertNull(expectsArrayKeyOrCallablePositiveTest('answer'));
+        $this->assertNull(expectsArrayKeyOrCallablePositiveTest(function() { return 'answer 42'; }));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsArrayOrCallableNegativeTest() must be an integer or a string or a callable, double given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsArrayKeyOrCallableNegativeTest() must be an integer or a string or a callable, double given
      */
     public function testExpectsArrayKeyOrCallable_Negative()
     {
-        function expectsArrayOrCallableNegativeTest($arg1) { expectsArrayKeyOrCallable($arg1); }
-        $this->assertNull(expectsArrayOrCallableNegativeTest(2.0));
+        function expectsArrayKeyOrCallableNegativeTest($arg1) { expectsArrayKeyOrCallable($arg1); }
+        $this->assertNull(expectsArrayKeyOrCallableNegativeTest(2.0));
+    }
+
+    public function testExpectsBoolOrCallable_Positive()
+    {
+        function expectsBoolOrCallablePositiveTest($arg1) { expectsBoolOrCallable($arg1); }
+        $this->assertNull(expectsBoolOrCallablePositiveTest(true));
+        $this->assertNull(expectsBoolOrCallablePositiveTest(function() { return 'answer 42'; }));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsBoolOrCallableNegativeTest() must be boolean or callable, double given
+     */
+    public function testExpectsBoolOrCallable_Negative()
+    {
+        function expectsBoolOrCallableNegativeTest($arg1) { expectsBoolOrCallable($arg1); }
+        $this->assertNull(expectsBoolOrCallableNegativeTest(2.0));
     }
 
     public function testExpectWithMethod_Positive()

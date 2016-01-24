@@ -2,6 +2,8 @@
 
 namespace nspl\op;
 
+use \nspl\args;
+
 function sum($a, $b) { return $a + $b; };
 const sum = '\nspl\op\sum';
 
@@ -112,6 +114,8 @@ const object = '\nspl\op\object';
  */
 function itemGetter($key)
 {
+    args\expectsArrayKey($key);
+
     if (func_num_args() > 1) {
         $keys = func_get_args();
         return function($array) use ($keys) {
@@ -131,6 +135,8 @@ function itemGetter($key)
  */
 function propertyGetter($property)
 {
+    args\expectsString($property);
+
     if (func_num_args() > 1) {
         $properties = func_get_args();
         return function($object) use ($properties) {
@@ -156,6 +162,8 @@ function propertyGetter($property)
  */
 function methodCaller($method, array $args = array())
 {
+    args\expectsString($method);
+
     return function($object) use ($method, $args) {
         return call_user_func_array(array($object, $method), $args);
     };

@@ -2,20 +2,28 @@
 
 namespace nspl\rnd;
 
+use \nspl\ds;
+use \nspl\args;
+
 /**
  * Returns a k length list of unique elements chosen from the population sequence
  *
- * @param array $population
+ * @param array|\Traversable $population
  * @param int $length
  * @param bool $preserveKeys
  * @return array
  */
-function sample(array $population, $length, $preserveKeys = false)
+function sample($population, $length, $preserveKeys = false)
 {
+    args\expectsTraversable($population);
+    args\expectsInt($length);
+    args\expectsBool($preserveKeys);
+
     if (!$length) {
         return array();
     }
 
+    $population = ds\traversableToArray($population);
     if ($length > count($population)) {
         throw new \InvalidArgumentException('Sample is larger than population');
     }
@@ -32,14 +40,17 @@ function sample(array $population, $length, $preserveKeys = false)
 /**
  * Returns a random element from a non-empty sequence
  *
- * @param array $sequence
+ * @param array|\Traversable $sequence
  * @return mixed
  */
-function choice(array $sequence)
+function choice($sequence)
 {
     if (!$sequence) {
         throw new \InvalidArgumentException('Sequence is empty');
     }
+
+    args\expectsTraversable($sequence);
+    $sequence = ds\traversableToArray($sequence);
 
     return $sequence[array_rand($sequence)];
 }

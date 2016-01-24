@@ -14,8 +14,13 @@ class RndTest extends \PHPUnit_Framework_TestCase
     public function testSample()
     {
         $list = ['a', 'b', 'c', 'd', 'e'];
-
         $this->assertTrue(isList(sample($list, 3)));
+
+        $iterator = new \ArrayIterator($list);
+        $this->assertTrue(isList(sample($iterator, 3)));
+        foreach (sample($iterator, 3) as $item) {
+            $this->assertTrue(in_array($item, $list));
+        }
 
         $sample = sample($list, 3, true);
         foreach ($sample as $k => $element) {
@@ -48,6 +53,9 @@ class RndTest extends \PHPUnit_Framework_TestCase
     public function testChoice()
     {
         $list = ['a', 'b', 'c', 'd', 'e'];
+
+        $iterator = new \ArrayIterator($list);
+        $this->assertTrue(in_array(choice($iterator), $list));
 
         $appearances = array_fill_keys($list, 0);
         for ($i = 0; $i < 50000; ++$i) {

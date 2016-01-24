@@ -191,23 +191,23 @@ const pairs = '\nspl\a\pairs';
  * Returns array which contains sorted items the passed sequence
  *
  * @param array|\Traversable $array
- * @param bool $descending If true then sort sequence in descending order. If not boolean and $key was not passed then acts as a $key parameter
+ * @param bool $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted($array, $descending = false, callable $key = null, callable $cmp = null)
+function sorted($array, $reversed = false, callable $key = null, callable $cmp = null)
 {
     args\expectsTraversable($array);
-    args\expectsBoolOrCallable($descending);
+    args\expectsBoolOrCallable($reversed);
 
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
     }
 
-    if (!is_bool($descending) && !$key) {
-        $key = $descending;
+    if (!is_bool($reversed) && !$key) {
+        $key = $reversed;
     }
 
     if ($key) {
@@ -216,7 +216,7 @@ function sorted($array, $descending = false, callable $key = null, callable $cmp
         };
     }
 
-    if (is_bool($descending) && $descending) {
+    if (is_bool($reversed) && $reversed) {
         $cmp = f\compose(op\neg, $cmp);
     }
 

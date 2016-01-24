@@ -357,11 +357,11 @@ Returns list of (key, value) pairs. If ```$valueKey``` is true then convert arra
 assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
 ```
 
-##### sorted($sequence, $descending = false, $key = null, $cmp = null)
+##### sorted($sequence, $reversed = false, $key = null, $cmp = null)
 
 Returns array which contains sorted items the passed sequence
 
-```$descending``` if true then sort sequence in descending order. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
+If ```$reversed``` is true then return reversed sorted sequence. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
 ```$key``` is a function of one argument that is used to extract a comparison key from each element  
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php

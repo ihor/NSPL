@@ -361,7 +361,7 @@ assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello
 
 Returns array which contains sorted items the passed sequence
 
-If ```$reversed``` is true then return reversed sorted sequence. If not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
+If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
 ```$key``` is a function of one argument that is used to extract a comparison key from each element  
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php

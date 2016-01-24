@@ -502,11 +502,11 @@ Check ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/ex
 Helps to pick random elements from sequences of data
 
 
-##### choice(array $sequence)
+##### choice($sequence)
 
 Returns a random element from a non-empty sequence
 
-##### weightedChoice(array $weightPairs)
+##### weightedChoice( $weightPairs)
 
 Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 
@@ -522,7 +522,7 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 )));
 ```
 
-##### sample(array $population, $length, $preserveKeys = false)
+##### sample($population, $length, $preserveKeys = false)
 
 Returns a k length list of unique elements chosen from the population sequence
 

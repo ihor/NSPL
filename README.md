@@ -540,7 +540,6 @@ Checks that argument has the required type (or types) otherwise throws the corre
 If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function  
 ```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be exception class or exception object  
 
-```nspl\args``` provides type checking callbacks for all PHP types (see the table below).
 ```php
 use const \nspl\args\int;
 use const \nspl\args\string;

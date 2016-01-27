@@ -222,7 +222,7 @@ $incListItems = partial(map, function($v) { return $v + 1; });
 $filterNumbers = partial(filter, 'is_numeric');
 ```
 
-Check ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/f.php).
+Check more ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/f.php).
 
 
 ## nspl\op
@@ -297,7 +297,7 @@ Returns a function that returns method result for a given object on predefined a
 $userIds = map(methodCaller('getId'), $users);
 ```
 
-Check ```\nspl\op``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/op.php).
+Check more ```\nspl\op``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/op.php).
 
 ## nspl\a
 
@@ -442,7 +442,7 @@ use const \nspl\a\first;
 assert([1, 2, 3] === map(first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 ```
 
-Check ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).
+Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).
 
 
 ## nspl\ds
@@ -495,7 +495,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 
 Returns new DefaultArray
 
-Check ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/ds.php).
+Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/ds.php).
 
 ## nspl\rnd
 
@@ -526,7 +526,7 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 
 Returns a k length list of unique elements chosen from the population sequence
 
-Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
+Check more ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
 
 ## nspl\args
 
@@ -666,6 +666,8 @@ Call Stack:
     0.0002     230704   1. {main}() /path/to/example.php:0
     0.0025     561328   2. calculateAge() /path/to/example.php:35
 ```
+
+Check more ```\nspl\args``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/args.php).
 
 Roadmap
 =======

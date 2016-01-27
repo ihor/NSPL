@@ -5,13 +5,14 @@ require_once __DIR__ . '/../autoload.php';
 use const \nspl\args\int;
 use const \nspl\args\numeric;
 use const \nspl\args\string;
+use const \nspl\args\notEmpty;
 use const \nspl\args\arrayAccess;
 use function \nspl\args\withKeys;
 use function \nspl\args\withMethod;
 use function \nspl\args\expects;
 use function \nspl\args\expectsAll;
 use function \nspl\args\expectsOptional;
-use function \nspl\args\expectsArg;
+use function \nspl\args\expectsToBe;
 
 
 // 1. Specify scalar parameter type
@@ -31,7 +32,7 @@ catch (\InvalidArgumentException $e) {
 // 2. Specify several types
 function first($sequence)
 {
-    expects([arrayAccess, string], $sequence);
+    expects([notEmpty, arrayAccess, string], $sequence);
     return $sequence[0];
 }
 
@@ -117,7 +118,7 @@ catch (\InvalidArgumentException $e) {
 // 8. Specify with custom checking function
 function calculateAge($yearOfBirth)
 {
-    expects($yearOfBirth, 'to be an integer > 1900 and <= current year', function($arg) {
+    expectsToBe($yearOfBirth, 'to be an integer > 1900 and <= current year', function($arg) {
         return is_int($arg) && $arg > 1900 && $arg <= (int) date('Y');
     });
 

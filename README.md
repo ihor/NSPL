@@ -532,90 +532,124 @@ Check ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/e
 
 Provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
 
-```nspl\args``` contains the following functions which take the same parameters:  
-##### expects*($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+##### expects($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that value is boolean otherwise throws the corresponding exception  
+Checks that argument has the required type (or types) otherwise throws the corresponding exception  
 
+```$type``` is a class name(s) or callable(s) which checks that the argument has the corresponding type(s)  
 If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function  
 ```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be exception class or exception object  
 
-- ```expectsNotEmpty()``` - checks that argument is not empty otherwise throws the corresponding exception
-- ```expectsBool()``` - checks that argument is boolean otherwise throws the corresponding exception
-- ```expectsInt()``` - checks that argument is an integer otherwise throws the corresponding exception
-- ```expectsFloat()``` - checks that argument is a float otherwise throws the corresponding exception
-- ```expectsNumeric()``` - checks that argument is numeric otherwise throws the corresponding exception
-- ```expectsString()``` - checks that argument is a string otherwise throws the corresponding exception
-- ```expectsArrayKey()``` - checks that argument can be an array key otherwise throws the corresponding exception
-- ```expectsTraversable()``` - checks that argument is an array or traversable otherwise throws the corresponding exception
-- ```expectsArrayAccess()``` - checks that argument is an array or implements array access otherwise throws the corresponding exception
-- ```expectsArrayAccessOrString()``` - checks that argument implements array access or is a string otherwise throws the corresponding exception
-- ```expectsCallable()``` - checks that argument is callable otherwise throws the corresponding exception
-- ```expectsArrayKeyOrCallable()``` - checks that argument can be an array key or is callable otherwise throws the corresponding exception
-
+```nspl\args``` provides type checking callbacks for all PHP types (see the table below).
 ```php
-use function \nspl\args\expectsNumeric;
+use const \nspl\args\int;
+use const \nspl\args\string;
+use const \nspl\args\arrayAccess;
+use function \nspl\args\expects;
 
-function sqr($x)
+function nth($sequence, $n)
 {
-    expectsNumeric($x);
-    return $x * $x;
+    expects([arrayAccess, string], $sequence);
+    expects(int, $n);
+
+    return $sequence[$n];
 }
 
-sqr('hello world');
+nth('hello world', 'blah');
 ```
 
 Outputs:
 ```
-InvalidArgumentException: Argument 1 passed to sqr() must be numeric, string given in /path/to/example.php on line 17
+InvalidArgumentException: Argument 2 passed to nth() must be integer, string 'blah' given in /path/to/example.php on line 17
 
 Call Stack:
     0.0002     230304   1. {main}() /path/to/example.php:0
     0.0023     556800   2. sqr() /path/to/example.php:17
 ```
 
-```nspl\args``` also contains the following functions which have similar signature:
+##### expectsAll($type, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
 
-##### expectsWithMethod($object, $method, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-
-Checks that object has the required method. Is useful when you use duck-typing instead of interfaces
-
-##### expectsWithMethods($object, array $methods, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-
-Checks that object has the required methods. Is useful when you use duck-typing instead of interfaces
-
-##### expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-
-Checks that array has the required keys
+Checks that arguments have the required type (or types) otherwise throws the corresponding exception  
 
 ```php
-use function \nspl\args\expectsWithMethods;
+use const \nspl\args\numeric;
+use function \nspl\args\expects;
+
+function sum($x, $y)
+{
+    expectsAll(numeric, [$x, $y]);
+
+    return $x + $y;
+}
+```
+
+##### expectsOptional($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+
+Checks that argument has the required type (or types) or is null otherwise throws the corresponding exception  
+
+```php
+use const \nspl\args\int;
+use const \nspl\args\string;
+use function \nspl\args\expectsNumeric;
+
+function splitBy($string, $separator = ' ', $limit = null)
+{
+    expectsAll(string, [$string, $separator]);
+    expectsOptional(int, $string);
+
+    return explode($separator, $string, $limit);
+}
+```
+
+```nspl\args``` provides the following type callbacks:
+
+Callback                            | Code
+------------------------------------|-----------------------------------------------------------------------------------
+notEmpty                            | (bool) $arg
+bool                                | is_bool($arg)
+int                                 | is_int($arg)
+float                               | is_float($arg)
+numeric                             | is_numeric($arg)
+string                              | is_string($arg)
+callable_                           | is_callable($arg)
+arrayKey                            | is_int($arg) &#124;&#124; is_string($arg)
+traversable                         | is_array($arg) &#124;&#124; $arg instanceof \Traversable
+arrayAccess                         | is_array($arg) &#124;&#124; $arg instanceof \ArrayAccess
+hasKey($key)                        | is_array($arg) && (isset($arg[$key)) &#124;&#124; array_key_exists($key, $arg))
+hasKeys($key1, ..., $keyN)          | is_array($arg) && (isset($arg[$key1)) &#124;&#124; array_key_exists($key1, $arg)) && ... && (isset($arg[$keyN)) &#124;&#124; array_key_exists($keyN, $arg))
+hasMethod($method)                  | is_object($arg) && method_exists($arg, $method)
+hasMethods($method1, ..., $methodN) | is_object($arg) && method_exists($arg, $method1) && ... && method_exists($arg, $methodN)
+ 
+
+```php
+use function \nspl\args\expects;
+use function \nspl\args\withMethods;
 
 class Service
 {
     // ...
     public function setCache($cache)
     {
-        expectsWithMethods($cache, ['set', 'get']);
+        expects(withMethods('set', 'get'), $cache);
         $this->cache = $cache;
     }
     // ....
 }
 ```
 
-##### expects($arg, $hasTo, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+##### expectsToBe($arg, $toBe, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
 Checks that argument satisfies requirements otherwise throws the corresponding exception  
 
-```$hasTo``` is a message which tells what the argument is expected to be. It will be used in the exceptions if the argument is invalid and also provides description for other developers  
+```$toBe``` is a message which tells what the argument is expected to be. It will be used in the exceptions if the argument is invalid and also provides description for other developers  
 ```$satisfy``` is a function which returns true if argument satisfies the requirements otherwise it returns false  
 ```php
-use function \nspl\args\expects;
+use function \nspl\args\expectsToBe;
 
 function calculateAge($yearOfBirth)
 {
-    expects($yearOfBirth, 'to be an integer > 1900 and < current year', function($arg) {
-        return is_int($arg) && $arg > 1900 && $arg < (int) date('Y');
+    expectsToBe($yearOfBirth, 'an integer > 1900 and <= current year', function($arg) {
+        return is_int($arg) && $arg > 1900 && $arg <= (int) date('Y');
     });
 
     return (int) date('Y') - $yearOfBirth;
@@ -626,7 +660,7 @@ $age = calculateAge(1800);
 
 Outputs:
 ```
-InvalidArgumentException: Argument 1 passed to calculateAge() has to be an integer > 1900 and < current year, 1800 given in /path/to/example.php on line 35
+InvalidArgumentException: Argument 1 passed to calculateAge() has to be an integer > 1900 and < current year, integer 1800 given in /path/to/example.php on line 35
 
 Call Stack:
     0.0002     230704   1. {main}() /path/to/example.php:0

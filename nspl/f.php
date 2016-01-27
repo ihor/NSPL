@@ -15,7 +15,7 @@ use nspl\args;
  */
 function map(callable $function, $sequence)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
     return array_map($function, ds\traversableToArray($sequence));
 }
 const map = '\nspl\f\map';
@@ -31,7 +31,7 @@ const map = '\nspl\f\map';
  */
 function reduce(callable $function, $sequence, $initial = 0)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
     return array_reduce(ds\traversableToArray($sequence), $function, $initial);
 }
 const reduce = '\nspl\f\reduce';
@@ -45,7 +45,7 @@ const reduce = '\nspl\f\reduce';
  */
 function filter(callable $predicate, $sequence)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
 
     $sequence = ds\traversableToArray($sequence);
     $isList = ds\isList($sequence);

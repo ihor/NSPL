@@ -114,7 +114,7 @@ const object = '\nspl\op\object';
  */
 function itemGetter($key)
 {
-    args\expectsArrayKey($key);
+    args\expects(args\arrayKey, $key);
 
     if (func_num_args() > 1) {
         $keys = func_get_args();
@@ -135,7 +135,7 @@ function itemGetter($key)
  */
 function propertyGetter($property)
 {
-    args\expectsString($property);
+    args\expects(args\string, $property);
 
     if (func_num_args() > 1) {
         $properties = func_get_args();
@@ -162,7 +162,7 @@ function propertyGetter($property)
  */
 function methodCaller($method, array $args = array())
 {
-    args\expectsString($method);
+    args\expects(args\string, $method);
 
     return function($object) use ($method, $args) {
         return call_user_func_array(array($object, $method), $args);

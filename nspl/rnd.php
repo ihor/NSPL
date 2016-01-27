@@ -15,9 +15,9 @@ use \nspl\args;
  */
 function sample($population, $length, $preserveKeys = false)
 {
-    args\expectsTraversable($population);
-    args\expectsInt($length);
-    args\expectsBool($preserveKeys);
+    args\expects(args\traversable, $population);
+    args\expects(args\int, $length);
+    args\expects(args\bool, $preserveKeys);
 
     if (!$length) {
         return array();
@@ -49,7 +49,7 @@ function choice($sequence)
         throw new \InvalidArgumentException('Sequence is empty');
     }
 
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
     $sequence = ds\traversableToArray($sequence);
 
     return $sequence[array_rand($sequence)];

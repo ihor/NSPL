@@ -17,7 +17,7 @@ use nspl\args;
  */
 function all($sequence, callable $predicate = null)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
 
     foreach ($sequence as $value) {
         if ($predicate && !call_user_func($predicate, $value) || !$predicate && !$value) {
@@ -39,7 +39,7 @@ const all = '\nspl\a\all';
  */
 function any($sequence, callable $predicate = null)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
 
     foreach ($sequence as $value) {
         if ($predicate && call_user_func($predicate, $value) || !$predicate && $value) {
@@ -61,8 +61,8 @@ const any = '\nspl\a\any';
  */
 function getByKey($array, $key, $default = null)
 {
-    args\expectsArrayAccess($array);
-    args\expectsArrayKey($key);
+    args\expects(args\arrayAccess, $array);
+    args\expects(args\arrayKey, $key);
 
     return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
 }
@@ -77,8 +77,8 @@ const getByKey = '\nspl\a\getByKey';
  */
 function extend($sequence1, $sequence2)
 {
-    args\expectsTraversable($sequence1);
-    args\expectsTraversable($sequence2, 2);
+    args\expects(args\traversable, $sequence1);
+    args\expects(args\traversable, $sequence2, 2);
 
     return array_merge(ds\traversableToArray($sequence1), ds\traversableToArray(($sequence2)));
 }
@@ -97,7 +97,7 @@ function zip($sequence1, $sequence2)
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expectsTraversable($lists[$j], $j + 1);
+        args\expects(args\traversable, $lists[$j], $j + 1);
         $lists[$j] = ds\traversableToArray($lists[$j]);
 
         if (!ds\isList($lists[$j])) {
@@ -132,7 +132,8 @@ const zip = '\nspl\a\zip';
  */
 function flatten($sequence, $depth = null)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
+    args\expectsOptional(args\int, $depth);
 
     if (null === $depth) {
         $result = array();
@@ -171,8 +172,8 @@ const flatten = '\nspl\a\flatten';
  */
 function pairs($sequence, $valueKey = false)
 {
-    args\expectsTraversable($sequence);
-    args\expectsBool($valueKey);
+    args\expects(args\traversable, $sequence);
+    args\expects(args\bool, $valueKey);
 
     if (!$sequence) {
         return array();
@@ -199,8 +200,8 @@ const pairs = '\nspl\a\pairs';
  */
 function sorted($array, $reversed = false, callable $key = null, callable $cmp = null)
 {
-    args\expectsTraversable($array);
-    args\expectsBoolOrCallable($reversed);
+    args\expects(args\traversable, $array);
+    args\expects([args\bool, args\callable_], $reversed);
 
     if (!$cmp) {
         $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
@@ -237,8 +238,8 @@ const sorted = '\nspl\a\sorted';
  */
 function keySorted($array, $reversed = false)
 {
-    args\expectsTraversable($array);
-    args\expectsBool($array);
+    args\expects(args\traversable, $array);
+    args\expects(args\bool, $array);
 
     $array = ds\traversableToArray($array);
     if ($reversed) {
@@ -263,9 +264,9 @@ const keySorted = '\nspl\a\keySorted';
  */
 function indexed($sequence, $by, $keepLast = true, callable $transform = null)
 {
-    args\expectsTraversable($sequence);
-    args\expectsArrayKeyOrCallable($by);
-    args\expectsBool($keepLast);
+    args\expects(args\traversable, $sequence);
+    args\expects([args\arrayKey, args\callable_], $by);
+    args\expects(args\bool, $keepLast);
 
     $indexIsCallable = is_callable($by);
 
@@ -301,9 +302,9 @@ const indexed = '\nspl\a\indexed';
  */
 function take($list, $N, $step = 1)
 {
-    args\expectsTraversable($list);
-    args\expectsInt($N);
-    args\expectsInt($step);
+    args\expects(args\traversable, $list);
+    args\expects(args\int, $N);
+    args\expects(args\int, $step, 3);
 
     if (is_array($list)) {
         if (1 === $step) {
@@ -343,14 +344,10 @@ const take = '\nspl\a\take';
  */
 function first($sequence)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
 
     if (!$sequence) {
         throw new \InvalidArgumentException('Can not return the first item of an empty list');
-    }
-
-    if (is_array($sequence) && (isset($sequence[0]) || array_key_exists(0, $sequence))) {
-        return $sequence[0];
     }
 
     foreach ($sequence as $item) break;
@@ -368,8 +365,8 @@ const first = '\nspl\a\first';
  */
 function drop($sequence, $N)
 {
-    args\expectsTraversable($sequence);
-    args\expectsInt($N);
+    args\expects(args\traversable, $sequence);
+    args\expects(args\int, $N);
 
     if (is_array($sequence)) {
         return array_slice($sequence, $N);
@@ -398,7 +395,7 @@ const drop = '\nspl\a\drop';
  */
 function last($sequence)
 {
-    args\expectsTraversable($sequence);
+    args\expects(args\traversable, $sequence);
 
     if (!$sequence) {
         throw new \InvalidArgumentException('Can not return the last item of an empty list');
@@ -424,8 +421,8 @@ const last = '\nspl\a\last';
  */
 function moveElement(array $list, $from, $to)
 {
-    args\expectsInt($from);
-    args\expectsInt($to, 3);
+    args\expects(args\int, $from);
+    args\expects(args\int, $to, 3);
 
     if (!ds\isList($list)) {
         throw new \InvalidArgumentException('First argument should be a list');

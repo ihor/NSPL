@@ -32,7 +32,7 @@ function isList($var)
  */
 function traversableToArray($var)
 {
-    args\expectsTraversable($var);
+    args\expects(args\traversable, $var);
     return $var instanceof \Iterator
         ? iterator_to_array($var)
         : (array) $var;

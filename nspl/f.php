@@ -48,11 +48,37 @@ function filter(callable $predicate, $sequence)
     args\expects(args\traversable, $sequence);
 
     $sequence = ds\traversableToArray($sequence);
-    $isList = ds\isList($sequence);
     $filtered = array_filter($sequence, $predicate);
-    return $isList ? array_values($filtered) : $filtered;
+    return ds\isList($sequence) ? array_values($filtered) : $filtered;
 }
 const filter = '\nspl\f\filter';
+
+/**
+ * Returns two lists, one containing values for which your predicate returned true, and the other containing
+ * the elements that returned false
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function partition(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $isList = ds\isList($sequence);
+    $result = [[], []];
+    foreach ($sequence as $k => $v) {
+        if ($isList) {
+            $result[(int)(bool)call_user_func($predicate, $v)][] = $v;
+        }
+        else {
+            $result[(int)(bool)call_user_func($predicate, $v)][$k] = $v;
+        }
+    }
+
+    return [$result[1], $result[0]];
+}
+const partition = '\nspl\f\partition';
 
 /**
  * Applies function to arguments and returns the result

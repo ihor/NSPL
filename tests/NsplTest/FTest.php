@@ -5,6 +5,7 @@ namespace NsplTest;
 use function \nspl\f\map;
 use function \nspl\f\reduce;
 use function \nspl\f\filter;
+use function \nspl\f\partition;
 use function \nspl\f\apply;
 use function \nspl\f\flipped;
 use function \nspl\f\partial;
@@ -20,6 +21,7 @@ use function \nspl\f\uncurried;
 use const \nspl\f\map;
 use const \nspl\f\reduce;
 use const \nspl\f\filter;
+use const \nspl\f\partition;
 use const \nspl\f\apply;
 use const \nspl\f\flipped;
 use const \nspl\f\partial;
@@ -28,7 +30,6 @@ use const \nspl\f\ppartial;
 use const \nspl\f\compose;
 use const \nspl\f\memoized;
 use const \nspl\f\pipe;
-use const \nspl\f\I;
 use const \nspl\f\curried;
 use const \nspl\f\uncurried;
 
@@ -80,6 +81,19 @@ class FTest extends \PHPUnit_Framework_TestCase
             call_user_func(filter, function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
         );
         $this->assertEquals([], call_user_func(filter, 'is_int', []));
+    }
+
+    public function testPartition()
+    {
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals(
+            [array('b' => 2), array('a' => 1, 'c' => 3)],
+            partition(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
+        );
+        $this->assertEquals([[], []], partition('is_int', []));
+
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], call_user_func(partition, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals('\nspl\f\partition', partition);
     }
 
     public function testApply()

@@ -46,9 +46,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, $range(1, 3)));
 
         $this->assertEquals(['A', 'B', 'C'], call_user_func(map, 'strtoupper', ['a', 'b', 'c']));
-        $this->assertEquals([1, 4, 9], call_user_func(map, function($v) { return $v * $v; }, new \ArrayIterator([1, 2, 3])));
-        $this->assertEquals(['a' => 0, 'b' => 1, 'c' => 2], call_user_func(map, 'abs', array('a' => 0, 'b' => -1, 'c' => 2)));
-        $this->assertEquals([], call_user_func(map, 'strtoupper', []));
+        $this->assertEquals('\nspl\f\map', map);
     }
 
     public function testReduce()
@@ -60,10 +58,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, reduce(function($a, $b) { return $a * $b; }, [], 1));
 
         $this->assertEquals(6, call_user_func(reduce, function($a, $b) { return $a + $b; }, [1, 2, 3]));
-        $this->assertEquals('abc', call_user_func(reduce, function($a, $b) { return $a . $b; }, new \ArrayIterator(['a', 'b', 'c']), ''));
-        $this->assertEquals(64, call_user_func(reduce, 'pow', array('a' => 3, 'b' => 2, 'c' => 1), 2));
-        $this->assertEquals(0, call_user_func(reduce, function($a, $b) { return $a * $b; }, [], 0));
-        $this->assertEquals(1, call_user_func(reduce, function($a, $b) { return $a * $b; }, [], 1));
+        $this->assertEquals('\nspl\f\reduce', reduce);
     }
 
     public function testFilter()
@@ -76,11 +71,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], filter('is_int', []));
 
         $this->assertEquals([1, 2, 3], call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals(
-            array('b' => 2),
-            call_user_func(filter, function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
-        );
-        $this->assertEquals([], call_user_func(filter, 'is_int', []));
+        $this->assertEquals('\nspl\f\filter', filter);
     }
 
     public function testPartition()
@@ -102,7 +93,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(time(), apply('time'), '', 0.1);
 
         $this->assertEquals([1, 3, 5, 7, 9], call_user_func(apply, 'range', [1, 10, 2]));
-        $this->assertEquals(time(), call_user_func(apply, 'time'), '', 0.1);
+        $this->assertEquals('\nspl\f\apply', apply);
     }
 
     public function testFlipped()
@@ -114,6 +105,7 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $flippedF = call_user_func(flipped, $f);
         $this->assertEquals('cba', $flippedF('a', 'b', 'c'));
+        $this->assertEquals('\nspl\f\flipped', flipped);
     }
 
     public function testPartial()
@@ -131,12 +123,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $sqrList = call_user_func(partial, 'array_map', function($v) { return $v * $v; });
         $this->assertEquals([1, 4, 9], $sqrList([1, 2, 3]));
         $this->assertEquals([], $sqrList([]));
-
-        $oneArgFuncPartial = call_user_func(partial, 'count', [1, 2, 3]);
-        $this->assertEquals(3, $oneArgFuncPartial());
-
-        $noArgFuncPartial = call_user_func(partial, 'time', null);
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $this->assertEquals('\nspl\f\partial', partial);
     }
 
     public function testRpartial()
@@ -152,12 +139,7 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $cube = call_user_func(rpartial, 'pow', 3);
         $this->assertEquals(27, $cube(3));
-
-        $oneArgFuncPartial = call_user_func(rpartial, 'count', [1, 2, 3]);
-        $this->assertEquals(3, $oneArgFuncPartial());
-
-        $noArgFuncPartial = call_user_func(rpartial, 'time', null);
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $this->assertEquals('\nspl\f\rpartial', rpartial);
     }
 
     public function testPpartial()
@@ -177,14 +159,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('abc', call_user_func($f1, 'b', 'c'));
 
         $oddNumbers = call_user_func(ppartial, 'range', array(0 => 1, 2 => 2));
-        $this->assertEquals([1], $oddNumbers(1));
-        $this->assertEquals([1, 3, 5], $oddNumbers(6));
-
-        $oneArgFuncPartial = call_user_func(ppartial, 'count', array(0 => [1, 2, 3]));
-        $this->assertEquals(3, $oneArgFuncPartial());
-
-        $noArgFuncPartial = call_user_func(ppartial, 'time', array(0 => null));
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $this->assertEquals('\nspl\f\ppartial', ppartial);
     }
 
     public function testMemoized()
@@ -246,6 +221,8 @@ class FTest extends \PHPUnit_Framework_TestCase
         $result = $memoized($object, true);
         $this->assertEquals($object, $result);
         $this->assertEquals(4, $calculationsPerformed);
+
+        $this->assertEquals('\nspl\f\memoized', memoized);
     }
 
     public function testCompose()
@@ -262,13 +239,7 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $countFiltered = call_user_func(compose, 'count', filter);
         $this->assertEquals(3, $countFiltered('is_int', [1, 'a', 2, 'b', 3]));
-
-        $underscoreToCamelcase = call_user_func(compose,
-            'lcfirst',
-            partial('str_replace', '_', ''),
-            rpartial('ucwords', '_')
-        );
-        $this->assertEquals('underscoreToCamelcase', $underscoreToCamelcase('underscore_to_camelcase'));
+        $this->assertEquals('\nspl\f\compose', compose);
     }
 
     public function testPipe()
@@ -286,13 +257,7 @@ class FTest extends \PHPUnit_Framework_TestCase
             partial('str_replace', '_', ''),
             'lcfirst'
         ));
-
-        $this->assertEquals('underscoreToCamelcase', call_user_func(pipe,
-            'underscore_to_camelcase',
-            rpartial('ucwords', '_'),
-            partial('str_replace', '_', ''),
-            'lcfirst'
-        ));
+        $this->assertEquals('\nspl\f\pipe', pipe);
     }
 
     public function testI()

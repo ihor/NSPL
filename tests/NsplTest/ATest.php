@@ -183,7 +183,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\sorted', sorted);
     }
 
-    public function keySorted()
+    public function testKeySorted()
     {
         $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), keySorted(array('b' => 2, 'c' => 3, 'a' => 1)));
         $this->assertEquals(array('a' => 1, 'b' => 2, 'c' => 3), keySorted(new \ArrayIterator(array('b' => 2, 'c' => 3, 'a' => 1))));

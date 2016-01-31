@@ -6,6 +6,7 @@ use function \nspl\f\map;
 use function \nspl\f\reduce;
 use function \nspl\f\filter;
 use function \nspl\f\partition;
+use function \nspl\f\span;
 use function \nspl\f\apply;
 use function \nspl\f\flipped;
 use function \nspl\f\partial;
@@ -22,6 +23,7 @@ use const \nspl\f\map;
 use const \nspl\f\reduce;
 use const \nspl\f\filter;
 use const \nspl\f\partition;
+use const \nspl\f\span;
 use const \nspl\f\apply;
 use const \nspl\f\flipped;
 use const \nspl\f\partial;
@@ -85,6 +87,17 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], call_user_func(partition, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
         $this->assertEquals('\nspl\f\partition', partition);
+    }
+
+    public function testSpan()
+    {
+        $this->assertEquals([[], ['a', 1, 'b', 2, 'c', 3]], span('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], span('is_numeric', [1, 2, 3, 'a', 'b', 'c']));
+        $this->assertEquals([[], []], span('is_int', []));
+
+        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], call_user_func(span, 'is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+        $this->assertEquals('\nspl\f\span', span);
     }
 
     public function testApply()

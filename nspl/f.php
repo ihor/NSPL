@@ -69,16 +69,49 @@ function partition(callable $predicate, $sequence)
     $result = [[], []];
     foreach ($sequence as $k => $v) {
         if ($isList) {
-            $result[(int)(bool)call_user_func($predicate, $v)][] = $v;
+            $result[(int)!call_user_func($predicate, $v)][] = $v;
         }
         else {
-            $result[(int)(bool)call_user_func($predicate, $v)][$k] = $v;
+            $result[(int)!call_user_func($predicate, $v)][$k] = $v;
         }
     }
 
-    return [$result[1], $result[0]];
+    return $result;
 }
 const partition = '\nspl\f\partition';
+
+/**
+ * Returns two lists, one containing values for which your predicate returned true until the predicate returned
+ * false, and the other containing all the elements that left
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function span(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $isList = ds\isList($sequence);
+    $result = [[], []];
+
+    $listIndex = 0;
+    foreach ($sequence as $k => $v) {
+        if (!$predicate($v)) {
+            $listIndex = 1;
+        }
+
+        if ($isList) {
+            $result[$listIndex][] = $v;
+        }
+        else {
+            $result[$listIndex][$k] = $v;
+        }
+    }
+
+    return $result;
+}
+const span = '\nspl\f\span';
 
 /**
  * Applies function to arguments and returns the result

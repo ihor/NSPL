@@ -13,6 +13,7 @@ use function \nspl\f\partial;
 use function \nspl\f\rpartial;
 use function \nspl\f\ppartial;
 use function \nspl\f\compose;
+use function \nspl\f\id;
 use function \nspl\f\memoized;
 use function \nspl\f\pipe;
 use function \nspl\f\I;
@@ -30,6 +31,7 @@ use const \nspl\f\partial;
 use const \nspl\f\rpartial;
 use const \nspl\f\ppartial;
 use const \nspl\f\compose;
+use const \nspl\f\id;
 use const \nspl\f\memoized;
 use const \nspl\f\pipe;
 use const \nspl\f\curried;
@@ -253,6 +255,15 @@ class FTest extends \PHPUnit_Framework_TestCase
         $countFiltered = call_user_func(compose, 'count', filter);
         $this->assertEquals(3, $countFiltered('is_int', [1, 'a', 2, 'b', 3]));
         $this->assertEquals('\nspl\f\compose', compose);
+    }
+
+    public function testId()
+    {
+        $this->assertEquals(1, id(1));
+        $this->assertEquals('hello world', id('hello world'));
+
+        $this->assertEquals(1, call_user_func(id, 1));
+        $this->assertEquals('\nspl\f\id', id);
     }
 
     public function testPipe()

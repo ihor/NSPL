@@ -203,6 +203,17 @@ function ppartial(callable $function, array $args)
 const ppartial = '\nspl\f\ppartial';
 
 /**
+ * Returns the given value
+ * @param mixed $value
+ * @return mixed
+ */
+function id($value)
+{
+    return $value;
+}
+const id = '\nspl\f\id';
+
+/**
  * Returns memoized $function which returns the cached result when the same inputs occur again
  *
  * @param callable $function

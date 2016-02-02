@@ -239,7 +239,7 @@ const sorted = '\nspl\a\sorted';
 function keySorted($array, $reversed = false)
 {
     args\expects(args\traversable, $array);
-    args\expects(args\bool, $array);
+    args\expects(args\bool, $reversed);
 
     $array = ds\traversableToArray($array);
     if ($reversed) {

@@ -2,7 +2,103 @@
 
 namespace nspl\args;
 
-const notEmpty = '\nspl\args\_p\isNotEmpty';
+use \nspl\f;
+
+/**
+ * Checks that argument satisfies the required constraints otherwise throws the corresponding exception
+ *
+ * @param callable|callable[]|string|string[] $constraints Callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)
+ * @param mixed $arg
+ * @param int|null $atPosition If null then calculated automatically
+ * @param string $otherwiseThrow Exception class or exception object
+ * @throws \Throwable
+ */
+function expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    // Backward compatibility
+    if (null !== $atPosition && is_callable($atPosition)) {
+        expectsToBe($constraints, $arg, $atPosition, is_int($otherwiseThrow) ? $otherwiseThrow : null, func_num_args() > 4 ? func_get_arg(4) : '\InvalidArgumentException');
+        return;
+    }
+
+    if ((array) $constraints === $constraints) {
+        $passedAnd = true;
+        $passedOr = false;
+        foreach ($constraints as $constraint) {
+            if (is_callable($constraint)) {
+                if (isset(_p\Checker::$isOr[$constraint])) {
+                    if (!$passedOr && $constraint($arg)) {
+                        $passedOr = true;
+                    }
+                }
+                else if (!$constraint($arg)) {
+                    $passedAnd = false;
+                    break;
+                }
+            }
+            else if (!$passedOr && class_exists($constraint) && $arg instanceof $constraint) {
+                $passedOr = true;
+            }
+        }
+
+        if (!$passedAnd || !$passedOr) {
+            _p\throwExpectsException($arg, _p\ErrorMessage::getFor($constraints), $atPosition, $otherwiseThrow);
+        }
+    }
+    else if (!$constraints($arg)) {
+        _p\throwExpectsException($arg, _p\ErrorMessage::getFor($constraints), $atPosition, $otherwiseThrow);
+    }
+}
+
+/**
+ * Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception
+ *
+ * @param callable|callable[]|string|string[] $constraints Callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)
+ * @param array $args
+ * @param array $atPositions If empty then calculated automatically
+ * @param string $otherwiseThrow Exception class or exception object
+ * @throws \Throwable
+ */
+function expectsAll($constraints, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
+{
+    foreach ($args as $k => $arg) {
+        expects($constraints, $arg, isset($atPositions[$k]) ? $atPositions[$k] : null, $otherwiseThrow);
+    }
+}
+
+/**
+ * Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception
+ *
+ * @param callable|callable[] $constraints Callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)
+ * @param mixed $arg
+ * @param int|null $atPosition If empty then calculated automatically
+ * @param string $otherwiseThrow Exception class or exception object
+ * @throws \Throwable
+ */
+function expectsOptional($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (null !== $arg) {
+        expects($constraints, $arg, $atPosition, $otherwiseThrow);
+    }
+}
+
+/**
+ * Checks that argument satisfies the required constraints otherwise throws the corresponding exception
+ *
+ * @param mixed $arg
+ * @param string $toBe Message which tells what the argument is expected to be
+ * @param callable $constraints Callable which returns true if argument satisfies the constraints
+ * @param int $atPosition If null then calculated automatically
+ * @param string|\Throwable $otherwiseThrow Exception class or exception object
+ */
+function expectsToBe($arg, $toBe, callable $constraints, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (!$constraints($arg)) {
+        _p\throwExpectsException($arg, 'to be ' . $toBe, $atPosition, $otherwiseThrow, true);
+    }
+}
+
+// Or-constraints
 const bool = 'is_bool';
 const int = 'is_int';
 const float = 'is_float';
@@ -13,29 +109,74 @@ const arrayKey = '\nspl\args\_p\isArrayKey';
 const traversable = '\nspl\args\_p\isTraversable';
 const arrayAccess = '\nspl\args\_p\isArrayAccess';
 
+// And-constraints
+const nonEmpty = '\nspl\args\_p\isNotEmpty';
+const positive = '\nspl\args\_p\isPositive';
+const nonNegative = '\nspl\args\_p\isNotNegative';
+const nonZero = '\nspl\args\_p\isNotZero';
+
 /**
- * Returns functions which returns true when passed object has the method
- * @param string $method
- * @return _p\HasMethods
+ * Returns a function which returns true when any of given constraints is satisfied
+ * @param callable $constraints
+ * @return \Closure
  */
-function withMethod($method)
+function any(callable $constraints)
 {
-    return new _p\HasMethods(func_get_args());
+    return new _p\Any(func_get_args());
 }
 
 /**
- * Returns functions which returns true when passed object has the methods
- * @param string $method1
- * @param string $method2
- * @return _p\HasMethods
+ * Returns a function which returns true when none of given constraints are satisfied
+ * @param callable $constraints
+ * @return \Closure
  */
-function withMethods($method1, $method2 /*, ... */)
+function not(callable $constraints)
 {
-    return new _p\HasMethods(func_get_args());
+    return new _p\Not(func_get_args());
 }
 
 /**
- * Returns functions which returns true when passed array has the key
+ * Returns a function which returns true is given string is shorter than $threshold
+ * @param int $threshold
+ * @return _p\LessThan
+ */
+function shorterThan($threshold)
+{
+    return new _p\LessThan('strlen', $threshold, 'shorter');
+}
+
+/**
+ * Returns a function which returns true is given string is longer than $threshold
+ * @param int $threshold
+ * @return _p\LessThan
+ */
+function longerThan($threshold)
+{
+    return new _p\MoreThan('strlen', $threshold, 'longer');
+}
+
+/**
+ * Returns a function which returns true is given number is smaller than $threshold
+ * @param int $threshold
+ * @return _p\LessThan
+ */
+function smallerThan($threshold)
+{
+    return new _p\LessThan(f\id, $threshold, 'smaller');
+}
+
+/**
+ * Returns a function which returns true is given number is bigger than $threshold
+ * @param int $threshold
+ * @return _p\LessThan
+ */
+function biggerThan($threshold)
+{
+    return new _p\MoreThan(f\id, $threshold, 'bigger');
+}
+
+/**
+ * Returns a function which returns true when given array has the key
  * @param string $key
  * @return _p\HasKeys
  */
@@ -45,7 +186,7 @@ function withKey($key)
 }
 
 /**
- * Returns functions which returns true when passed array has the keys
+ * Returns a function which returns true when given array has the keys
  * @param string $key1
  * @param string $key2
  * @return _p\HasKeys
@@ -56,92 +197,24 @@ function withKeys($key1, $key2 /*, ... */)
 }
 
 /**
- * Checks that argument has the required type (or types) otherwise throws the corresponding exception
- *
- * @param callable|callable[] $type Class name(s) or callable(s) which checks that the argument has the corresponding type(s)
- * @param mixed $arg
- * @param int|null $atPosition If null then calculated automatically
- * @param string $otherwiseThrow Exception class or exception object
- * @throws \Throwable
+ * Returns a function which returns true when given object has the method
+ * @param string $method
+ * @return _p\HasMethods
  */
-function expects($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+function withMethod($method)
 {
-    // Backward compatibility
-    if (null !== $atPosition && is_callable($atPosition)) {
-        expectsToBe($type, $arg, $atPosition, is_int($otherwiseThrow) ? $otherwiseThrow : null, func_num_args() > 4 ? func_get_arg(4) : '\InvalidArgumentException');
-        return;
-    }
-
-    if (is_array($type)) {
-        $passed = false;
-        foreach ($type as $_type) {
-            if (
-                (is_callable($_type) && call_user_func($_type, $arg)) ||
-                (is_string($_type) && class_exists($_type) && $arg instanceof $_type)
-            ) {
-                $passed = true;
-                break;
-            }
-        }
-
-        if (!$passed) {
-            $message = implode(' or ', array_map('\nspl\args\_p\getErrorMessage', $type));
-            _p\throwExpectsException($arg, $message, $atPosition, $otherwiseThrow);
-        }
-    }
-    else if (!call_user_func($type, $arg)) {
-        _p\throwExpectsException($arg, _p\getErrorMessage($type), $atPosition, $otherwiseThrow);
-    }
+    return new _p\HasMethods(func_get_args());
 }
 
 /**
- * Checks that arguments have the required type (or types) otherwise throws the corresponding exception
- *
- * @param callable|callable[] $type Class name(s) or callable(s) which checks that the argument has the corresponding type(s)
- * @param array $args
- * @param array $atPositions If empty then calculated automatically
- * @param string $otherwiseThrow Exception class or exception object
- * @throws \Throwable
+ * Returns a function which returns true when given object has the methods
+ * @param string $method1
+ * @param string $method2
+ * @return _p\HasMethods
  */
-function expectsAll($type, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
+function withMethods($method1, $method2 /*, ... */)
 {
-    foreach ($args as $k => $arg) {
-        expects($type, $arg, isset($atPositions[$k]) ? $atPositions[$k] : null, $otherwiseThrow);
-    }
-}
-
-/**
- * Checks that argument has the required type (or types) or is null otherwise throws the corresponding exception
- *
- * @param callable|callable[] $type Class name(s) or callable(s) which checks that the argument has the corresponding type(s)
- * @param mixed $arg
- * @param int|null $atPosition If null then calculated automatically
- * @param string $otherwiseThrow
- * @throws \Throwable
- * @throws string
- */
-function expectsOptional($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-{
-    if (null !== $arg && !call_user_func($type, $arg)) {
-        _p\throwExpectsException($arg, _p\getErrorMessage($type), $atPosition, $otherwiseThrow);
-    }
-}
-
-/**
- * Checks that argument satisfies the requirements otherwise throws the corresponding exception
- * @todo Find a better function name
- *
- * @param mixed $arg
- * @param string $toBe Message which tells what the argument is expected to be
- * @param callable $satisfy
- * @param int $atPosition If null then calculated automatically
- * @param string|\Throwable $otherwiseThrow Exception class or exception object
- */
-function expectsToBe($arg, $toBe, callable $satisfy, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-{
-    if (!call_user_func($satisfy, $arg)) {
-        _p\throwExpectsException($arg, 'to be ' . $toBe, $atPosition, $otherwiseThrow, true);
-    }
+    return new _p\HasMethods(func_get_args());
 }
 
 #region deprecated
@@ -382,174 +455,22 @@ function expectsWithKeys(array $array, array $keys, $atPosition = null, $otherwi
 namespace nspl\args\_p;
 
 use nspl\a;
+use nspl\f;
 use nspl\ds;
 
-/**
- * @param mixed $value
- * @return bool
- */
-function isNotEmpty($value)
-{
-    return (bool) $value;
-}
-
-/**
- * @param mixed $value
- * @return bool
- */
-function isArrayKey($value)
-{
-    return is_int($value) || is_string($value);
-}
-
-/**
- * @param mixed $value
- * @return bool
- */
-function isTraversable($value)
-{
-    return is_array($value) || $value instanceof \Traversable;
-}
-
-/**
- * @param mixed $value
- * @return bool
- */
-function isArrayAccess($value)
-{
-    return is_array($value) || $value instanceof \ArrayAccess;
-}
-
-
-interface Requirement
-{
-    /**
-     * @return string
-     */
-    function getErrorMessage();
-}
-
-
-class HasMethods implements Requirement
-{
-    /**
-     * @var string[]
-     */
-    private $methods;
-
-    /**
-     * @param string[] $methods
-     */
-    public function __construct(array $methods)
-    {
-        $this->methods = $methods;
-    }
-
-    /**
-     * @param object $object
-     * @return bool
-     */
-    public function __invoke($object)
-    {
-        if (!is_object($object)) {
-            return false;
-        }
-
-        foreach ($this->methods as $method) {
-            if (!method_exists($object, $method)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    function getErrorMessage()
-    {
-        return 'be an object with public method(s) "' . implode('", "', $this->methods) . '"';
-    }
-
-}
-
-
-class HasKeys implements Requirement
-{
-    /**
-     * @var string[]
-     */
-    private $keys;
-
-    /**
-     * @param string[] $keys
-     */
-    public function __construct(array $keys)
-    {
-        $this->keys = $keys;
-    }
-
-    /**
-     * @param object $array
-     * @return bool
-     */
-    public function __invoke($array)
-    {
-        if (!is_array($array) && !($array instanceof \ArrayAccess)) {
-            return false;
-        }
-
-        foreach ($this->keys as $key) {
-            if (!isset($array[$key]) || !array_key_exists($key, $array)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    function getErrorMessage()
-    {
-        return 'be an array with key(s) "' . implode('", "', $this->keys) . '"';
-    }
-
-}
-
-
-/**
- * @param string|object $type
- * @return string
- */
-function getErrorMessage($type)
-{
-    if ($type instanceof Requirement) {
-        return $type->getErrorMessage();
-    }
-
-    return a\getByKey(array(
-        \nspl\args\notEmpty => 'not be empty',
-        \nspl\args\bool => 'be a boolean',
-        \nspl\args\int => 'be an integer',
-        \nspl\args\float => 'be a float',
-        \nspl\args\numeric => 'be numeric',
-        \nspl\args\string => 'be a string',
-        \nspl\args\arrayKey => 'be an integer or a string',
-        \nspl\args\callable_ => 'be callable',
-        \nspl\args\traversable => 'be an array or traversable',
-        \nspl\args\arrayAccess => 'be an array or implement array access',
-    ), $type, 'be ' . $type);
-}
+function isNotEmpty($value) { return (bool) $value; }
+function isArrayKey($value) { return is_int($value) || is_string($value); }
+function isTraversable($value) { return is_array($value) || $value instanceof \Traversable; }
+function isArrayAccess($value) { return is_array($value) || $value instanceof \ArrayAccess; }
+function isPositive($value) { return $value > 0; }
+function isNotNegative($value) { return $value >= 0; }
+function isNotZero($value) { return $value !== 0; }
 
 /**
  * @param mixed $arg
  * @param string $hadTo
  * @param int $atPosition
  * @param string|\Throwable $exception
- * @param bool $reportValue
  * @param bool $has
  * @throws \Throwable
  * @throws string
@@ -569,7 +490,9 @@ function throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\
             $function,
             $has ? 'has' : 'must',
             $hadTo,
-            is_scalar($arg) ? (', ' . ds\getType($arg) . ' ' . var_export($arg, true) . ' given') : (', ' . ds\getType($arg) . ' given')
+            is_scalar($arg)
+                ? (', ' . ds\getType($arg) . ' ' . var_export($arg, true) . ' given')
+                : (', ' . ds\getType($arg) . (is_array($arg) ? (' ' . json_encode($arg)): '') . ' given')
         ));
     }
 
@@ -614,4 +537,352 @@ function getErrorSource($arg)
     );
 
     return array_merge(array_values($result), $result);
+}
+
+class Checker
+{
+    public static $isOr = array(
+        \nspl\args\bool => true,
+        \nspl\args\int => true,
+        \nspl\args\float => true,
+        \nspl\args\numeric => true,
+        \nspl\args\string => true,
+        \nspl\args\arrayKey => true,
+        \nspl\args\callable_ => true,
+        \nspl\args\traversable => true,
+        \nspl\args\arrayAccess => true,
+    );
+
+}
+
+class ErrorMessage
+{
+    private static $messages = array(
+        \nspl\args\bool => 'be a boolean',
+        \nspl\args\int => 'be an integer',
+        \nspl\args\float => 'be a float',
+        \nspl\args\numeric => 'be numeric',
+        \nspl\args\string => 'be a string',
+        \nspl\args\arrayKey => 'be an integer or a string',
+        \nspl\args\callable_ => 'be callable',
+        \nspl\args\traversable => 'be an array or traversable',
+        \nspl\args\arrayAccess => 'be an array or implement array access',
+
+        \nspl\args\nonEmpty => 'not be empty',
+        \nspl\args\positive => 'be positive',
+        \nspl\args\nonNegative => 'be non-negative',
+        \nspl\args\nonZero => 'be non-zero',
+    );
+
+    /**
+     * @param string|object|array $type
+     * @param bool $onlyOr
+     * @return string
+     */
+    public static function getFor($type, $onlyOr = false)
+    {
+        if (is_array($type)) {
+            $messagesFor = f\partial(f\map, ['\nspl\args\_p\ErrorMessage', 'getFor']);
+            if ($onlyOr) {
+                return implode(' or ', $messagesFor($type));
+            }
+            else {
+                $isOr = function ($t) { return isset(Checker::$isOr[$t]) || class_exists($t); };
+                list($orTypes, $andTypes) = f\partition($isOr, $type);
+
+                return implode(' and ', array_filter([
+                    implode(' or ', $messagesFor($orTypes)),
+                    implode(' and ', $messagesFor($andTypes))
+                ]));
+            }
+        }
+
+        if ($type instanceof Constraint) {
+            return $type->getErrorMessage();
+        }
+
+        return a\getByKey(self::$messages, $type, 'be ' . $type);
+    }
+}
+
+interface Constraint
+{
+    /**
+     * @return string
+     */
+    function getErrorMessage();
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    function __invoke($value);
+
+}
+
+
+class HasMethods implements Constraint
+{
+    /**
+     * @var string[]
+     */
+    private $methods;
+
+    /**
+     * @param string[] $methods
+     */
+    public function __construct(array $methods)
+    {
+        $this->methods = $methods;
+    }
+
+    /**
+     * @param object $object
+     * @return bool
+     */
+    public function __invoke($object)
+    {
+        if (!is_object($object)) {
+            return false;
+        }
+
+        foreach ($this->methods as $method) {
+            if (!method_exists($object, $method)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'be an object with public method(s) "' . implode('", "', $this->methods) . '"';
+    }
+
+}
+
+class HasKeys implements Constraint
+{
+    /**
+     * @var string[]
+     */
+    private $keys;
+
+    /**
+     * @param string[] $keys
+     */
+    public function __construct(array $keys)
+    {
+        $this->keys = $keys;
+    }
+
+    /**
+     * @param array $array
+     * @return bool
+     */
+    public function __invoke($array)
+    {
+        if (!is_array($array) && !($array instanceof \ArrayAccess)) {
+            return false;
+        }
+
+        foreach ($this->keys as $key) {
+            if (!isset($array[$key]) || !array_key_exists($key, $array)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'be an array with key(s) "' . implode('", "', $this->keys) . '"';
+    }
+
+}
+
+class LessThan implements Constraint
+{
+    /**
+     * @var callable
+     */
+    private $function;
+
+    /**
+     * @var callable
+     */
+    private $threshold;
+
+    /**
+     * @var string
+     */
+    private $message;
+
+    /**
+     * @param callable $function
+     * @param int $threshold
+     * @param string $message
+     */
+    public function __construct($function, $threshold, $message)
+    {
+        $this->function = $function;
+        $this->threshold = $threshold;
+        $this->message = $message;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        $f = $this->function;
+        return $f($value) < $this->threshold;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'be ' . $this->message . ' than ' . $this->threshold;
+    }
+
+}
+
+class MoreThan implements Constraint
+{
+    /**
+     * @var callable
+     */
+    private $function;
+
+    /**
+     * @var callable
+     */
+    private $threshold;
+
+    /**
+     * @var string
+     */
+    private $message;
+
+    /**
+     * @param callable $function
+     * @param int $threshold
+     * @param string $message
+     */
+    public function __construct($function, $threshold, $message)
+    {
+        $this->function = $function;
+        $this->threshold = $threshold;
+        $this->message = $message;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        $f = $this->function;
+        return $f($value) > $this->threshold;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'be ' . $this->message . ' than ' . $this->threshold;
+    }
+
+}
+
+class Not implements Constraint
+{
+    /**
+     * @var callable[]
+     */
+    private $constraints;
+
+    /**
+     * @param callable[] $constraints
+     */
+    public function __construct(array $constraints)
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        foreach ($this->constraints as $expectation) {
+            if ($expectation($value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'not be ' . ErrorMessage::getFor($this->constraints, true);
+    }
+
+}
+
+class Any implements Constraint
+{
+    /**
+     * @var callable[]
+     */
+    private $constraints;
+
+    /**
+     * @param callable[] $constraints
+     */
+    public function __construct(array $constraints)
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        foreach ($this->constraints as $expectation) {
+            if ($expectation($value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    function getErrorMessage()
+    {
+        return 'be ' . ErrorMessage::getFor($this->constraints, true);
+    }
+
 }

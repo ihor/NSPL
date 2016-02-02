@@ -7,7 +7,7 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences  
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
  - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
- - [nspl\args](#nsplargs) - provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
+ - [nspl\args](#nsplargs) - provides collections of functions which validate function arguments
 
 NSPL aims to provide compact but clear syntax to make functional PHP code look less verbose. Fast and simple, it is created to be used every day instead of being another functional programming playground for geeks. Look at the following code written with NSPL:
 ```php
@@ -530,15 +530,15 @@ Check more ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/mas
 
 ## nspl\args
 
-Provides possibility to validate function arguments including types, mixed types, combining primitive types with user-defined types and custom validation rules
+Provides collections of functions which validate function arguments
 
-##### expects($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument has the required type (or types) otherwise throws the corresponding exception  
+Checks that argument satisfies the required constraints otherwise throws the corresponding exception  
 
-```$type``` is a class name(s) or callable(s) which checks that the argument has the corresponding type(s)  
+```$constraints``` are callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)  
 If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function  
-```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be exception class or exception object  
+```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be the exception class or exception object  
 
 ```php
 use const \nspl\args\int;
@@ -568,7 +568,7 @@ Call Stack:
 
 ##### expectsAll($type, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that arguments have the required type (or types) otherwise throws the corresponding exception  
+Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception  
 
 ```php
 use const \nspl\args\numeric;
@@ -584,46 +584,68 @@ function sum($x, $y)
 
 ##### expectsOptional($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument has the required type (or types) or is null otherwise throws the corresponding exception  
+Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception  
 
 ```php
-use const \nspl\args\int;
-use const \nspl\args\string;
-use function \nspl\args\expectsNumeric;
-
 function splitBy($string, $separator = ' ', $limit = null)
 {
     expectsAll(string, [$string, $separator]);
-    expectsOptional(int, $string);
+    expectsOptional(int, $limit);
 
     return explode($separator, $string, $limit);
 }
 ```
 
-```nspl\args``` provides the following type callbacks:
+The module also provides predefined constraints. Which are one of the two types:
+- OR-constraints which are evaluated with ```or``` operator (e.g. ```expects([int, string], $arg)``` evaluates as ```$arg``` has to be an ```int``` or a ```string```)
+- AND-constraints which are evaluated with ```and``` operator (e.g. ```expects([string, longerThan(3), shorterThan(10)], $arg)``` evaluates as ```$arg``` has to be a string longer than 3 characters and shorter than 10 characters). If you want to evaluate several AND-constraints as they were OR-constraints you can use ```any``` constraint
 
-Callback                            | Code
-------------------------------------|-----------------------------------------------------------------------------------
-notEmpty                            | (bool) $arg
-bool                                | is_bool($arg)
-int                                 | is_int($arg)
-float                               | is_float($arg)
-numeric                             | is_numeric($arg)
-string                              | is_string($arg)
-callable_                           | is_callable($arg)
-arrayKey                            | is_int($arg) &#124;&#124; is_string($arg)
-traversable                         | is_array($arg) &#124;&#124; $arg instanceof \Traversable
-arrayAccess                         | is_array($arg) &#124;&#124; $arg instanceof \ArrayAccess
-hasKey($key)                        | is_array($arg) && (isset($arg[$key)) &#124;&#124; array_key_exists($key, $arg))
-hasKeys($key1, ..., $keyN)          | is_array($arg) && (isset($arg[$key1)) &#124;&#124; array_key_exists($key1, $arg)) && ... && (isset($arg[$keyN)) &#124;&#124; array_key_exists($keyN, $arg))
-hasMethod($method)                  | is_object($arg) && method_exists($arg, $method)
-hasMethods($method1, ..., $methodN) | is_object($arg) && method_exists($arg, $method1) && ... && method_exists($arg, $methodN)
+Callback                            | Explanation                                                            | Type
+------------------------------------|------------------------------------------------------------------------|----------
+bool                                | Checks that argument is a bool                                         | OR
+int                                 | Checks that argument is an int                                         | OR
+float                               | Checks that argument is a float                                        | OR
+numeric                             | Checks that argument is numeric                                        | OR
+string                              | Checks that argument is a string                                       | OR
+callable_                           | Checks that argument is callable                                       | OR
+arrayKey                            | Checks that argument can be an array key                               | OR
+traversable                         | Checks that argument can be traversed with foreach                     | OR
+arrayAccess                         | Checks that argument supports array index access                       | OR
+nonEmpty                            | Checks that argument is not empty                                      | AND
+positive                            | Checks that argument is positive (> 0)                                 | AND
+nonNegative                         | Checks that argument is not negative (>= 0)                            | AND
+nonZero                             | Checks that argument is not zero (!== 0)                               | AND
+any(constraint1, ..., constraintN)  | Checks constraints as if they were OR-constraints                      | AND
+not(constraint1, ..., constraintN)  | Checks that argument does't satisfy all listed constraints             | AND
+longerThan($threshold)              | Checks that string argument is longer than given threshold             | AND
+shorterThan($threshold)             | Checks that string argument is shorter than given threshold            | AND
+biggerThan($threshold)              | Checks that number is bigger than given threshold                      | AND
+smallerThan($threshold)             | Checks that number is smaller than given threshold                     | AND
+hasKey($key)                        | Checks that argument supports array index access and has given key     | AND
+hasKeys($key1, ..., $keyN)          | Checks that argument supports array index access and has given keys    | AND
+hasMethod($method)                  | Checks that argument is an object and has given method                 | AND
+hasMethods($method1, ..., $methodN) | Checks that argument is an object and has given methods                | AND
  
 
 ```php
-use function \nspl\args\expects;
-use function \nspl\args\withMethods;
+function setPassword($password)
+{
+    expects([string, longerThan(3), shorterThan(10)], $password);
+}
+```
 
+```any``` example:
+```php
+function divide($x, $y)
+{
+    expects(numeric, $x);
+    expects([numeric, any(smallerThan(0), biggerThan(0))], $y, 1); // the same sa expects([numeric, nonZero], $y, 1);
+    return $x / $y;
+}
+```
+
+Duck-typing example:
+```php
 class Service
 {
     // ...
@@ -643,8 +665,6 @@ Checks that argument satisfies requirements otherwise throws the corresponding e
 ```$toBe``` is a message which tells what the argument is expected to be. It will be used in the exceptions if the argument is invalid and also provides description for other developers  
 ```$satisfy``` is a function which returns true if argument satisfies the requirements otherwise it returns false  
 ```php
-use function \nspl\args\expectsToBe;
-
 function calculateAge($yearOfBirth)
 {
     expectsToBe($yearOfBirth, 'an integer > 1900 and <= current year', function($arg) {

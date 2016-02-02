@@ -5,7 +5,7 @@ require_once __DIR__ . '/../autoload.php';
 use const \nspl\args\int;
 use const \nspl\args\numeric;
 use const \nspl\args\string;
-use const \nspl\args\notEmpty;
+use const \nspl\args\nonEmpty;
 use const \nspl\args\arrayAccess;
 use function \nspl\args\withKeys;
 use function \nspl\args\withMethod;
@@ -32,7 +32,7 @@ catch (\InvalidArgumentException $e) {
 // 2. Specify several types
 function first($sequence)
 {
-    expects([notEmpty, arrayAccess, string], $sequence);
+    expects([nonEmpty, arrayAccess, string], $sequence);
     return $sequence[0];
 }
 

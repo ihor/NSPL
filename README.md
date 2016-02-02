@@ -596,7 +596,7 @@ function splitBy($string, $separator = ' ', $limit = null)
 }
 ```
 
-The module also provides predefined constraints. Which are one of the two types:
+The module also provides predefined constraints. Which can be one of the two types:
 - OR-constraints which are evaluated with ```or``` operator (e.g. ```expects([int, string], $arg)``` evaluates as ```$arg``` has to be an ```int``` or a ```string```)
 - AND-constraints which are evaluated with ```and``` operator (e.g. ```expects([string, longerThan(3), shorterThan(10)], $arg)``` evaluates as ```$arg``` has to be a string longer than 3 characters and shorter than 10 characters). If you want to evaluate several AND-constraints as they were OR-constraints you can use ```any``` constraint
 

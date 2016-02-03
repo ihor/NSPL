@@ -506,7 +506,7 @@ Helps to pick random elements from sequences of data
 
 Returns a random element from a non-empty sequence
 
-##### weightedChoice( $weightPairs)
+##### weightedChoice($weightPairs)
 
 Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 

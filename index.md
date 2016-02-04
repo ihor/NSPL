@@ -121,7 +121,7 @@ assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2,
 
 Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
 ```php
-assert([[1], ['a', 2, 'b', 3, 'c']], span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
 ```
 
 ##### apply($function, array $args = [])

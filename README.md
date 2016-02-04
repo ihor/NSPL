@@ -103,7 +103,7 @@ Applies function of two arguments cumulatively to the items of sequence, from le
 assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 ```
 
-##### filter($function, $sequence)
+##### filter($predicate, $sequence)
 
 Returns list items that satisfy the predicate
 ```php

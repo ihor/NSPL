@@ -497,7 +497,7 @@ Call Stack:
     0.0023     556800   2. sqr() /path/to/example.php:17
 ```
 
-##### expectsAll($type, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
+##### expectsAll($constraints, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
 
 Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception  
 
@@ -513,7 +513,7 @@ function sum($x, $y)
 }
 ```
 
-##### expectsOptional($type, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+##### expectsOptional($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
 Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception  
 

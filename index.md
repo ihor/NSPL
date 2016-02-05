@@ -461,7 +461,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 ## nspl\args
 
-provides functionality to validate function arguments easily
+Provides functionality to validate function arguments easily
 
 ##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 

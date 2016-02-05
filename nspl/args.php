@@ -82,22 +82,6 @@ function expectsOptional($constraints, $arg, $atPosition = null, $otherwiseThrow
     }
 }
 
-/**
- * Checks that argument satisfies the required constraints otherwise throws the corresponding exception
- *
- * @param mixed $arg
- * @param string $toBe Message which tells what the argument is expected to be
- * @param callable $constraints Callable which returns true if argument satisfies the constraints
- * @param int $atPosition If null then calculated automatically
- * @param string|\Throwable $otherwiseThrow Exception class or exception object
- */
-function expectsToBe($arg, $toBe, callable $constraints, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
-{
-    if (!$constraints($arg)) {
-        _p\throwExpectsException($arg, 'to be ' . $toBe, $atPosition, $otherwiseThrow, true);
-    }
-}
-
 // Or-constraints
 const bool = 'is_bool';
 const int = 'is_int';
@@ -118,7 +102,7 @@ const nonZero = '\nspl\args\_p\isNotZero';
 /**
  * Returns a function which returns true when any of given constraints is satisfied
  * @param callable $constraints
- * @return \Closure
+ * @return _p\Any
  */
 function any(callable $constraints)
 {
@@ -128,11 +112,22 @@ function any(callable $constraints)
 /**
  * Returns a function which returns true when none of given constraints are satisfied
  * @param callable $constraints
- * @return \Closure
+ * @return _p\Not
  */
 function not(callable $constraints)
 {
     return new _p\Not(func_get_args());
+}
+
+/**
+ * Returns a function which returns true when the argument is one of the given values
+ * @param mixed $value1
+ * @param mixed $value2
+ * @return _p\Values
+ */
+function values($value1, $value2 /*, ... */)
+{
+    return new _p\Values(func_get_args());
 }
 
 /**
@@ -217,7 +212,44 @@ function withMethods($method1, $method2 /*, ... */)
     return new _p\HasMethods(func_get_args());
 }
 
+interface Constraint
+{
+    /**
+     * Returns message which will be used in the exception when value doesn't satisfy the constraint
+     * The message must contain text which goes after "must" in the exception message
+     *
+     * @return string
+     */
+    function __toString();
+
+    /**
+     * Returns true if the value satisfies the constraint
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    function __invoke($value);
+
+}
+
 #region deprecated
+/**
+ * @deprecated
+ * Checks that argument satisfies the required constraints otherwise throws the corresponding exception
+ *
+ * @param mixed $arg
+ * @param string $toBe Message which tells what the argument is expected to be
+ * @param callable $constraints Callable which returns true if argument satisfies the constraints
+ * @param int $atPosition If null then calculated automatically
+ * @param string|\Throwable $otherwiseThrow Exception class or exception object
+ */
+function expectsToBe($arg, $toBe, callable $constraints, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
+{
+    if (!$constraints($arg)) {
+        _p\throwExpectsException($arg, 'to be ' . $toBe, $atPosition, $otherwiseThrow, true);
+    }
+}
+
 /**
  * @deprecated
  * Checks that argument is not empty otherwise throws the corresponding exception
@@ -457,6 +489,7 @@ namespace nspl\args\_p;
 use nspl\a;
 use nspl\f;
 use nspl\ds;
+use nspl\args\Constraint;
 
 function isNotEmpty($value) { return (bool) $value; }
 function isArrayKey($value) { return is_int($value) || is_string($value); }
@@ -557,7 +590,7 @@ class Checker
 
 class ErrorMessage
 {
-    private static $messages = array(
+    public static $messages = array(
         \nspl\args\bool => 'be a boolean',
         \nspl\args\int => 'be an integer',
         \nspl\args\float => 'be a float',
@@ -598,25 +631,11 @@ class ErrorMessage
         }
 
         if ($type instanceof Constraint) {
-            return $type->getErrorMessage();
+            return $type->__toString();
         }
 
-        return a\getByKey(self::$messages, $type, 'be ' . $type);
+        return a\getByKey(self::$messages, $type, 'be ' . (class_exists($type) ? $type : end(explode('\\', $type))));
     }
-}
-
-interface Constraint
-{
-    /**
-     * @return string
-     */
-    function getErrorMessage();
-
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    function __invoke($value);
 
 }
 
@@ -658,9 +677,9 @@ class HasMethods implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
-        return 'be an object with public method(s) "' . implode('", "', $this->methods) . '"';
+        return 'be an object with public method(s) \'' . implode("', '", $this->methods) . "'";
     }
 
 }
@@ -702,9 +721,11 @@ class HasKeys implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
-        return 'be an array with key(s) "' . implode('", "', $this->keys) . '"';
+        return 'be an array with key(s) ' . implode(', ', array_map(function($v) {
+            return var_export($v, true);
+        }, $this->keys));
     }
 
 }
@@ -751,7 +772,7 @@ class LessThan implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
         return 'be ' . $this->message . ' than ' . $this->threshold;
     }
@@ -800,7 +821,7 @@ class MoreThan implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
         return 'be ' . $this->message . ' than ' . $this->threshold;
     }
@@ -840,7 +861,7 @@ class Not implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
         return 'not be ' . ErrorMessage::getFor($this->constraints, true);
     }
@@ -880,9 +901,45 @@ class Any implements Constraint
     /**
      * @return string
      */
-    function getErrorMessage()
+    function __toString()
     {
         return 'be ' . ErrorMessage::getFor($this->constraints, true);
+    }
+
+}
+
+class Values implements Constraint
+{
+    /**
+     * @var array
+     */
+    private $values;
+
+    /**
+     * @param array $values
+     */
+    public function __construct(array $values)
+    {
+        $this->values = $values;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        return in_array($value, $this->values);
+    }
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return 'be one of the following values ' . implode(', ', array_map(function($v) {
+            return var_export($v, true);
+        }, $this->values));
     }
 
 }

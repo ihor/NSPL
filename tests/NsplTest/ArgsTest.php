@@ -5,7 +5,6 @@ namespace NsplTest;
 use function \nspl\args\expects;
 use function \nspl\args\expectsAll;
 use function \nspl\args\expectsOptional;
-use function \nspl\args\expectsToBe;
 
 // Or-constraints
 use const \nspl\args\bool;
@@ -25,6 +24,7 @@ use const \nspl\args\nonNegative;
 use const \nspl\args\nonZero;
 use function \nspl\args\any;
 use function \nspl\args\not;
+use function \nspl\args\values;
 use function \nspl\args\withMethod;
 use function \nspl\args\withMethods;
 use function \nspl\args\withKey;
@@ -50,6 +50,7 @@ use function \nspl\args\expectsBoolOrCallable;
 use function \nspl\args\expectsWithMethod;
 use function \nspl\args\expectsWithMethods;
 use function \nspl\args\expectsWithKeys;
+use function \nspl\args\expectsToBe;
 
 class ArgsTest extends \PHPUnit_Framework_TestCase
 {
@@ -216,6 +217,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsUserDefinedTypeNegativeTest() must be an integer or be NsplTest\TestClass, string 'hello world' given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsUserDefinedTypeNegativeTest() must be an integer or NsplTest\TestClass, string 'hello world' given
      */
     public function testExpectsWithCustomType_Negative()
     {
@@ -316,6 +318,25 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     }
     #endregion
 
+    #region value
+    public function testExpectsValues_Positive()
+    {
+        function expectsValuesPositiveTest($arg) { expects(values('hello', 'world'), $arg); }
+        $this->assertNull(expectsValuesPositiveTest('hello'));
+        $this->assertNull(expectsValuesPositiveTest('world'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsValuesNegativeTest() must be one of the following values 'hello', 'world', integer 1 given
+     */
+    public function testExpectsValues_Negative()
+    {
+        function expectsValuesNegativeTest($arg) { expects(values('hello', 'world'), $arg); }
+        $this->assertNull(expectsValuesNegativeTest(1));
+    }
+    #endregion
+
     #region longerThan
     public function testExpectLongerThan_Positive()
     {
@@ -397,7 +418,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodNegativeTest() must be an object with public method(s) "test_Method_1", NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodNegativeTest() must be an object with public method(s) 'test_Method_1', NsplTest\TestClass given
      */
     public function testExpectsWithMethod_Negative()
     {
@@ -415,7 +436,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodsNegativeTest() must be an object with public method(s) "testMethod1", "test_Method_2", NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodsNegativeTest() must be an object with public method(s) 'testMethod1', 'test_Method_2', NsplTest\TestClass given
      */
     public function testExpectsWithMethods_Negative()
     {
@@ -433,7 +454,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithKeyNegativeTest() must be an array with key(s) "answer"
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithKeyNegativeTest() must be an array with key(s) 'answer'
      */
     public function testExpectsWithKey_Negative()
     {
@@ -454,7 +475,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithKeysNegativeTest() must be an array with key(s) "hello", "answer"
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithKeysNegativeTest() must be an array with key(s) 'hello', 'answer'
      */
     public function testExpectsWithKeys_Negative()
     {
@@ -620,36 +641,6 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     {
         function expectsIntsNegativeTest($x, $y) { expectsAll(int, [$x, $y]); }
         $this->assertNull(expectsIntsNegativeTest('1', 2));
-    }
-    #endregion
-
-    #region expectsArg
-    public function testExpectsCustom_Positive()
-    {
-        function expectsCustomPositiveTest($arg1)
-        {
-            expectsToBe($arg1, 'to be a positive integer', function($arg) {
-                return is_int($arg) && $arg > 0;
-            });
-        }
-
-        $this->assertNull(expectsCustomPositiveTest(42));
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsCustomNegativeTest() has to be a positive integer, integer -1 given
-     */
-    public function testExpectsCustom_Negative()
-    {
-        function expectsCustomNegativeTest($arg1)
-        {
-            expectsToBe($arg1, 'a positive integer', function($arg) {
-                return is_int($arg) && $arg > 0;
-            });
-        }
-
-        $this->assertNull(expectsCustomNegativeTest(-1));
     }
     #endregion
 
@@ -984,11 +975,39 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull(deprecatedExpectsWithCustomExceptionTest('true'));
     }
+
+    public function testExpectsCustom_Positive()
+    {
+        function expectsCustomPositiveTest($arg1)
+        {
+            expectsToBe($arg1, 'to be a positive integer', function($arg) {
+                return is_int($arg) && $arg > 0;
+            });
+        }
+
+        $this->assertNull(expectsCustomPositiveTest(42));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsCustomNegativeTest() has to be a positive integer, integer -1 given
+     */
+    public function testExpectsCustom_Negative()
+    {
+        function expectsCustomNegativeTest($arg1)
+        {
+            expectsToBe($arg1, 'a positive integer', function($arg) {
+                return is_int($arg) && $arg > 0;
+            });
+        }
+
+        $this->assertNull(expectsCustomNegativeTest(-1));
+    }
     #endregion
 
 }
 
-#region Helper classes
+#region Helpers
 class TestClass
 {
     public function testMethod1() {}
@@ -1002,4 +1021,10 @@ class TestClass2
     public function testMethod2() {}
 
 }
+
+function validYear($arg)
+{
+    return is_int($arg) && $arg > 1900 && $arg <= (int) date('Y');
+}
+const validYear = '\NsplTest\validYear';
 #endregion

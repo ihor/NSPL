@@ -5,11 +5,11 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code with functional programming paradigm
  - [nspl\op](#nsplop) - provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
- - [nspl\args](#nsplargs) - provides functionality to validate function arguments easily
+ - [nspl\args](#nsplargs) - helps to validate function arguments
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
  - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
 
-NSPL aims to provide compact but clear syntax to make functional PHP code look less verbose. Fast and simple, it is created to be used every day instead of being another functional programming playground for geeks. Look at the following code written with NSPL:
+NSPL aims to make code compact and less verbose but still clear and readable. Look at the following code written with NSPL:
 ```php
 // get user ids
 $userIds = map(propertyGetter('id'), $users);
@@ -461,7 +461,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 ## nspl\args
 
-Provides functionality to validate function arguments easily
+Helps to validate function arguments
 
 ##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 

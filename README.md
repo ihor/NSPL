@@ -9,7 +9,7 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
  - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
 
-NSPL aims to make code compact and less verbose but still clear and readable. Look at the following code written with NSPL:
+NSPL aims to make code compact and less verbose but still clear and readable. Look at the following example:
 ```php
 // get user ids
 $userIds = map(propertyGetter('id'), $users);

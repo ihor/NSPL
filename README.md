@@ -84,6 +84,63 @@ use nspl\a;
 $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 ```
 
+## Table of contents
+
+* [nspl\f](#nsplf)
+    * [map](#mapfunction-sequence)
+    * [reduce](#reducefunction-sequence-initial--0)
+    * [filter](#filterpredicate-sequence)
+    * [partition](#partitionpredicate-sequence)
+    * [span](#spanpredicate-sequence)
+    * [apply](#applyfunction-array-args--)
+    * [flipped](#flippedfunction)
+    * [partial](#partialfunction-arg1)
+    * [rpartial](#rpartialfunction-arg1)
+    * [ppartial](#ppartialfunction-array-args)
+    * [memoized](#memoizedfunction)
+    * [compose](#composef-g)
+    * [pipe](#pipeinput-function1-function2)
+    * [curried](#curriedfunction-withoptionalargs--false)
+    * [uncurried](#uncurriedfunction)
+    * [Callbacks](#callbacks)
+* [nspl\op](#nsplop)
+    * [Callbacks](#callbacks-1)
+    * [itemGetter](#itemgetterkey)
+    * [propertyGetter](#propertygetterproperty)
+    * [methodCaller](#methodcallermethod-array-args--array)
+* [nspl\a](#nspla)
+    * [all](#allsequence-predicate)
+    * [any](#anysequence-predicate)
+    * [getByKey](#getbykeyarray-key-default--null)
+    * [extend](#extendsequence1-sequence2)
+    * [zip](#zipsequence1-sequence2)
+    * [flatten](#flattensequence-depth--null)
+    * [pairs](#pairssequence-valuekey--false)
+    * [sorted](#sortedsequence-reversed--false-key--null-cmp--null)
+    * [keySorted](#keysortedsequence-reversed--false)
+    * [indexed](#indexedsequence-by-keeplast--true-transform--null)
+    * [take](#takesequence-n-step--1)
+    * [first](#firstsequence)
+    * [drop](#dropsequence-n)
+    * [last](#lastsequence)
+    * [moveElement](#moveelementarray-list-from-to)
+    * [Callbacks](#callbacks-2)
+* [nspl\args](#nsplargs)
+    * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
+    * [expectsAll](#expectsallconstraints-array-args-array-atpositions---otherwisethrow--invalidargumentexception)
+    * [expectsOptional](#expectsoptionalconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
+    * [Predefined constraints](#predefined-constraints)
+    * [Custom constraints](#custom-constraints)
+* [nspl\ds](#nsplds)
+    * [getType](#gettypevar)
+    * [isList](#islistvar)
+    * [ArrayObject](#arrayobject)
+    * [DefaultArray](#defaultarray)
+* [nspl\rnd](#nsplrnd)
+    * [choice](#choicesequence)
+    * [weightedChoice](#weightedchoiceweightpairs)
+    * [sample](#samplepopulation-length-preservekeys--false)
+
 ## nspl\f
 
 Provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code in functional programming paradigm.
@@ -243,13 +300,9 @@ Check more ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 Class ```nspl\op``` provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
 
+##### Callbacks
 
-```php
-use const nspl\op\sum;
-use function nspl\f\reduce;
-
-assert(6 === reduce(sum, [1, 2, 3]));
-```
+The module provides the following operations both as functions and callbacks. See an example below.
 
 Function | Operation
 ---------|-----------------------------------------------
@@ -286,6 +339,13 @@ float    | (float)
 str      | (string)
 array_   | (array)
 object   | (object)
+
+```php
+use const nspl\op\sum;
+use function nspl\f\reduce;
+
+assert(6 === reduce(sum, [1, 2, 3]));
+```
 
 ##### itemGetter($key)
 Returns a function that returns key value for a given array

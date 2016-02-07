@@ -5,11 +5,11 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code with functional programming paradigm
  - [nspl\op](#nsplop) - provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
- - [nspl\args](#nsplargs) - provides functionality to validate function arguments easily
+ - [nspl\args](#nsplargs) - helps to validate function arguments
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
  - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
 
-NSPL aims to provide compact but clear syntax to make functional PHP code look less verbose. Fast and simple, it is created to be used every day instead of being another functional programming playground for geeks. Look at the following code written with NSPL:
+NSPL aims to make code compact and less verbose but still clear and readable. Look at the following example:
 ```php
 // get user ids
 $userIds = map(propertyGetter('id'), $users);
@@ -83,6 +83,63 @@ If your PHP version is less than 5.6 you should import parent namespace and use 
 use nspl\a;
 $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 ```
+
+## Table of contents
+
+* [nspl\f](#nsplf)
+    * [map](#mapfunction-sequence)
+    * [reduce](#reducefunction-sequence-initial--0)
+    * [filter](#filterpredicate-sequence)
+    * [partition](#partitionpredicate-sequence)
+    * [span](#spanpredicate-sequence)
+    * [apply](#applyfunction-array-args--)
+    * [flipped](#flippedfunction)
+    * [partial](#partialfunction-arg1)
+    * [rpartial](#rpartialfunction-arg1)
+    * [ppartial](#ppartialfunction-array-args)
+    * [memoized](#memoizedfunction)
+    * [compose](#composef-g)
+    * [pipe](#pipeinput-function1-function2)
+    * [curried](#curriedfunction-withoptionalargs--false)
+    * [uncurried](#uncurriedfunction)
+    * [Callbacks](#callbacks)
+* [nspl\op](#nsplop)
+    * [Callbacks](#callbacks-1)
+    * [itemGetter](#itemgetterkey)
+    * [propertyGetter](#propertygetterproperty)
+    * [methodCaller](#methodcallermethod-array-args--array)
+* [nspl\a](#nspla)
+    * [all](#allsequence-predicate)
+    * [any](#anysequence-predicate)
+    * [getByKey](#getbykeyarray-key-default--null)
+    * [extend](#extendsequence1-sequence2)
+    * [zip](#zipsequence1-sequence2)
+    * [flatten](#flattensequence-depth--null)
+    * [pairs](#pairssequence-valuekey--false)
+    * [sorted](#sortedsequence-reversed--false-key--null-cmp--null)
+    * [keySorted](#keysortedsequence-reversed--false)
+    * [indexed](#indexedsequence-by-keeplast--true-transform--null)
+    * [take](#takesequence-n-step--1)
+    * [first](#firstsequence)
+    * [drop](#dropsequence-n)
+    * [last](#lastsequence)
+    * [moveElement](#moveelementarray-list-from-to)
+    * [Callbacks](#callbacks-2)
+* [nspl\args](#nsplargs)
+    * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
+    * [expectsAll](#expectsallconstraints-array-args-array-atpositions---otherwisethrow--invalidargumentexception)
+    * [expectsOptional](#expectsoptionalconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
+    * [Predefined constraints](#predefined-constraints)
+    * [Custom constraints](#custom-constraints)
+* [nspl\ds](#nsplds)
+    * [getType](#gettypevar)
+    * [isList](#islistvar)
+    * [ArrayObject](#arrayobject)
+    * [DefaultArray](#defaultarray)
+* [nspl\rnd](#nsplrnd)
+    * [choice](#choicesequence)
+    * [weightedChoice](#weightedchoiceweightpairs)
+    * [sample](#samplepopulation-length-preservekeys--false)
 
 ## nspl\f
 
@@ -243,13 +300,9 @@ Check more ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 Class ```nspl\op``` provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
 
+##### Callbacks
 
-```php
-use const nspl\op\sum;
-use function nspl\f\reduce;
-
-assert(6 === reduce(sum, [1, 2, 3]));
-```
+The module provides the following operations both as functions and callbacks. See an example below.
 
 Function | Operation
 ---------|-----------------------------------------------
@@ -286,6 +339,13 @@ float    | (float)
 str      | (string)
 array_   | (array)
 object   | (object)
+
+```php
+use const nspl\op\sum;
+use function nspl\f\reduce;
+
+assert(6 === reduce(sum, [1, 2, 3]));
+```
 
 ##### itemGetter($key)
 Returns a function that returns key value for a given array
@@ -461,7 +521,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 ## nspl\args
 
-Provides functionality to validate function arguments easily
+Helps to validate function arguments
 
 ##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 

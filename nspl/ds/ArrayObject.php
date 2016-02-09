@@ -14,16 +14,6 @@ class ArrayObject implements \ArrayAccess, \Iterator
      */
     protected $valid = true;
 
-    /**
-     * @return $this
-     */
-    public static function create()
-    {
-        $result = new static();
-        $result->array = func_get_args();
-        return $result;
-    }
-
     public function __construct()
     {
         $this->array = func_get_args();
@@ -177,6 +167,17 @@ class ArrayObject implements \ArrayAccess, \Iterator
     }
 
     /**
+     * @param array $array
+     * @return static
+     */
+    public static function fromArray(array $array)
+    {
+        $result = new static();
+        $result->array = $array;
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -193,5 +194,5 @@ class ArrayObject implements \ArrayAccess, \Iterator
  */
 function arrayobject()
 {
-    return call_user_func_array(array('\nspl\ds\ArrayObject', 'create'), func_get_args());
+    return ArrayObject::fromArray(func_get_args());
 }

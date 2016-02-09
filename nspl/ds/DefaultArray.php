@@ -7,7 +7,7 @@ class DefaultArray extends ArrayObject
     /**
      * @var mixed|callable
      */
-    private $default;
+    protected $default;
 
     /**
      * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the array for the key, and returned.
@@ -19,6 +19,18 @@ class DefaultArray extends ArrayObject
     {
         $this->default = $default;
         $this->array = (array) $data;
+    }
+
+    /**
+     * @param array $array
+     * @return static
+     */
+    public static function fromArray($default, array $array)
+    {
+        $result = new static($default);
+        $result->array = $array;
+
+        return $result;
     }
 
     private function getDefault()

@@ -69,10 +69,10 @@ function partition(callable $predicate, $sequence)
     $result = [[], []];
     foreach ($sequence as $k => $v) {
         if ($isList) {
-            $result[(int)!call_user_func($predicate, $v)][] = $v;
+            $result[(int)!$predicate($v)][] = $v;
         }
         else {
-            $result[(int)!call_user_func($predicate, $v)][$k] = $v;
+            $result[(int)!$predicate($v)][$k] = $v;
         }
     }
 
@@ -311,7 +311,7 @@ function curried(callable $function, $withOptionalArgs = false)
 
     return function($arg) use ($function, $numOfArgs) {
         if (1 === $numOfArgs) {
-            return call_user_func_array($function, array($arg));
+            return $function($arg);
         }
 
         return curried(function() use ($arg, $function) {
@@ -331,7 +331,7 @@ function uncurried(callable $function)
 {
     return function() use ($function) {
         foreach (func_get_args() as $arg) {
-            $function = call_user_func($function, $arg);
+            $function = $function($arg);
         }
 
         return $function;

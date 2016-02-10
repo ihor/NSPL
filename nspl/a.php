@@ -20,7 +20,7 @@ function all($sequence, callable $predicate = null)
     args\expects(args\traversable, $sequence);
 
     foreach ($sequence as $value) {
-        if ($predicate && !call_user_func($predicate, $value) || !$predicate && !$value) {
+        if ($predicate && !$predicate($value) || !$predicate && !$value) {
             return false;
         }
     }
@@ -42,7 +42,7 @@ function any($sequence, callable $predicate = null)
     args\expects(args\traversable, $sequence);
 
     foreach ($sequence as $value) {
-        if ($predicate && call_user_func($predicate, $value) || !$predicate && $value) {
+        if ($predicate && $predicate($value) || !$predicate && $value) {
             return true;
         }
     }
@@ -213,7 +213,7 @@ function sorted($array, $reversed = false, callable $key = null, callable $cmp =
 
     if ($key) {
         $cmp = function($a, $b) use ($key, $cmp) {
-            return call_user_func_array($cmp, array($key($a), $key($b)));
+            return $cmp($key($a), $key($b));
         };
     }
 
@@ -273,10 +273,10 @@ function indexed($sequence, $by, $keepLast = true, callable $transform = null)
     $result = array();
     foreach ($sequence as $item) {
         if ($indexIsCallable || isset($item[$by]) || array_key_exists($by, $item)) {
-            $index = $indexIsCallable ? call_user_func($by, $item) : $item[$by];
+            $index = $indexIsCallable ? $by($item) : $item[$by];
 
             if ($keepLast) {
-                $result[$index] = $transform ? call_user_func($transform, $item) : $item;;
+                $result[$index] = $transform ? $transform($item) : $item;;
                 continue;
             }
 
@@ -284,7 +284,7 @@ function indexed($sequence, $by, $keepLast = true, callable $transform = null)
                 $result[$index] = [];
             }
 
-            $result[$index][] = $transform ? call_user_func($transform, $item) : $item;;
+            $result[$index][] = $transform ? $transform($item) : $item;;
         }
     }
 

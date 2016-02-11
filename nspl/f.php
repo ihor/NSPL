@@ -203,7 +203,8 @@ function ppartial(callable $function, array $args)
 const ppartial = '\nspl\f\ppartial';
 
 /**
- * Returns the given value
+ * Identity function. Returns passed value.
+ *
  * @param mixed $value
  * @return mixed
  */

@@ -100,6 +100,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [memoized](#memoizedfunction)
     * [compose](#composef-g)
     * [pipe](#pipeinput-function1-function2)
+    * [id](#idvalue)
     * [curried](#curriedfunction-withoptionalargs--false)
     * [uncurried](#uncurriedfunction)
     * [Callbacks](#callbacks)
@@ -271,6 +272,14 @@ $sum = pipe(
 ##### I($input, $function1, $function2)
 
 Alias for the pipe
+
+##### id($value)
+
+Identity function. Returns passed value.
+
+```php
+assert(1 === id(1));
+```
 
 ##### curried($function, $withOptionalArgs = false)
 

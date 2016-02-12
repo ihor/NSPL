@@ -64,6 +64,7 @@ or simply execute the following in the command line:
 ```
 composer require ihor/nspl
 ```
+For the latest changes require version ```1.1.*-dev```
 
 #### Manually
 Checkout the code and include ```autoload.php```:

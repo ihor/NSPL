@@ -510,11 +510,11 @@ Returns the last sequence item
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
-##### moveElement(array $list, $from, $to)
+##### reorder(array $list, $from, $to)
 
 Moves list element to another position
 ```php
-assert([2, 0, 1] === moveElement([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
+assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
 
 ##### Callbacks

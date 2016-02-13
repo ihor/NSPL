@@ -214,7 +214,7 @@ Returns new function which applies each given function to the result of another 
 ```compose(f, g, h)``` is the same as ```f(g(h(x)))```
 ```php
 use const \nspl\a\flatten;
-use const \nspl\f\map;
+use const \nspl\a\map;
 use function \nspl\f\compose;
 use function \nspl\f\partial;
 use function \nspl\f\rpartial;
@@ -228,9 +228,9 @@ assert(['hello', 'world', 'foo', 'bar'] === $flatMap(partial('explode', ' '), ['
 Passes ```$input``` to composition of functions (functions have to be in the reversed order)
 ```php
 use const \nspl\op\sum;
-use const \nspl\f\filter;
-use const \nspl\f\map;
-use const \nspl\f\reduce;
+use const \nspl\a\filter;
+use const \nspl\a\map;
+use const \nspl\a\reduce;
 use function \nspl\f\partial;
 
 // sum of squares of all even numbers less than 20
@@ -260,8 +260,8 @@ Returns normal (uncurried) version of a [curried function](https://en.wikipedia.
 
 ```nspl\f``` provides all these functions as callbacks in its constants which have the same names as the functions.
 ```php
-use const \nspl\f\map;
-use const \nspl\f\filter;
+use const \nspl\a\map;
+use const \nspl\a\filter;
 
 $incListItems = partial(map, function($v) { return $v + 1; });
 $filterNumbers = partial(filter, 'is_numeric');
@@ -316,7 +316,7 @@ object   | (object)
 
 ```php
 use const nspl\op\sum;
-use function nspl\f\reduce;
+use function nspl\a\reduce;
 
 assert(6 === reduce(sum, [1, 2, 3]));
 ```
@@ -326,7 +326,7 @@ Returns a function that returns key value for a given array
 
 ```php
 use function nspl\op\itemGetter;
-use function nspl\f\map;
+use function nspl\a\map;
 
 assert([2, 5, 8] === map(itemGetter(1), [[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
 ```
@@ -510,11 +510,11 @@ Returns the last sequence item
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
-##### moveElement(array $list, $from, $to)
+##### reorder(array $list, $from, $to)
 
 Moves list element to another position
 ```php
-assert([2, 0, 1] === moveElement([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
+assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
 
 ##### Callbacks

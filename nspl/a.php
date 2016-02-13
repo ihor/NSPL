@@ -526,6 +526,41 @@ const last = '\nspl\a\last';
  * @param int $to
  * @return array
  */
+function reorder(array $list, $from, $to)
+{
+    args\expects(args\int, $from);
+    args\expects(args\int, $to, 3);
+
+    if (!ds\isList($list)) {
+        throw new \InvalidArgumentException('First argument should be a list');
+    }
+
+    if (!isset($list[$from]) || !isset($list[$to])) {
+        throw new \InvalidArgumentException('From and to should be valid list keys');
+    }
+
+    if ($from === $to) {
+        return $list;
+    }
+
+    $moving = array_splice($list, $from, 1);
+    array_splice($list, $to, 0, $moving);
+
+    return $list;
+}
+const reorder = '\nspl\a\reorder';
+
+//region deprecated
+/**
+ * @depreacated
+ * @see \nspl\a\reorder
+ * Moves list element to another position
+ *
+ * @param array $list
+ * @param int $from
+ * @param int $to
+ * @return array
+ */
 function moveElement(array $list, $from, $to)
 {
     args\expects(args\int, $from);
@@ -548,4 +583,5 @@ function moveElement(array $list, $from, $to)
 
     return $list;
 }
-const moveElement = '\nspl\a\moveElement';
+const moveElement = '\nspl\a\reorder';
+//endregion

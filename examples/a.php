@@ -13,7 +13,7 @@ use function nspl\a\sorted;
 use function nspl\a\keySorted;
 use function nspl\a\indexed;
 use function nspl\a\take;
-use function nspl\a\moveElement;
+use function nspl\a\reorder;
 
 use const nspl\op\eq;
 use const nspl\op\object;
@@ -116,7 +116,7 @@ echo sprintf("Numbers less than 20 which are divisible by 3: %s\n", implode(', '
 
 
 // 12. Re-order pets rating
-$petsRating = moveElement(['dog', 'hamster', 'cat'], 2, 1);
+$petsRating = reorder(['dog', 'hamster', 'cat'], 2, 1);
 
 echo "New pets rating:\n";
 foreach ($petsRating as $pet) {

@@ -21,7 +21,7 @@ use function \nspl\a\take;
 use function \nspl\a\first;
 use function \nspl\a\drop;
 use function \nspl\a\last;
-use function \nspl\a\moveElement;
+use function \nspl\a\reorder;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -42,7 +42,12 @@ use const \nspl\a\take;
 use const \nspl\a\first;
 use const \nspl\a\drop;
 use const \nspl\a\last;
+use const \nspl\a\reorder;
+
+//region deprecated
+use function \nspl\a\moveElement;
 use const \nspl\a\moveElement;
+//endregion
 
 class ATest extends \PHPUnit_Framework_TestCase
 {
@@ -386,6 +391,41 @@ class ATest extends \PHPUnit_Framework_TestCase
         last([]);
     }
 
+    public function testReorder()
+    {
+        $this->assertEquals([2, 0, 1], reorder([0, 1, 2], 2, 0));
+        $this->assertEquals([0, 2, 1], reorder([0, 1, 2], 1, 2));
+        $this->assertEquals([0, 1, 2], reorder([0, 1, 2], 1, 1));
+
+        $this->assertEquals([2, 0, 1], call_user_func(reorder, [0, 1, 2], 2, 0));
+        $this->assertEquals('\nspl\a\reorder', reorder);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReorderToInNotList()
+    {
+        reorder(array(1 => 'a', 2 => 'b', 3 => 'c'), 1, 2);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReorderToInvalidPosition()
+    {
+        reorder([0, 1, 2], 0, 3);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReorderFromInvalidPosition()
+    {
+        reorder([0, 1, 2], 3, 0);
+    }
+    
+    //region deprecated
     public function testMoveElement()
     {
         $this->assertEquals([2, 0, 1], moveElement([0, 1, 2], 2, 0));
@@ -393,7 +433,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([0, 1, 2], moveElement([0, 1, 2], 1, 1));
 
         $this->assertEquals([2, 0, 1], call_user_func(moveElement, [0, 1, 2], 2, 0));
-        $this->assertEquals('\nspl\a\moveElement', moveElement);
+        $this->assertEquals('\nspl\a\reorder', moveElement);
     }
 
     /**
@@ -419,5 +459,6 @@ class ATest extends \PHPUnit_Framework_TestCase
     {
         moveElement([0, 1, 2], 3, 0);
     }
+    //endregion
 
 }

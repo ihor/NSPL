@@ -7,6 +7,9 @@ use nspl\ds;
 use nspl\args;
 
 /**
+ * @deprecated
+ * @see \nspl\a\map
+ *
  * Applies function of one argument to each sequence item
  *
  * @param callable $function
@@ -18,9 +21,12 @@ function map(callable $function, $sequence)
     args\expects(args\traversable, $sequence);
     return array_map($function, ds\traversableToArray($sequence));
 }
-const map = '\nspl\f\map';
+const map = '\nspl\a\map';
 
 /**
+ * @deprecated
+ * @see \nspl\a\reduce
+ *
  * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
  * to a single value.
  *
@@ -34,9 +40,12 @@ function reduce(callable $function, $sequence, $initial = 0)
     args\expects(args\traversable, $sequence);
     return array_reduce(ds\traversableToArray($sequence), $function, $initial);
 }
-const reduce = '\nspl\f\reduce';
+const reduce = '\nspl\a\reduce';
 
 /**
+ * @deprecated
+ * @see \nspl\a\filter
+ *
  * Returns sequence items that satisfy the predicate
  *
  * @param callable $predicate
@@ -51,9 +60,12 @@ function filter(callable $predicate, $sequence)
     $filtered = array_filter($sequence, $predicate);
     return ds\isList($sequence) ? array_values($filtered) : $filtered;
 }
-const filter = '\nspl\f\filter';
+const filter = '\nspl\a\filter';
 
 /**
+ * @deprecated
+ * @see \nspl\a\partition
+ *
  * Returns two lists, one containing values for which your predicate returned true, and the other containing
  * the elements that returned false
  *
@@ -78,9 +90,12 @@ function partition(callable $predicate, $sequence)
 
     return $result;
 }
-const partition = '\nspl\f\partition';
+const partition = '\nspl\a\partition';
 
 /**
+ * @deprecated
+ * @see \nspl\a\span
+ *
  * Returns two lists, one containing values for which your predicate returned true until the predicate returned
  * false, and the other containing all the elements that left
  *
@@ -111,7 +126,7 @@ function span(callable $predicate, $sequence)
 
     return $result;
 }
-const span = '\nspl\f\span';
+const span = '\nspl\a\span';
 
 /**
  * Applies function to arguments and returns the result

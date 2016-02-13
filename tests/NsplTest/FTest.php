@@ -2,11 +2,6 @@
 
 namespace NsplTest;
 
-use function \nspl\f\map;
-use function \nspl\f\reduce;
-use function \nspl\f\filter;
-use function \nspl\f\partition;
-use function \nspl\f\span;
 use function \nspl\f\apply;
 use function \nspl\f\flipped;
 use function \nspl\f\partial;
@@ -20,11 +15,6 @@ use function \nspl\f\I;
 use function \nspl\f\curried;
 use function \nspl\f\uncurried;
 
-use const \nspl\f\map;
-use const \nspl\f\reduce;
-use const \nspl\f\filter;
-use const \nspl\f\partition;
-use const \nspl\f\span;
 use const \nspl\f\apply;
 use const \nspl\f\flipped;
 use const \nspl\f\partial;
@@ -37,71 +27,22 @@ use const \nspl\f\pipe;
 use const \nspl\f\curried;
 use const \nspl\f\uncurried;
 
+//region deprecated
+use function \nspl\f\map;
+use function \nspl\f\reduce;
+use function \nspl\f\filter;
+use function \nspl\f\partition;
+use function \nspl\f\span;
+
+use const \nspl\f\map;
+use const \nspl\f\reduce;
+use const \nspl\f\filter;
+use const \nspl\f\partition;
+use const \nspl\f\span;
+//endregion
+
 class FTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMap()
-    {
-        $this->assertEquals(['A', 'B', 'C'], map('strtoupper', ['a', 'b', 'c']));
-        $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, new \ArrayIterator([1, 2, 3])));
-        $this->assertEquals(['a' => 0, 'b' => 1, 'c' => 2], map('abs', array('a' => 0, 'b' => -1, 'c' => 2)));
-        $this->assertEquals([], map('strtoupper', []));
-
-        $range = function($min, $max) { for ($i = $min; $i <= $max; ++$i) yield $i; };
-        $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, $range(1, 3)));
-
-        $this->assertEquals(['A', 'B', 'C'], call_user_func(map, 'strtoupper', ['a', 'b', 'c']));
-        $this->assertEquals('\nspl\f\map', map);
-    }
-
-    public function testReduce()
-    {
-        $this->assertEquals(6, reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
-        $this->assertEquals('abc', reduce(function($a, $b) { return $a . $b; }, new \ArrayIterator(['a', 'b', 'c']), ''));
-        $this->assertEquals(64, reduce('pow', array('a' => 3, 'b' => 2, 'c' => 1), 2));
-        $this->assertEquals(0, reduce(function($a, $b) { return $a * $b; }, [], 0));
-        $this->assertEquals(1, reduce(function($a, $b) { return $a * $b; }, [], 1));
-
-        $this->assertEquals(6, call_user_func(reduce, function($a, $b) { return $a + $b; }, [1, 2, 3]));
-        $this->assertEquals('\nspl\f\reduce', reduce);
-    }
-
-    public function testFilter()
-    {
-        $this->assertEquals([1, 2, 3], filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals(
-            array('b' => 2),
-            filter(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
-        );
-        $this->assertEquals([], filter('is_int', []));
-
-        $this->assertEquals([1, 2, 3], call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals('\nspl\f\filter', filter);
-    }
-
-    public function testPartition()
-    {
-        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals(
-            [array('b' => 2), array('a' => 1, 'c' => 3)],
-            partition(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
-        );
-        $this->assertEquals([[], []], partition('is_int', []));
-
-        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], call_user_func(partition, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals('\nspl\f\partition', partition);
-    }
-
-    public function testSpan()
-    {
-        $this->assertEquals([[], ['a', 1, 'b', 2, 'c', 3]], span('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
-        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], span('is_numeric', [1, 2, 3, 'a', 'b', 'c']));
-        $this->assertEquals([[], []], span('is_int', []));
-
-        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], call_user_func(span, 'is_numeric', [1, 'a', 2, 'b', 3, 'c']));
-        $this->assertEquals('\nspl\f\span', span);
-    }
-
     public function testApply()
     {
         $this->assertEquals([1, 3, 5, 7, 9], apply('range', [1, 10, 2]));
@@ -329,5 +270,70 @@ class FTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Hello world!', $strReplace('_', ' ', 'Hello_world!'));
     }
+
+    //region deprecated
+    public function testMap()
+    {
+        $this->assertEquals(['A', 'B', 'C'], map('strtoupper', ['a', 'b', 'c']));
+        $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, new \ArrayIterator([1, 2, 3])));
+        $this->assertEquals(['a' => 0, 'b' => 1, 'c' => 2], map('abs', array('a' => 0, 'b' => -1, 'c' => 2)));
+        $this->assertEquals([], map('strtoupper', []));
+
+        $range = function($min, $max) { for ($i = $min; $i <= $max; ++$i) yield $i; };
+        $this->assertEquals([1, 4, 9], map(function($v) { return $v * $v; }, $range(1, 3)));
+
+        $this->assertEquals(['A', 'B', 'C'], call_user_func(map, 'strtoupper', ['a', 'b', 'c']));
+        $this->assertEquals('\nspl\a\map', map);
+    }
+
+    public function testReduce()
+    {
+        $this->assertEquals(6, reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
+        $this->assertEquals('abc', reduce(function($a, $b) { return $a . $b; }, new \ArrayIterator(['a', 'b', 'c']), ''));
+        $this->assertEquals(64, reduce('pow', array('a' => 3, 'b' => 2, 'c' => 1), 2));
+        $this->assertEquals(0, reduce(function($a, $b) { return $a * $b; }, [], 0));
+        $this->assertEquals(1, reduce(function($a, $b) { return $a * $b; }, [], 1));
+
+        $this->assertEquals(6, call_user_func(reduce, function($a, $b) { return $a + $b; }, [1, 2, 3]));
+        $this->assertEquals('\nspl\a\reduce', reduce);
+    }
+
+    public function testFilter()
+    {
+        $this->assertEquals([1, 2, 3], filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals(
+            array('b' => 2),
+            filter(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
+        );
+        $this->assertEquals([], filter('is_int', []));
+
+        $this->assertEquals([1, 2, 3], call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals('\nspl\a\filter', filter);
+    }
+
+    public function testPartition()
+    {
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals(
+            [array('b' => 2), array('a' => 1, 'c' => 3)],
+            partition(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
+        );
+        $this->assertEquals([[], []], partition('is_int', []));
+
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], call_user_func(partition, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals('\nspl\a\partition', partition);
+    }
+
+    public function testSpan()
+    {
+        $this->assertEquals([[], ['a', 1, 'b', 2, 'c', 3]], span('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+        $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], span('is_numeric', [1, 2, 3, 'a', 'b', 'c']));
+        $this->assertEquals([[], []], span('is_int', []));
+
+        $this->assertEquals([[1], ['a', 2, 'b', 3, 'c']], call_user_func(span, 'is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+        $this->assertEquals('\nspl\a\span', span);
+    }
+    //endregion
 
 }

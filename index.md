@@ -2,7 +2,7 @@ Non-standard PHP library (NSPL)
 ===============================
 Non-standard PHP Library (NSPL) is a collection of modules that are meant to solve common day to day routine problems:
 
- - [nspl\f](#nsplf) - provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code with functional programming paradigm
+ - [nspl\f](#nsplf) - provides functions that act on other functions. Helps to write code in functional programming paradigm
  - [nspl\op](#nsplop) - provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
  - [nspl\args](#nsplargs) - helps to validate function arguments
@@ -88,11 +88,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 ## Table of contents
 
 * [nspl\f](#nsplf)
-    * [map](#mapfunction-sequence)
-    * [reduce](#reducefunction-sequence-initial--0)
-    * [filter](#filterpredicate-sequence)
-    * [partition](#partitionpredicate-sequence)
-    * [span](#spanpredicate-sequence)
+    * [id](#idvalue)
     * [apply](#applyfunction-array-args--)
     * [flipped](#flippedfunction)
     * [partial](#partialfunction-arg1)
@@ -101,7 +97,6 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [memoized](#memoizedfunction)
     * [compose](#composef-g)
     * [pipe](#pipeinput-function1-function2)
-    * [id](#idvalue)
     * [curried](#curriedfunction-withoptionalargs--false)
     * [uncurried](#uncurriedfunction)
     * [Callbacks](#callbacks)
@@ -113,6 +108,11 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 * [nspl\a](#nspla)
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
+    * [map](#mapfunction-sequence)
+    * [reduce](#reducefunction-sequence-initial--0)
+    * [filter](#filterpredicate-sequence)
+    * [partition](#partitionpredicate-sequence)
+    * [span](#spanpredicate-sequence)
     * [getByKey](#getbykeyarray-key-default--null)
     * [extend](#extendsequence1-sequence2)
     * [zip](#zipsequence1-sequence2)
@@ -145,42 +145,14 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 
 ## nspl\f
 
-Provides the most popular higher-order functions: functions that act on or return other functions. Helps to write code in functional programming paradigm.
+Provides functions that act on other functions. Helps to write code in functional programming paradigm.
 
+##### id($value)
 
-##### map($function, $sequence)
+Identity function. Returns passed value.
 
-Applies function of one argument to each sequence item.
 ```php
-assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
-```
-
-##### reduce($function, $sequence, $initial = 0)
-
-Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
-```php
-assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
-```
-
-##### filter($predicate, $sequence)
-
-Returns list items that satisfy the predicate
-```php
-assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-```
-
-##### partition($predicate, $sequence)
-
-Returns two lists, one containing values for which your predicate returned true, and the other containing the elements that returned false
-```php
-assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-```
-
-##### span($predicate, $sequence)
-
-Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
-```php
-assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+assert(1 === id(1));
 ```
 
 ##### apply($function, array $args = [])
@@ -273,14 +245,6 @@ $sum = pipe(
 ##### I($input, $function1, $function2)
 
 Alias for the pipe
-
-##### id($value)
-
-Identity function. Returns passed value.
-
-```php
-assert(1 === id(1));
-```
 
 ##### curried($function, $withOptionalArgs = false)
 
@@ -401,6 +365,41 @@ Returns true if any element of the ```$sequence``` satisfies the predicate. If p
 
 ```php
 assert(true === any([true, false, false]));
+```
+
+##### map($function, $sequence)
+
+Applies function of one argument to each sequence item.
+```php
+assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
+```
+
+##### reduce($function, $sequence, $initial = 0)
+
+Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
+```php
+assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
+```
+
+##### filter($predicate, $sequence)
+
+Returns list items that satisfy the predicate
+```php
+assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+```
+
+##### partition($predicate, $sequence)
+
+Returns two lists, one containing values for which your predicate returned true, and the other containing the elements that returned false
+```php
+assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+```
+
+##### span($predicate, $sequence)
+
+Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
+```php
+assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
 ```
 
 ##### getByKey($array, $key, $default = null)

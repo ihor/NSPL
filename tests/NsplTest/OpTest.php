@@ -39,7 +39,7 @@ use const \nspl\op\array_;
 use function \nspl\op\itemGetter;
 use function \nspl\op\propertyGetter;
 use function \nspl\op\methodCaller;
-use function \nspl\f\map;
+use function \nspl\a\map;
 
 class OpTest extends \PHPUnit_Framework_TestCase
 {

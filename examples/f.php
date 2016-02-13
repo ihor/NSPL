@@ -3,10 +3,9 @@
 require_once __DIR__ . '/../autoload.php';
 
 use nspl\f;
-use function nspl\f\map;
-use function nspl\f\reduce;
-use function nspl\f\filter;
+use function nspl\f\partial;
 use function nspl\f\rpartial;
+use function nspl\f\flipped;
 use function nspl\f\compose;
 use function nspl\f\memoized;
 
@@ -15,6 +14,10 @@ use const nspl\op\gt;
 use const nspl\op\mul;
 use function nspl\op\propertyGetter;
 
+use const \nspl\a\getByKey;
+use function \nspl\a\map;
+use function \nspl\a\reduce;
+use function \nspl\a\filter;
 
 $users = map(object, [
     array('id' => 1, 'name' => 'John', 'age' => 15),
@@ -25,28 +28,14 @@ $users = map(object, [
     array('id' => 6, 'name' => 'Bob', 'age' => 30),
 ]);
 
-// 1. Get user ids
-$userIds = map(propertyGetter('id'), $users);
+// 1. Get user name from which can be stored as username, user_name or name in data array
+$data = array('id' => 1337, 'name' => 'John', 'gender' => 'male');
+$name = reduce(flipped(partial(getByKey, $data)), ['username', 'user_name', 'name'], '');
 
-echo sprintf("User ids are: %s\n", implode(', ', $userIds));
-
-
-// 2. Count users younger than 25
-$youngerThan25Count = reduce(function($count, $user) { return $count + (int) ($user->age < 25); }, $users);
-
-echo sprintf("%s users are younger than 25\n", $youngerThan25Count);
+echo sprintf("User name is %s\n", $name);
 
 
-// 3. Get users younger than 25
-$youngerThan25 = filter(function($user) { return $user->age < 25; }, $users);
-
-echo "These users are younger than 25:\n";
-foreach ($youngerThan25 as $user) {
-    echo sprintf("    %s - %s y.o.\n", $user->name, $user->age);
-}
-
-
-// 4. Get users older than 25
+// 2. Get users older than 25
 $isOlderThan25 = compose(rpartial(gt, 25), propertyGetter('age'));
 $olderThan25 = filter($isOlderThan25, $users);
 
@@ -56,7 +45,7 @@ foreach ($olderThan25 as $user) {
 }
 
 
-// 5. Memoizing heavy calculations
+// 3. Memoizing heavy calculations
 $factorial = function($n) {
     echo "Calculating $n!\n";
     return reduce(mul, range(1, $n), 1);

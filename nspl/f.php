@@ -7,128 +7,6 @@ use nspl\ds;
 use nspl\args;
 
 /**
- * @deprecated
- * @see \nspl\a\map
- *
- * Applies function of one argument to each sequence item
- *
- * @param callable $function
- * @param array|\Traversable $sequence
- * @return array
- */
-function map(callable $function, $sequence)
-{
-    args\expects(args\traversable, $sequence);
-    return array_map($function, ds\traversableToArray($sequence));
-}
-const map = '\nspl\a\map';
-
-/**
- * @deprecated
- * @see \nspl\a\reduce
- *
- * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
- * to a single value.
- *
- * @param callable $function
- * @param array|\Traversable $sequence
- * @param mixed $initial
- * @return array
- */
-function reduce(callable $function, $sequence, $initial = 0)
-{
-    args\expects(args\traversable, $sequence);
-    return array_reduce(ds\traversableToArray($sequence), $function, $initial);
-}
-const reduce = '\nspl\a\reduce';
-
-/**
- * @deprecated
- * @see \nspl\a\filter
- *
- * Returns sequence items that satisfy the predicate
- *
- * @param callable $predicate
- * @param array|\Traversable $sequence
- * @return array
- */
-function filter(callable $predicate, $sequence)
-{
-    args\expects(args\traversable, $sequence);
-
-    $sequence = ds\traversableToArray($sequence);
-    $filtered = array_filter($sequence, $predicate);
-    return ds\isList($sequence) ? array_values($filtered) : $filtered;
-}
-const filter = '\nspl\a\filter';
-
-/**
- * @deprecated
- * @see \nspl\a\partition
- *
- * Returns two lists, one containing values for which your predicate returned true, and the other containing
- * the elements that returned false
- *
- * @param callable $predicate
- * @param array|\Traversable $sequence
- * @return array
- */
-function partition(callable $predicate, $sequence)
-{
-    args\expects(args\traversable, $sequence);
-
-    $isList = ds\isList($sequence);
-    $result = [[], []];
-    foreach ($sequence as $k => $v) {
-        if ($isList) {
-            $result[(int)!$predicate($v)][] = $v;
-        }
-        else {
-            $result[(int)!$predicate($v)][$k] = $v;
-        }
-    }
-
-    return $result;
-}
-const partition = '\nspl\a\partition';
-
-/**
- * @deprecated
- * @see \nspl\a\span
- *
- * Returns two lists, one containing values for which your predicate returned true until the predicate returned
- * false, and the other containing all the elements that left
- *
- * @param callable $predicate
- * @param array|\Traversable $sequence
- * @return array
- */
-function span(callable $predicate, $sequence)
-{
-    args\expects(args\traversable, $sequence);
-
-    $isList = ds\isList($sequence);
-    $result = [[], []];
-
-    $listIndex = 0;
-    foreach ($sequence as $k => $v) {
-        if (!$predicate($v)) {
-            $listIndex = 1;
-        }
-
-        if ($isList) {
-            $result[$listIndex][] = $v;
-        }
-        else {
-            $result[$listIndex][$k] = $v;
-        }
-    }
-
-    return $result;
-}
-const span = '\nspl\a\span';
-
-/**
  * Applies function to arguments and returns the result
  *
  * @param callable $function
@@ -354,3 +232,127 @@ function uncurried(callable $function)
     };
 }
 const uncurried = '\nspl\f\uncurried';
+
+//region deprecated
+/**
+ * @deprecated
+ * @see \nspl\a\map
+ *
+ * Applies function of one argument to each sequence item
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function map(callable $function, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+    return array_map($function, ds\traversableToArray($sequence));
+}
+const map = '\nspl\a\map';
+
+/**
+ * @deprecated
+ * @see \nspl\a\reduce
+ *
+ * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
+ * to a single value.
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence
+ * @param mixed $initial
+ * @return array
+ */
+function reduce(callable $function, $sequence, $initial = 0)
+{
+    args\expects(args\traversable, $sequence);
+    return array_reduce(ds\traversableToArray($sequence), $function, $initial);
+}
+const reduce = '\nspl\a\reduce';
+
+/**
+ * @deprecated
+ * @see \nspl\a\filter
+ *
+ * Returns sequence items that satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function filter(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $sequence = ds\traversableToArray($sequence);
+    $filtered = array_filter($sequence, $predicate);
+    return ds\isList($sequence) ? array_values($filtered) : $filtered;
+}
+const filter = '\nspl\a\filter';
+
+/**
+ * @deprecated
+ * @see \nspl\a\partition
+ *
+ * Returns two lists, one containing values for which your predicate returned true, and the other containing
+ * the elements that returned false
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function partition(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $isList = ds\isList($sequence);
+    $result = [[], []];
+    foreach ($sequence as $k => $v) {
+        if ($isList) {
+            $result[(int)!$predicate($v)][] = $v;
+        }
+        else {
+            $result[(int)!$predicate($v)][$k] = $v;
+        }
+    }
+
+    return $result;
+}
+const partition = '\nspl\a\partition';
+
+/**
+ * @deprecated
+ * @see \nspl\a\span
+ *
+ * Returns two lists, one containing values for which your predicate returned true until the predicate returned
+ * false, and the other containing all the elements that left
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function span(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $isList = ds\isList($sequence);
+    $result = [[], []];
+
+    $listIndex = 0;
+    foreach ($sequence as $k => $v) {
+        if (!$predicate($v)) {
+            $listIndex = 1;
+        }
+
+        if ($isList) {
+            $result[$listIndex][] = $v;
+        }
+        else {
+            $result[$listIndex][$k] = $v;
+        }
+    }
+
+    return $result;
+}
+const span = '\nspl\a\span';
+//endregion

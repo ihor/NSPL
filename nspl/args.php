@@ -615,13 +615,13 @@ class ErrorMessage
     public static function getFor($type, $onlyOr = false)
     {
         if (is_array($type)) {
-            $messagesFor = f\partial(f\map, ['\nspl\args\_p\ErrorMessage', 'getFor']);
+            $messagesFor = f\partial(a\map, ['\nspl\args\_p\ErrorMessage', 'getFor']);
             if ($onlyOr) {
                 return implode(' or ', $messagesFor($type));
             }
             else {
                 $isOr = function ($t) { return isset(Checker::$isOr[$t]) || class_exists($t); };
-                list($orTypes, $andTypes) = f\partition($isOr, $type);
+                list($orTypes, $andTypes) = a\partition($isOr, $type);
 
                 return implode(' and ', array_filter([
                     implode(' or ', $messagesFor($orTypes)),

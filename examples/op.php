@@ -7,11 +7,11 @@ use const nspl\op\gt;
 use function nspl\op\itemGetter;
 use function nspl\op\propertyGetter;
 
-use function nspl\f\map;
 use function nspl\f\rpartial;
 
 use function nspl\a\all;
 use function nspl\a\any;
+use function nspl\a\map;
 use function nspl\a\sorted;
 
 

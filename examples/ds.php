@@ -3,9 +3,8 @@
 require_once __DIR__ . '/../autoload.php';
 
 use function \nspl\ds\defaultarray;
-use function \nspl\ds\dstring;
 
-use function \nspl\f\map;
+use function \nspl\a\map;
 use function \nspl\op\methodCaller;
 
 
@@ -32,14 +31,3 @@ for ($i = 0; $i < 3; ++$i) {
 
 echo "Matrix 3x3:\n";
 print_r(map(methodCaller('toArray'), $matrix->toArray())); // casting default array with all nested default arrays to PHP array
-
-
-// 3. Dynamic email subject
-$subject = dstring()
-    ->addStr('Something bad happened on ')
-    ->addConstant('APPLICATION_ENV')
-    ->addStr(' at ')
-    ->addFunction('date', ['Y-m-d H:i:s']);
-
-define('APPLICATION_ENV', 'staging');
-echo $subject . "\n";

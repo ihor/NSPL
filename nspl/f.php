@@ -46,7 +46,7 @@ function partial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return call_user_func_array($function, a\extend($args, func_get_args()));
+        return call_user_func_array($function, a\merge($args, func_get_args()));
     };
 }
 const partial = '\nspl\f\partial';
@@ -65,7 +65,7 @@ function rpartial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return call_user_func_array($function, a\extend(func_get_args(), $args));
+        return call_user_func_array($function, a\merge(func_get_args(), $args));
     };
 }
 const rpartial = '\nspl\f\rpartial';

@@ -182,14 +182,14 @@ const getByKey = '\nspl\a\getByKey';
  * @param array|\Traversable $sequence2
  * @return array
  */
-function extend($sequence1, $sequence2)
+function merge($sequence1, $sequence2)
 {
     args\expects(args\traversable, $sequence1);
     args\expects(args\traversable, $sequence2, 2);
 
     return array_merge(traversableToArray($sequence1), traversableToArray(($sequence2)));
 }
-const extend = '\nspl\a\extend';
+const merge = '\nspl\a\merge';
 
 /**
  * Zips two or more sequences
@@ -575,6 +575,24 @@ function traversableToArray($var)
 }
 
 //region deprecated
+/**
+ * @deprecated
+ * @see \nspl\a\merge
+ * Returns arrays containing $sequence1 items and $sequence2 items
+ *
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
+ * @return array
+ */
+function extend($sequence1, $sequence2)
+{
+    args\expects(args\traversable, $sequence1);
+    args\expects(args\traversable, $sequence2, 2);
+
+    return array_merge(traversableToArray($sequence1), traversableToArray(($sequence2)));
+}
+const extend = '\nspl\a\merge';
+
 /**
  * @depreacated
  * @see \nspl\a\reorder

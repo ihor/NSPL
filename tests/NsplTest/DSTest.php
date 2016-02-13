@@ -6,50 +6,15 @@ use \nspl\ds\ArrayObject;
 use \nspl\ds\DefaultArray;
 use function \nspl\ds\arrayobject;
 use function \nspl\ds\defaultarray;
+
+//region deprecated
 use function \nspl\ds\getType;
 use function \nspl\ds\isList;
 use function \nspl\ds\traversableToArray;
+//endregion
 
 class DsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetType()
-    {
-        $this->assertEquals('NULL', getType(null));
-        $this->assertEquals('boolean', getType(true));
-        $this->assertEquals('integer', getType(1));
-        $this->assertEquals('double', getType(1.0));
-        $this->assertEquals('array', getType([]));
-        $this->assertEquals('string', getType('hello world'));
-        $this->assertEquals('stdClass', getType(new \StdClass()));
-    }
-
-    public function testIsList()
-    {
-        $this->assertFalse(isList(1));
-        $this->assertFalse(isList(array(1 => 'a')));
-        $this->assertFalse(isList(array(0 => 'a', 2 => 'c')));
-        $this->assertFalse(isList(new \StdClass()));
-        $this->assertTrue(isList([]));
-        $this->assertTrue(isList([1]));
-        $this->assertTrue(isList([1, 2, 3]));
-        $this->assertTrue(isList([10, 11, 13]));
-    }
-
-    public function testTraversableToArray()
-    {
-        $this->assertEquals([1, 2, 3], traversableToArray([1, 2, 3]));
-        $this->assertEquals([1, 2, 3], traversableToArray(new ArrayObject(1, 2, 3)));
-        $this->assertEquals([1, 2, 3], traversableToArray(new \ArrayObject([1, 2, 3])));
-
-        $range = function($min, $max)
-        {
-            for ($i = $min; $i <= $max; ++$i) {
-                yield $i;
-            }
-        };
-        $this->assertEquals([1, 2, 3], traversableToArray($range(1, 3)));
-    }
-
     public function testArrayObject()
     {
         $array = new ArrayObject(1, 2, 3);
@@ -126,4 +91,28 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(30, $array['bananas']);
     }
 
+    //region deprecated
+    public function testGetType()
+    {
+        $this->assertEquals('NULL', getType(null));
+        $this->assertEquals('boolean', getType(true));
+        $this->assertEquals('integer', getType(1));
+        $this->assertEquals('double', getType(1.0));
+        $this->assertEquals('array', getType([]));
+        $this->assertEquals('string', getType('hello world'));
+        $this->assertEquals('stdClass', getType(new \StdClass()));
+    }
+
+    public function testIsList()
+    {
+        $this->assertFalse(isList(1));
+        $this->assertFalse(isList(array(1 => 'a')));
+        $this->assertFalse(isList(array(0 => 'a', 2 => 'c')));
+        $this->assertFalse(isList(new \StdClass()));
+        $this->assertTrue(isList([]));
+        $this->assertTrue(isList([1]));
+        $this->assertTrue(isList([1, 2, 3]));
+        $this->assertTrue(isList([10, 11, 13]));
+    }
+    //endregion
 }

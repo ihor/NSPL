@@ -114,7 +114,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [partition](#partitionpredicate-sequence)
     * [span](#spanpredicate-sequence)
     * [getByKey](#getbykeyarray-key-default--null)
-    * [extend](#extendsequence1-sequence2)
+    * [merge](#mergesequence1-sequence2)
     * [zip](#zipsequence1-sequence2)
     * [flatten](#flattensequence-depth--null)
     * [pairs](#pairssequence-valuekey--false)
@@ -412,7 +412,7 @@ assert(2 === getByKey($data, 'b', -1));
 assert(-1 === getByKey($data, 'd', -1));
 ```
 
-##### extend($sequence1, $sequence2)
+##### merge($sequence1, $sequence2)
 
 Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
 ```php

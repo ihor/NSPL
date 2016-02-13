@@ -10,7 +10,7 @@ use function \nspl\a\filter;
 use function \nspl\a\partition;
 use function \nspl\a\span;
 use function \nspl\a\getByKey;
-use function \nspl\a\extend;
+use function \nspl\a\merge;
 use function \nspl\a\zip;
 use function \nspl\a\flatten;
 use function \nspl\a\pairs;
@@ -33,7 +33,7 @@ use const \nspl\a\filter;
 use const \nspl\a\partition;
 use const \nspl\a\span;
 use const \nspl\a\getByKey;
-use const \nspl\a\extend;
+use const \nspl\a\merge;
 use const \nspl\a\zip;
 use const \nspl\a\flatten;
 use const \nspl\a\pairs;
@@ -50,6 +50,8 @@ use const \nspl\a\isList;
 //region deprecated
 use function \nspl\a\moveElement;
 use const \nspl\a\moveElement;
+use function \nspl\a\extend;
+use const \nspl\a\extend;
 //endregion
 
 class ATest extends \PHPUnit_Framework_TestCase
@@ -166,17 +168,17 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\getByKey', getByKey);
     }
 
-    public function testExtend()
+    public function testMerge()
     {
-        $this->assertEquals([1, 2, 3, 4, 5, 6], extend([1, 2, 3], [4, 5, 6]));
-        $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], [3, 4, 5]));
-        $this->assertEquals([1, 2, 3, 3, 4, 5], extend(new \ArrayIterator([1, 2, 3]), [3, 4, 5]));
-        $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], new \ArrayIterator([3, 4, 5])));
-        $this->assertEquals([4, 5, 6], extend([], [4, 5, 6]));
-        $this->assertEquals([1, 2, 3], extend([1, 2, 3], []));
+        $this->assertEquals([1, 2, 3, 4, 5, 6], merge([1, 2, 3], [4, 5, 6]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], merge([1, 2, 3], [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], merge(new \ArrayIterator([1, 2, 3]), [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], merge([1, 2, 3], new \ArrayIterator([3, 4, 5])));
+        $this->assertEquals([4, 5, 6], merge([], [4, 5, 6]));
+        $this->assertEquals([1, 2, 3], merge([1, 2, 3], []));
 
-        $this->assertEquals([1, 2, 3, 4, 5, 6], call_user_func(extend, [1, 2, 3], [4, 5, 6]));
-        $this->assertEquals('\nspl\a\extend', extend);
+        $this->assertEquals([1, 2, 3, 4, 5, 6], call_user_func(merge, [1, 2, 3], [4, 5, 6]));
+        $this->assertEquals('\nspl\a\merge', merge);
     }
 
     public function testZip()
@@ -459,6 +461,19 @@ class ATest extends \PHPUnit_Framework_TestCase
     }
     
     //region deprecated
+    public function testExtend()
+    {
+        $this->assertEquals([1, 2, 3, 4, 5, 6], extend([1, 2, 3], [4, 5, 6]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], extend(new \ArrayIterator([1, 2, 3]), [3, 4, 5]));
+        $this->assertEquals([1, 2, 3, 3, 4, 5], extend([1, 2, 3], new \ArrayIterator([3, 4, 5])));
+        $this->assertEquals([4, 5, 6], extend([], [4, 5, 6]));
+        $this->assertEquals([1, 2, 3], extend([1, 2, 3], []));
+
+        $this->assertEquals([1, 2, 3, 4, 5, 6], call_user_func(extend, [1, 2, 3], [4, 5, 6]));
+        $this->assertEquals('\nspl\a\merge', extend);
+    }
+
     public function testMoveElement()
     {
         $this->assertEquals([2, 0, 1], moveElement([0, 1, 2], 2, 0));

@@ -114,7 +114,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [partition](#partitionpredicate-sequence)
     * [span](#spanpredicate-sequence)
     * [getByKey](#getbykeyarray-key-default--null)
-    * [extend](#extendsequence1-sequence2)
+    * [merge](#mergesequence1-sequence2)
     * [zip](#zipsequence1-sequence2)
     * [flatten](#flattensequence-depth--null)
     * [pairs](#pairssequence-valuekey--false)
@@ -125,7 +125,8 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [first](#firstsequence)
     * [drop](#dropsequence-n)
     * [last](#lastsequence)
-    * [moveElement](#moveelementarray-list-from-to)
+    * [reorder](#reorderarray-list-from-to)
+    * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\args](#nsplargs)
     * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
@@ -134,14 +135,14 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [Predefined constraints](#predefined-constraints)
     * [Custom constraints](#custom-constraints)
 * [nspl\ds](#nsplds)
-    * [getType](#gettypevar)
-    * [isList](#islistvar)
     * [ArrayObject](#arrayobject)
     * [DefaultArray](#defaultarray)
 * [nspl\rnd](#nsplrnd)
     * [choice](#choicesequence)
     * [weightedChoice](#weightedchoiceweightpairs)
     * [sample](#samplepopulation-length-preservekeys--false)
+* [nspl](#nspl)
+    * [getType](#gettypevar)
 
 ## nspl\f
 
@@ -411,7 +412,7 @@ assert(2 === getByKey($data, 'b', -1));
 assert(-1 === getByKey($data, 'd', -1));
 ```
 
-##### extend($sequence1, $sequence2)
+##### merge($sequence1, $sequence2)
 
 Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
 ```php
@@ -516,6 +517,10 @@ Moves list element to another position
 ```php
 assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
+
+##### isList($var)
+
+Returns true if the variable is a list
 
 ##### Callbacks
 
@@ -703,15 +708,6 @@ If you need to create a constraint which takes arguments you must create a calla
 
 Provides non-standard data structures and methods to work with them
 
-
-##### getType($var)
-
-Returns the variable type or its class name if it is an object
-
-##### isList($var)
-
-Returns true if the variable is a list
-
 ##### ArrayObject
 
 Alternative ArrayObject implementation
@@ -777,6 +773,13 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 Returns a k length list of unique elements chosen from the population sequence
 
 Check more ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
+
+## nspl
+
+##### getType($var)
+
+Returns the variable type or its class name if it is an object
+
 
 Roadmap
 =======

@@ -166,14 +166,14 @@ const span = '\nspl\a\span';
  * @param mixed $default
  * @return mixed
  */
-function getByKey($array, $key, $default = null)
+function value($array, $key, $default = null)
 {
     args\expects(args\arrayAccess, $array);
     args\expects(args\arrayKey, $key);
 
     return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
 }
-const getByKey = '\nspl\a\getByKey';
+const value = '\nspl\a\value';
 
 /**
  * Returns arrays containing $sequence1 items and $sequence2 items
@@ -594,7 +594,26 @@ function extend($sequence1, $sequence2)
 const extend = '\nspl\a\merge';
 
 /**
- * @depreacated
+ * @deprecated
+ * @see \nspl\a\value
+ * Returns array value by key if it exists otherwise returns the default value
+ *
+ * @param array|\ArrayAccess $array
+ * @param int|string $key
+ * @param mixed $default
+ * @return mixed
+ */
+function getByKey($array, $key, $default = null)
+{
+    args\expects(args\arrayAccess, $array);
+    args\expects(args\arrayKey, $key);
+
+    return isset($array[$key]) || array_key_exists($key, $array) ? $array[$key] : $default;
+}
+const getByKey = '\nspl\a\value';
+
+/**
+ * @deprecated
  * @see \nspl\a\reorder
  * Moves list element to another position
  *

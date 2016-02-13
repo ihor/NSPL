@@ -9,7 +9,7 @@ use function \nspl\a\reduce;
 use function \nspl\a\filter;
 use function \nspl\a\partition;
 use function \nspl\a\span;
-use function \nspl\a\getByKey;
+use function \nspl\a\value;
 use function \nspl\a\merge;
 use function \nspl\a\zip;
 use function \nspl\a\flatten;
@@ -32,7 +32,7 @@ use const \nspl\a\reduce;
 use const \nspl\a\filter;
 use const \nspl\a\partition;
 use const \nspl\a\span;
-use const \nspl\a\getByKey;
+use const \nspl\a\value;
 use const \nspl\a\merge;
 use const \nspl\a\zip;
 use const \nspl\a\flatten;
@@ -49,9 +49,12 @@ use const \nspl\a\isList;
 
 //region deprecated
 use function \nspl\a\moveElement;
-use const \nspl\a\moveElement;
+use function \nspl\a\getByKey;
 use function \nspl\a\extend;
+
+use const \nspl\a\moveElement;
 use const \nspl\a\extend;
+use const \nspl\a\getByKey;
 //endregion
 
 class ATest extends \PHPUnit_Framework_TestCase
@@ -159,13 +162,13 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\span', span);
     }
 
-    public function testGetByKey()
+    public function testValue()
     {
-        $this->assertEquals(2, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
-        $this->assertEquals(-1, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+        $this->assertEquals(2, value(array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals(-1, value(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
 
-        $this->assertEquals(2, call_user_func(getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
-        $this->assertEquals('\nspl\a\getByKey', getByKey);
+        $this->assertEquals(2, call_user_func(value, array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals('\nspl\a\value', value);
     }
 
     public function testMerge()
@@ -472,6 +475,15 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3, 4, 5, 6], call_user_func(extend, [1, 2, 3], [4, 5, 6]));
         $this->assertEquals('\nspl\a\merge', extend);
+    }
+
+    public function testGetByKey()
+    {
+        $this->assertEquals(2, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals(-1, getByKey(array('a' => 1, 'b' => 2, 'c' => 3), 'd', -1));
+
+        $this->assertEquals(2, call_user_func(getByKey, array('a' => 1, 'b' => 2, 'c' => 3), 'b'));
+        $this->assertEquals('\nspl\a\value', getByKey);
     }
 
     public function testMoveElement()

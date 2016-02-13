@@ -634,7 +634,7 @@ class ErrorMessage
             return $type->__toString();
         }
 
-        return a\getByKey(self::$messages, $type, 'be ' . (class_exists($type) ? $type : end(explode('\\', $type))));
+        return a\value(self::$messages, $type, 'be ' . (class_exists($type) ? $type : end(explode('\\', $type))));
     }
 
 }

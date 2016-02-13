@@ -113,7 +113,6 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [filter](#filterpredicate-sequence)
     * [partition](#partitionpredicate-sequence)
     * [span](#spanpredicate-sequence)
-    * [getByKey](#getbykeyarray-key-default--null)
     * [merge](#mergesequence1-sequence2)
     * [zip](#zipsequence1-sequence2)
     * [flatten](#flattensequence-depth--null)
@@ -126,6 +125,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [drop](#dropsequence-n)
     * [last](#lastsequence)
     * [reorder](#reorderarray-list-from-to)
+    * [value](#valuearray-key-default--null)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\args](#nsplargs)
@@ -403,20 +403,20 @@ Returns two lists, one containing values for which your predicate returned true 
 assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
 ```
 
-##### getByKey($array, $key, $default = null)
+##### value($array, $key, $default = null)
 
 Returns array value by key if it exists otherwise returns the default value
 ```php
 $data = array('a' => 1, 'b' => 2, 'c' => 3);
-assert(2 === getByKey($data, 'b', -1));
-assert(-1 === getByKey($data, 'd', -1));
+assert(2 === value($data, 'b', -1));
+assert(-1 === value($data, 'd', -1));
 ```
 
 ##### merge($sequence1, $sequence2)
 
 Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
 ```php
-assert([1, 2, 3, 4, 5, 6] === extend([1, 2, 3], [4, 5, 6]));
+assert([1, 2, 3, 4, 5, 6] === merge([1, 2, 3], [4, 5, 6]));
 ```
 
 ##### zip($sequence1, $sequence2)

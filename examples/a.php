@@ -2,13 +2,11 @@
 
 require_once __DIR__ . '/../autoload.php';
 
-use const nspl\a\getByKey;
 use function nspl\a\all;
 use function nspl\a\any;
 use function nspl\a\map;
 use function nspl\a\reduce;
 use function nspl\a\filter;
-use function nspl\a\getByKey;
 use function nspl\a\sorted;
 use function nspl\a\keySorted;
 use function nspl\a\indexed;

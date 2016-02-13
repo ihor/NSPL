@@ -14,7 +14,7 @@ use const nspl\op\gt;
 use const nspl\op\mul;
 use function nspl\op\propertyGetter;
 
-use const \nspl\a\getByKey;
+use const \nspl\a\value;
 use function \nspl\a\map;
 use function \nspl\a\reduce;
 use function \nspl\a\filter;
@@ -30,7 +30,7 @@ $users = map(object, [
 
 // 1. Get user name from which can be stored as username, user_name or name in data array
 $data = array('id' => 1337, 'name' => 'John', 'gender' => 'male');
-$name = reduce(flipped(partial(getByKey, $data)), ['username', 'user_name', 'name'], '');
+$name = reduce(flipped(partial(value, $data)), ['username', 'user_name', 'name'], '');
 
 echo sprintf("User name is %s\n", $name);
 

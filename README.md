@@ -135,13 +135,14 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [Predefined constraints](#predefined-constraints)
     * [Custom constraints](#custom-constraints)
 * [nspl\ds](#nsplds)
-    * [getType](#gettypevar)
     * [ArrayObject](#arrayobject)
     * [DefaultArray](#defaultarray)
 * [nspl\rnd](#nsplrnd)
     * [choice](#choicesequence)
     * [weightedChoice](#weightedchoiceweightpairs)
     * [sample](#samplepopulation-length-preservekeys--false)
+* [nspl](#nspl)
+    * [getType](#gettypevar)
 
 ## nspl\f
 
@@ -707,11 +708,6 @@ If you need to create a constraint which takes arguments you must create a calla
 
 Provides non-standard data structures and methods to work with them
 
-
-##### getType($var)
-
-Returns the variable type or its class name if it is an object
-
 ##### ArrayObject
 
 Alternative ArrayObject implementation
@@ -777,6 +773,13 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 Returns a k length list of unique elements chosen from the population sequence
 
 Check more ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
+
+## nspl
+
+##### getType($var)
+
+Returns the variable type or its class name if it is an object
+
 
 Roadmap
 =======

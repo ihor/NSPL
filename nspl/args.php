@@ -524,8 +524,8 @@ function throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\
             $has ? 'has' : 'must',
             $hadTo,
             is_scalar($arg)
-                ? (', ' . ds\getType($arg) . ' ' . var_export($arg, true) . ' given')
-                : (', ' . ds\getType($arg) . (is_array($arg) ? (' ' . json_encode($arg)): '') . ' given')
+                ? (', ' . \nspl\getType($arg) . ' ' . var_export($arg, true) . ' given')
+                : (', ' . \nspl\getType($arg) . (is_array($arg) ? (' ' . json_encode($arg)): '') . ' given')
         ));
     }
 

@@ -33,7 +33,7 @@ echo sprintf("User names are: %s (users were presented with array data)\n", impl
 // 2. Convert list of user presented with array data to list of objects
 $objects = map(object, $users);
 
-echo sprintf("List of users converted to objects consists of types: %s\n", implode(', ', map('\nspl\ds\getType', $objects)));
+echo sprintf("List of users converted to objects consists of types: %s\n", implode(', ', map(\nspl\getType, $objects)));
 
 
 // 3. Sort users by age

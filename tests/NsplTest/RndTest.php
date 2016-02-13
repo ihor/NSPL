@@ -4,7 +4,7 @@ namespace NsplTest;
 
 use \nspl\a;
 
-use function \nspl\ds\isList;
+use function \nspl\a\isList;
 use function \nspl\rnd\sample;
 use function \nspl\rnd\choice;
 use function \nspl\rnd\weightedChoice;

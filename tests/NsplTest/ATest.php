@@ -22,6 +22,8 @@ use function \nspl\a\first;
 use function \nspl\a\drop;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
+use function \nspl\a\isList;
+use function \nspl\a\traversableToArray;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -43,6 +45,7 @@ use const \nspl\a\first;
 use const \nspl\a\drop;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
+use const \nspl\a\isList;
 
 //region deprecated
 use function \nspl\a\moveElement;
@@ -423,6 +426,36 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testReorderFromInvalidPosition()
     {
         reorder([0, 1, 2], 3, 0);
+    }
+
+    public function testIsList()
+    {
+        $this->assertFalse(isList(1));
+        $this->assertFalse(isList(array(1 => 'a')));
+        $this->assertFalse(isList(array(0 => 'a', 2 => 'c')));
+        $this->assertFalse(isList(new \StdClass()));
+        $this->assertTrue(isList([]));
+        $this->assertTrue(isList([1]));
+        $this->assertTrue(isList([1, 2, 3]));
+        $this->assertTrue(isList([10, 11, 13]));
+
+        $this->assertTrue(call_user_func(isList, [10, 11, 13]));
+        $this->assertEquals('\nspl\a\isList', isList);
+    }
+
+    public function testTraversableToArray()
+    {
+        $this->assertEquals([1, 2, 3], traversableToArray([1, 2, 3]));
+        $this->assertEquals([1, 2, 3], traversableToArray(new \nspl\ds\ArrayObject(1, 2, 3)));
+        $this->assertEquals([1, 2, 3], traversableToArray(new \ArrayObject([1, 2, 3])));
+
+        $range = function($min, $max)
+        {
+            for ($i = $min; $i <= $max; ++$i) {
+                yield $i;
+            }
+        };
+        $this->assertEquals([1, 2, 3], traversableToArray($range(1, 3)));
     }
     
     //region deprecated

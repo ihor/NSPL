@@ -247,7 +247,7 @@ const uncurried = '\nspl\f\uncurried';
 function map(callable $function, $sequence)
 {
     args\expects(args\traversable, $sequence);
-    return array_map($function, ds\traversableToArray($sequence));
+    return array_map($function, a\traversableToArray($sequence));
 }
 const map = '\nspl\a\map';
 
@@ -266,7 +266,7 @@ const map = '\nspl\a\map';
 function reduce(callable $function, $sequence, $initial = 0)
 {
     args\expects(args\traversable, $sequence);
-    return array_reduce(ds\traversableToArray($sequence), $function, $initial);
+    return array_reduce(a\traversableToArray($sequence), $function, $initial);
 }
 const reduce = '\nspl\a\reduce';
 
@@ -284,9 +284,9 @@ function filter(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $sequence = ds\traversableToArray($sequence);
+    $sequence = a\traversableToArray($sequence);
     $filtered = array_filter($sequence, $predicate);
-    return ds\isList($sequence) ? array_values($filtered) : $filtered;
+    return a\isList($sequence) ? array_values($filtered) : $filtered;
 }
 const filter = '\nspl\a\filter';
 
@@ -305,7 +305,7 @@ function partition(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $isList = ds\isList($sequence);
+    $isList = a\isList($sequence);
     $result = [[], []];
     foreach ($sequence as $k => $v) {
         if ($isList) {
@@ -335,7 +335,7 @@ function span(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $isList = ds\isList($sequence);
+    $isList = a\isList($sequence);
     $result = [[], []];
 
     $listIndex = 0;

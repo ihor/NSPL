@@ -2,6 +2,7 @@
 
 namespace nspl\ds;
 
+//region deprecated
 use \nspl\args;
 
 /**
@@ -16,6 +17,8 @@ function getType($var)
 }
 
 /**
+ * @deprecated
+ * @see \nspl\a\isList
  * Returns true if the variable is a list
  *
  * @param mixed $var
@@ -37,3 +40,4 @@ function traversableToArray($var)
         ? iterator_to_array($var)
         : (array) $var;
 }
+//endregion

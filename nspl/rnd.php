@@ -2,7 +2,7 @@
 
 namespace nspl\rnd;
 
-use \nspl\ds;
+use \nspl\a;
 use \nspl\args;
 
 /**
@@ -23,7 +23,7 @@ function sample($population, $length, $preserveKeys = false)
         return array();
     }
 
-    $population = ds\traversableToArray($population);
+    $population = a\traversableToArray($population);
     if ($length > count($population)) {
         throw new \InvalidArgumentException('Sample is larger than population');
     }
@@ -50,7 +50,7 @@ function choice($sequence)
     }
 
     args\expects(args\traversable, $sequence);
-    $sequence = ds\traversableToArray($sequence);
+    $sequence = a\traversableToArray($sequence);
 
     return $sequence[array_rand($sequence)];
 }

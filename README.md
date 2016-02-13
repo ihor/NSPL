@@ -125,7 +125,8 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [first](#firstsequence)
     * [drop](#dropsequence-n)
     * [last](#lastsequence)
-    * [moveElement](#moveelementarray-list-from-to)
+    * [reorder](#reorderarray-list-from-to)
+    * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\args](#nsplargs)
     * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
@@ -135,7 +136,6 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [Custom constraints](#custom-constraints)
 * [nspl\ds](#nsplds)
     * [getType](#gettypevar)
-    * [isList](#islistvar)
     * [ArrayObject](#arrayobject)
     * [DefaultArray](#defaultarray)
 * [nspl\rnd](#nsplrnd)
@@ -517,6 +517,10 @@ Moves list element to another position
 assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
 ```
 
+##### isList($var)
+
+Returns true if the variable is a list
+
 ##### Callbacks
 
 ```nspl\a``` provides all these functions as callbacks in its constants which have the same names as the functions.
@@ -707,10 +711,6 @@ Provides non-standard data structures and methods to work with them
 ##### getType($var)
 
 Returns the variable type or its class name if it is an object
-
-##### isList($var)
-
-Returns true if the variable is a list
 
 ##### ArrayObject
 

@@ -61,7 +61,7 @@ const any = '\nspl\a\any';
 function map(callable $function, $sequence)
 {
     args\expects(args\traversable, $sequence);
-    return array_map($function, ds\traversableToArray($sequence));
+    return array_map($function, traversableToArray($sequence));
 }
 const map = '\nspl\a\map';
 
@@ -77,7 +77,7 @@ const map = '\nspl\a\map';
 function reduce(callable $function, $sequence, $initial = 0)
 {
     args\expects(args\traversable, $sequence);
-    return array_reduce(ds\traversableToArray($sequence), $function, $initial);
+    return array_reduce(traversableToArray($sequence), $function, $initial);
 }
 const reduce = '\nspl\a\reduce';
 
@@ -92,9 +92,9 @@ function filter(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $sequence = ds\traversableToArray($sequence);
+    $sequence = traversableToArray($sequence);
     $filtered = array_filter($sequence, $predicate);
-    return ds\isList($sequence) ? array_values($filtered) : $filtered;
+    return isList($sequence) ? array_values($filtered) : $filtered;
 }
 const filter = '\nspl\a\filter';
 
@@ -110,7 +110,7 @@ function partition(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $isList = ds\isList($sequence);
+    $isList = isList($sequence);
     $result = [[], []];
     foreach ($sequence as $k => $v) {
         if ($isList) {
@@ -137,7 +137,7 @@ function span(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $isList = ds\isList($sequence);
+    $isList = isList($sequence);
     $result = [[], []];
 
     $listIndex = 0;
@@ -187,7 +187,7 @@ function extend($sequence1, $sequence2)
     args\expects(args\traversable, $sequence1);
     args\expects(args\traversable, $sequence2, 2);
 
-    return array_merge(ds\traversableToArray($sequence1), ds\traversableToArray(($sequence2)));
+    return array_merge(traversableToArray($sequence1), traversableToArray(($sequence2)));
 }
 const extend = '\nspl\a\extend';
 
@@ -205,9 +205,9 @@ function zip($sequence1, $sequence2)
 
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $lists[$j], $j + 1);
-        $lists[$j] = ds\traversableToArray($lists[$j]);
+        $lists[$j] = traversableToArray($lists[$j]);
 
-        if (!ds\isList($lists[$j])) {
+        if (!isList($lists[$j])) {
             $lists[$j] = array_values($lists[$j]);
         }
     }
@@ -244,9 +244,9 @@ function flatten($sequence, $depth = null)
 
     if (null === $depth) {
         $result = array();
-        array_walk_recursive(ds\traversableToArray($sequence), function($item, $key) use (&$result) {
+        array_walk_recursive(traversableToArray($sequence), function($item, $key) use (&$result) {
             if ($item instanceof \Traversable) {
-                $result = array_merge($result, flatten(ds\traversableToArray($item)));
+                $result = array_merge($result, flatten(traversableToArray($item)));
             }
             else {
                 $result[] = $item;
@@ -328,8 +328,8 @@ function sorted($array, $reversed = false, callable $key = null, callable $cmp =
         $cmp = f\compose(op\neg, $cmp);
     }
 
-    $array = ds\traversableToArray($array);
-    $isList = ds\isList($array);
+    $array = traversableToArray($array);
+    $isList = isList($array);
     uasort($array, $cmp);
 
     return $isList ? array_values($array) : $array;
@@ -348,7 +348,7 @@ function keySorted($array, $reversed = false)
     args\expects(args\traversable, $array);
     args\expects(args\bool, $reversed);
 
-    $array = ds\traversableToArray($array);
+    $array = traversableToArray($array);
     if ($reversed) {
         krsort($array);
     }
@@ -531,7 +531,7 @@ function reorder(array $list, $from, $to)
     args\expects(args\int, $from);
     args\expects(args\int, $to, 3);
 
-    if (!ds\isList($list)) {
+    if (!isList($list)) {
         throw new \InvalidArgumentException('First argument should be a list');
     }
 
@@ -550,6 +550,30 @@ function reorder(array $list, $from, $to)
 }
 const reorder = '\nspl\a\reorder';
 
+/**
+ * Returns true if the variable is a list
+ *
+ * @param mixed $var
+ * @return bool
+ */
+function isList($var)
+{
+    return is_array($var) && array_values($var) === $var;
+}
+const isList = '\nspl\a\isList';
+
+/**
+ * @param array|\Traversable $var
+ * @return array
+ */
+function traversableToArray($var)
+{
+    args\expects(args\traversable, $var);
+    return $var instanceof \Iterator
+        ? iterator_to_array($var)
+        : (array) $var;
+}
+
 //region deprecated
 /**
  * @depreacated
@@ -566,7 +590,7 @@ function moveElement(array $list, $from, $to)
     args\expects(args\int, $from);
     args\expects(args\int, $to, 3);
 
-    if (!ds\isList($list)) {
+    if (!isList($list)) {
         throw new \InvalidArgumentException('First argument should be a list');
     }
 

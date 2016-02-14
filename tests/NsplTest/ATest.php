@@ -23,7 +23,6 @@ use function \nspl\a\drop;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
 use function \nspl\a\isList;
-use function \nspl\a\traversableToArray;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -51,6 +50,7 @@ use const \nspl\a\isList;
 use function \nspl\a\moveElement;
 use function \nspl\a\getByKey;
 use function \nspl\a\extend;
+use function \nspl\a\traversableToArray;
 
 use const \nspl\a\moveElement;
 use const \nspl\a\extend;
@@ -447,7 +447,8 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(call_user_func(isList, [10, 11, 13]));
         $this->assertEquals('\nspl\a\isList', isList);
     }
-
+    
+    //region deprecated
     public function testTraversableToArray()
     {
         $this->assertEquals([1, 2, 3], traversableToArray([1, 2, 3]));
@@ -462,8 +463,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         };
         $this->assertEquals([1, 2, 3], traversableToArray($range(1, 3)));
     }
-    
-    //region deprecated
+
     public function testExtend()
     {
         $this->assertEquals([1, 2, 3, 4, 5, 6], extend([1, 2, 3], [4, 5, 6]));

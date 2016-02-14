@@ -244,7 +244,9 @@ function zip($sequence1, $sequence2)
 
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $lists[$j], $j + 1);
-        $lists[$j] = traversableToArray($lists[$j]);
+        if ($lists[$j] instanceof \Iterator) {
+            $lists[$j] = iterator_to_array($lists[$j]);
+        }
 
         if (!isList($lists[$j])) {
             $lists[$j] = array_values($lists[$j]);
@@ -283,9 +285,14 @@ function flatten($sequence, $depth = null)
 
     if (null === $depth) {
         $result = array();
-        array_walk_recursive(traversableToArray($sequence), function($item, $key) use (&$result) {
+
+        if ($sequence instanceof \Traversable) {
+            $sequence = iterator_to_array($sequence);
+        }
+
+        array_walk_recursive($sequence, function($item, $key) use (&$result) {
             if ($item instanceof \Traversable) {
-                $result = array_merge($result, flatten(traversableToArray($item)));
+                $result = array_merge($result, flatten(iterator_to_array($item)));
             }
             else {
                 $result[] = $item;
@@ -337,16 +344,16 @@ const pairs = '\nspl\a\pairs';
 /**
  * Returns array which contains sorted items the passed sequence
  *
- * @param array|\Traversable $array
+ * @param array|\Traversable $sequence
  * @param bool $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each element
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted($array, $reversed = false, callable $key = null, callable $cmp = null)
+function sorted($sequence, $reversed = false, callable $key = null, callable $cmp = null)
 {
-    args\expects(args\traversable, $array);
+    args\expects(args\traversable, $sequence);
     args\expects([args\bool, args\callable_], $reversed);
 
     if (!$cmp) {
@@ -367,35 +374,41 @@ function sorted($array, $reversed = false, callable $key = null, callable $cmp =
         $cmp = f\compose(op\neg, $cmp);
     }
 
-    $array = traversableToArray($array);
-    $isList = isList($array);
-    uasort($array, $cmp);
+    if ($sequence instanceof \Iterator) {
+        $sequence = iterator_to_array($sequence);
+    }
 
-    return $isList ? array_values($array) : $array;
+    $isList = isList($sequence);
+    uasort($sequence, $cmp);
+
+    return $isList ? array_values($sequence) : $sequence;
 }
 const sorted = '\nspl\a\sorted';
 
 /**
  * Returns array which contains sequence items sorted by keys
  *
- * @param array|\Traversable $array
+ * @param array|\Traversable $sequence
  * @param bool $reversed
  * @return array
  */
-function keySorted($array, $reversed = false)
+function keySorted($sequence, $reversed = false)
 {
-    args\expects(args\traversable, $array);
+    args\expects(args\traversable, $sequence);
     args\expects(args\bool, $reversed);
 
-    $array = traversableToArray($array);
-    if ($reversed) {
-        krsort($array);
-    }
-    else {
-        ksort($array);
+    if ($sequence instanceof \Iterator) {
+        $sequence = iterator_to_array($sequence);
     }
 
-    return $array;
+    if ($reversed) {
+        krsort($sequence);
+    }
+    else {
+        ksort($sequence);
+    }
+
+    return $sequence;
 }
 const keySorted = '\nspl\a\keySorted';
 
@@ -602,6 +615,7 @@ function isList($var)
 const isList = '\nspl\a\isList';
 
 /**
+ * @deprecated
  * @param array|\Traversable $var
  * @return array
  */

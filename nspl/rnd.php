@@ -23,7 +23,10 @@ function sample($population, $length, $preserveKeys = false)
         return array();
     }
 
-    $population = a\traversableToArray($population);
+    if ($population instanceof \Iterator) {
+        $population = iterator_to_array($population);
+    }
+
     if ($length > count($population)) {
         throw new \InvalidArgumentException('Sample is larger than population');
     }
@@ -50,7 +53,10 @@ function choice($sequence)
     }
 
     args\expects(args\traversable, $sequence);
-    $sequence = a\traversableToArray($sequence);
+
+    if ($sequence instanceof \Iterator) {
+        $sequence = iterator_to_array($sequence);
+    }
 
     return $sequence[array_rand($sequence)];
 }

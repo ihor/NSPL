@@ -61,7 +61,13 @@ const any = '\nspl\a\any';
 function map(callable $function, $sequence)
 {
     args\expects(args\traversable, $sequence);
-    return array_map($function, traversableToArray($sequence));
+
+    $result = [];
+    foreach ($sequence as $key => $item) {
+        $result[$key] = $function($item);
+    }
+
+    return $result;
 }
 const map = '\nspl\a\map';
 
@@ -77,7 +83,12 @@ const map = '\nspl\a\map';
 function reduce(callable $function, $sequence, $initial = 0)
 {
     args\expects(args\traversable, $sequence);
-    return array_reduce(traversableToArray($sequence), $function, $initial);
+
+    foreach ($sequence as $item) {
+        $initial = $function($initial, $item);
+    }
+
+    return $initial;
 }
 const reduce = '\nspl\a\reduce';
 
@@ -92,9 +103,24 @@ function filter(callable $predicate, $sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    $sequence = traversableToArray($sequence);
-    $filtered = array_filter($sequence, $predicate);
-    return isList($sequence) ? array_values($filtered) : $filtered;
+    $prevKey = -1;
+    $isList = true;
+
+    $result = [];
+    foreach ($sequence as $key => $item) {
+        if ($predicate($item)) {
+            $result[$key] = $item;
+        }
+
+        if ($isList) {
+            if ($key !== $prevKey + 1) {
+                $isList = false;
+            }
+            ++$prevKey;
+        }
+    }
+
+    return $isList ? array_values($result) : $result;
 }
 const filter = '\nspl\a\filter';
 
@@ -187,7 +213,20 @@ function merge($sequence1, $sequence2)
     args\expects(args\traversable, $sequence1);
     args\expects(args\traversable, $sequence2, 2);
 
-    return array_merge(traversableToArray($sequence1), traversableToArray(($sequence2)));
+    $result = $sequence1 instanceof \Iterator
+        ? iterator_to_array($sequence1)
+        : $sequence1;
+
+    foreach ($sequence2 as $key => $item) {
+        if (is_string($key)) {
+            $result[$key] = $item;
+        }
+        else {
+            $result[] = $item;
+        }
+    }
+
+    return $result;
 }
 const merge = '\nspl\a\merge';
 
@@ -568,7 +607,6 @@ const isList = '\nspl\a\isList';
  */
 function traversableToArray($var)
 {
-    args\expects(args\traversable, $var);
     return $var instanceof \Iterator
         ? iterator_to_array($var)
         : (array) $var;

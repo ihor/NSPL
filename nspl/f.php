@@ -15,7 +15,13 @@ use nspl\args;
  */
 function apply(callable $function, array $args = array())
 {
-    return call_user_func_array($function, $args);
+    switch (count($args)) {
+        case 0: return $function();
+        case 1: return $function($args[0]);
+        case 2: return $function($args[0], $args[1]);
+        case 3: return $function($args[0], $args[1], $args[2]);
+        default: return call_user_func_array($function, $args);
+    }
 }
 const apply = '\nspl\f\apply';
 
@@ -46,7 +52,7 @@ function partial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return call_user_func_array($function, a\merge($args, func_get_args()));
+        return call_user_func_array($function, array_merge($args, func_get_args()));
     };
 }
 const partial = '\nspl\f\partial';
@@ -65,7 +71,7 @@ function rpartial(callable $function, $arg1)
 {
     $args = array_slice(func_get_args(), 1);
     return function() use ($function, $args) {
-        return call_user_func_array($function, a\merge(func_get_args(), $args));
+        return call_user_func_array($function, array_merge(func_get_args(), $args));
     };
 }
 const rpartial = '\nspl\f\rpartial';

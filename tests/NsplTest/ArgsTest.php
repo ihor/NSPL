@@ -644,6 +644,24 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     }
     #endregion
 
+    #region Custom constraints
+    public function testCustomConstraint_Positive()
+    {
+        function expectsCustomConstraintPositiveTest($year) { expects(validYear, $year); }
+        $this->assertNull(expectsCustomConstraintPositiveTest(2000));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsCustomConstraintNegativeTest() must be valid year, integer 1000 given
+     */
+    public function testCustomConstraint_Negative()
+    {
+        function expectsCustomConstraintNegativeTest($year) { expects(validYear, $year); }
+        $this->assertNull(expectsCustomConstraintNegativeTest(1000));
+    }
+    #endregion
+
     #region Custom exception
     /**
      * @expectedException \BadFunctionCallException

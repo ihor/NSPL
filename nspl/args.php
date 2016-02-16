@@ -563,7 +563,7 @@ function getErrorSource($arg)
     }
 
     $result = array(
-        'function' => $call['function'],
+        'function' => (isset($call['class']) ? $call['class'] . '::' : '') . $call['function'],
         'position' => $position,
         'file' => $call['file'],
         'line' => $call['line'],
@@ -634,7 +634,11 @@ class ErrorMessage
             return $type->__toString();
         }
 
-        return a\value(self::$messages, $type, 'be ' . (class_exists($type) ? $type : end(explode('\\', $type))));
+        $default = class_exists($type)
+            ? $type
+            : implode(' ', array_map('strtolower', preg_split('/(?=[A-Z])/', end(explode('\\', $type)))));
+
+        return a\value(self::$messages, $type, 'be ' . $default);
     }
 
 }

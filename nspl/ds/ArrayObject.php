@@ -2,7 +2,7 @@
 
 namespace nspl\ds;
 
-class ArrayObject implements \ArrayAccess, \Iterator
+class ArrayObject implements \ArrayAccess, \Iterator, \Countable
 {
     /**
      * @var array
@@ -158,12 +158,31 @@ class ArrayObject implements \ArrayAccess, \Iterator
     }
     //endregion
 
+    //region Countable methods
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->array);
+    }
+    //endregion
+
+    /**
+     * @param array $a
+     * @return string
+     */
+    protected function stringifyArray(array $a)
+    {
+        return str_replace(',)', ')', str_replace('  ', ' ', str_replace('array (  ', 'array(', str_replace("\n", '', var_export($a, true)))));
+    }
+
     /**
      * @return string
      */
     public function __toString()
     {
-        return json_encode($this->array);
+        return $this->stringifyArray($this->array);
     }
 
     /**

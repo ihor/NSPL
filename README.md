@@ -137,6 +137,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 * [nspl\ds](#nsplds)
     * [ArrayObject](#arrayobject)
     * [DefaultArray](#defaultarray)
+    * [Set](#set)
 * [nspl\rnd](#nsplrnd)
     * [choice](#choicesequence)
     * [weightedChoice](#weightedchoiceweightpairs)
@@ -740,6 +741,36 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 ##### defaultarray($default, $data = array())
 
 Returns new DefaultArray
+
+##### Set
+
+Array-like collection that contains no duplicate elements
+
+##### set
+
+Returns new Set object
+
+```php
+$set = set(1, 2);
+
+$set->add('hello');
+$set[] = 'world';
+
+$set->delete('hello');
+
+$array = [1, 2, 3];
+$intersection = $set->intersection($array);
+
+$anotherSet = Set::fromArray([1, 2, 3]);
+$difference = $set->difference($anotherSet);
+
+$iterator = new \ArrayIterator([1, 2, 3]);
+$union = $set->union($iterator);
+
+$isSubset = $set->isSubset([1, 2, 'hello', 'world']);
+
+$isSuperset = $set->isSuperset([1, 2]);
+```
 
 Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/ds.php).
 

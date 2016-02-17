@@ -4,13 +4,14 @@ namespace NsplTest;
 
 use \nspl\ds\ArrayObject;
 use \nspl\ds\DefaultArray;
+use \nspl\ds\Set;
 use function \nspl\ds\arrayobject;
 use function \nspl\ds\defaultarray;
+use function \nspl\ds\set;
 
 //region deprecated
 use function \nspl\ds\getType;
 use function \nspl\ds\isList;
-use function \nspl\ds\traversableToArray;
 //endregion
 
 class DsTest extends \PHPUnit_Framework_TestCase
@@ -89,6 +90,65 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $array['oranges']);
         $this->assertEquals(20, $array['apples']);
         $this->assertEquals(30, $array['bananas']);
+    }
+
+    public function testSet()
+    {
+        $set = new Set(1, 2);
+
+        $this->assertCount(2, $set);
+        $this->assertTrue($set->contains(1));
+        $this->assertTrue($set->contains(2));
+
+        $set->add('hello');
+        $this->assertCount(3, $set);
+        $this->assertTrue($set->contains('hello'));
+
+        $set[] = 'world';
+        $this->assertCount(4, $set);
+        $this->assertTrue($set->contains('world'));
+
+        $set->update(['hello']);
+        $this->assertCount(4, $set);
+
+        $set->delete('hello');
+        $this->assertCount(3, $set);
+        $this->assertFalse($set->contains('hello'));
+
+        $difference = $set->difference([1, 2, 3]);
+        $this->assertEquals(['world'], $difference->toArray());
+
+        $intersection = $set->intersection([1, 2, 3]);
+        $this->assertEquals([1, 2], $intersection->toArray());
+
+        $union = $set->union([1, 2, 3]);
+        $this->assertEquals([1, 2, 3, 'world'], $union->toArray(), '', 0, 10, true);
+
+        $this->assertTrue($set->isSubset($union));
+        $this->assertFalse($set->isSubset([1, 2, 3, 4]));
+
+        $this->assertTrue($set->isSuperset([1, 2]));
+        $this->assertFalse($set->isSuperset(['hello', 'world']));
+
+        $this->assertFalse($set->isEmpty());
+
+        $set->clear();
+
+        $this->assertTrue($set->isEmpty());
+
+        $set = set(1, 2);
+
+        $this->assertCount(2, $set);
+        $this->assertTrue($set->contains(1));
+        $this->assertTrue($set->contains(2));
+
+        $set[] = 2;
+        $set[] = 3;
+
+        $this->assertCount(3, $set);
+        $this->assertTrue($set->contains(1));
+        $this->assertTrue($set->contains(2));
+        $this->assertTrue($set->contains(3));
     }
 
     //region deprecated

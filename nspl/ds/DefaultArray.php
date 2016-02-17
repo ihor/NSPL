@@ -33,6 +33,11 @@ class DefaultArray extends ArrayObject
         return $result;
     }
 
+    public function __toString()
+    {
+        return 'defaultarray' . substr(parent::__toString(), 5);
+    }
+
     private function getDefault()
     {
         if (is_callable($this->default)) {

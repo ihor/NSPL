@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../autoload.php';
 
+use \nspl\ds\Set;
+use function \nspl\ds\set;
 use function \nspl\ds\defaultarray;
 
 use function \nspl\a\map;
@@ -31,3 +33,42 @@ for ($i = 0; $i < 3; ++$i) {
 
 echo "Matrix 3x3:\n";
 print_r(map(methodCaller('toArray'), $matrix->toArray())); // casting default array with all nested default arrays to PHP array
+
+// 3. Set example
+$set = set(1, 2);
+
+$set->add('hello');
+$set[] = 'world';
+$set->update([3, 4], ['answer', 42]);
+
+echo "Set:\n";
+print_r($set->toArray());
+
+foreach (['hello', 3, 4, 'answer', 42] as $element) {
+    $set->delete($element);
+}
+
+echo "Set:\n";
+print_r($set->toArray());
+
+$array = [1, 2, 3];
+$intersection = $set->intersection($array);
+
+echo "Intersection:\n";
+print_r($intersection->toArray());
+
+$anotherSet = Set::fromArray([1, 2, 3]);
+$difference = $set->difference($anotherSet);
+
+echo "Difference:\n";
+print_r($difference->toArray());
+
+$iterator = new \ArrayIterator([1, 2, 3]);
+$union = $set->union($iterator);
+
+echo "Union:\n";
+print_r($union->toArray());
+
+$isSubset = $set->isSubset([1, 2, 'hello', 'world']);
+
+$isSuperset = $set->isSuperset([1, 2]);

@@ -10,3 +10,4 @@ require_once __DIR__ . '/nspl/op.php';
 
 require_once __DIR__ . '/nspl/ds/ArrayObject.php';
 require_once __DIR__ . '/nspl/ds/DefaultArray.php';
+require_once __DIR__ . '/nspl/ds/Set.php';

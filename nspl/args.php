@@ -565,8 +565,8 @@ function getErrorSource($arg)
     $result = array(
         'function' => (isset($call['class']) ? $call['class'] . '::' : '') . $call['function'],
         'position' => $position,
-        'file' => $call['file'],
-        'line' => $call['line'],
+        'file' => @$call['file'],
+        'line' => @$call['line'],
     );
 
     return array_merge(array_values($result), $result);

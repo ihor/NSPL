@@ -14,6 +14,17 @@ use function \nspl\args\expectsAll;
 use function \nspl\args\expectsOptional;
 use function \nspl\args\expectsToBe;
 
+function callAndCatch($function, $arg)
+{
+    try {
+        $args = func_get_args();
+        array_shift($args);
+        call_user_func_array($function, $args);
+    }
+    catch (\InvalidArgumentException $e) {
+        echo $e->getMessage() . "\n";
+    }
+}
 
 // 1. Specify scalar parameter type
 function sqr($x)
@@ -22,12 +33,7 @@ function sqr($x)
     return $x * $x;
 }
 
-try {
-    sqr('hello world');
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('sqr', 'hello world');
 
 // 2. Specify several types
 function first($sequence)
@@ -36,12 +42,7 @@ function first($sequence)
     return $sequence[0];
 }
 
-try {
-    first(12);
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('first', 12);
 
 // 3. Specify several parameters of the same type
 function concat($str1, $str2)
@@ -50,12 +51,7 @@ function concat($str1, $str2)
     return $str1 . $str2;
 }
 
-try {
-    concat(1, 2);
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('concat', 1, 2);
 
 // 4. Specify type for optional parameter
 function splitBy($string, $separator = ' ', $limit = null)
@@ -66,12 +62,8 @@ function splitBy($string, $separator = ' ', $limit = null)
     return explode($separator, $string, $limit);
 }
 
-try {
-    splitBy('hello world', ' ', 'world');
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('splitBy', 'hello world', ' ', 'world');
+
 
 // 5. Specify user-defined type
 class Integer {}
@@ -81,12 +73,7 @@ function sum($x, $y)
     expectsAll([int, Integer::class], [$x, $y]);
 }
 
-try {
-    sum('hello', 'world');
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('sum', 'hello', 'world');
 
 // 6. Specify array with keys
 function getUserFullName($data)
@@ -95,12 +82,7 @@ function getUserFullName($data)
     return $data['first_name'] . ' ' . $data['last_name'];
 }
 
-try {
-    getUserFullName(array('hello' => 'world'));
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('getUserFullName', array('hello' => 'world'));
 
 // 7. Specify object with methods
 function pet($duck)
@@ -108,26 +90,21 @@ function pet($duck)
     expects(withMethod('quack'), $duck);
 }
 
-try {
-    pet(new Integer());
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('pet', new Integer());
+
 
 // 8. Specify with custom checking function
+function validYear($year)
+{
+    return is_int($year) && $year > 1900 && $year <= (int) date('Y');
+}
+const validYear = 'validYear';
+
 function calculateAge($yearOfBirth)
 {
-    expectsToBe($yearOfBirth, 'to be an integer > 1900 and <= current year', function($arg) {
-        return is_int($arg) && $arg > 1900 && $arg <= (int) date('Y');
-    });
+    expects(validYear, $yearOfBirth);
 
     return (int) date('Y') - $yearOfBirth;
 }
 
-try {
-    $age = calculateAge(1800);
-}
-catch (\InvalidArgumentException $e) {
-    echo $e->getMessage() . "\n";
-}
+callAndCatch('calculateAge', 1800);

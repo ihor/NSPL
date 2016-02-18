@@ -732,7 +732,7 @@ foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
 ```
 into this:
 ```php
-$a = new DefaultArray(0);
+$a = defaultarray(0);
 foreach([1, 2, 1, 1, 3, 3, 3] as $v) {
     ++$a[$v];
 }
@@ -745,10 +745,6 @@ Returns new DefaultArray
 ##### Set
 
 Array-like collection that contains no duplicate elements
-
-##### set
-
-Returns new Set object
 
 ```php
 $set = set(1, 2);
@@ -771,6 +767,10 @@ $isSubset = $set->isSubset([1, 2, 'hello', 'world']);
 
 $isSuperset = $set->isSuperset([1, 2]);
 ```
+
+##### set
+
+Returns new Set
 
 Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/ds.php).
 

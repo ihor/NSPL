@@ -744,7 +744,7 @@ Returns new DefaultArray
 
 ##### Set
 
-Array-like collection that contains no duplicate elements. It supports basic set-functions which take other sets, arrays and traversable objects as arguments
+Array-like collection that contains no duplicate elements. It supports basic set operations which take other sets, arrays and traversable objects as arguments
 
 ```php
 $set = set(1, 2);

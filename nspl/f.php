@@ -3,8 +3,19 @@
 namespace nspl\f;
 
 use nspl\a;
-use nspl\ds;
 use nspl\args;
+
+/**
+ * Identity function. Returns passed value.
+ *
+ * @param mixed $value
+ * @return mixed
+ */
+function id($value)
+{
+    return $value;
+}
+const id = '\nspl\f\id';
 
 /**
  * Applies function to arguments and returns the result
@@ -24,19 +35,6 @@ function apply(callable $function, array $args = array())
     }
 }
 const apply = '\nspl\f\apply';
-
-/**
- * Returns function which accepts arguments in the reversed order
- *
- * @param callable $function
- * @return callable
- */
-function flipped(callable $function) {
-    return function() use ($function) {
-        return call_user_func_array($function, array_reverse(func_get_args()));
-    };
-}
-const flipped = '\nspl\f\flipped';
 
 /**
  * Returns new function which will behave like $function with
@@ -102,37 +100,17 @@ function ppartial(callable $function, array $args)
 const ppartial = '\nspl\f\ppartial';
 
 /**
- * Identity function. Returns passed value.
- *
- * @param mixed $value
- * @return mixed
- */
-function id($value)
-{
-    return $value;
-}
-const id = '\nspl\f\id';
-
-/**
- * Returns memoized $function which returns the cached result when the same inputs occur again
+ * Returns function which accepts arguments in the reversed order
  *
  * @param callable $function
  * @return callable
  */
-function memoized(callable $function)
-{
+function flipped(callable $function) {
     return function() use ($function) {
-        static $memory = array();
-        $args = func_get_args();
-        $key = serialize($args);
-        if (!isset($memory[$key]) && !array_key_exists($key, $memory)) {
-            $memory[$key] = call_user_func_array($function, $args);
-        }
-
-        return $memory[$key];
+        return call_user_func_array($function, array_reverse(func_get_args()));
     };
 }
-const memoized = '\nspl\f\memoized';
+const flipped = '\nspl\f\flipped';
 
 /**
  * Returns new function which applies each given function to the result of another from right to left
@@ -238,6 +216,27 @@ function uncurried(callable $function)
     };
 }
 const uncurried = '\nspl\f\uncurried';
+
+/**
+ * Returns memoized $function which returns the cached result when the same inputs occur again
+ *
+ * @param callable $function
+ * @return callable
+ */
+function memoized(callable $function)
+{
+    return function() use ($function) {
+        static $memory = array();
+        $args = func_get_args();
+        $key = serialize($args);
+        if (!isset($memory[$key]) && !array_key_exists($key, $memory)) {
+            $memory[$key] = call_user_func_array($function, $args);
+        }
+
+        return $memory[$key];
+    };
+}
+const memoized = '\nspl\f\memoized';
 
 //region deprecated
 /**

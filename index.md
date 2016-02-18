@@ -67,7 +67,7 @@ composer require ihor/nspl
 For the latest changes require version ```1.1.*-dev```
 
 #### Manually
-Checkout the code and include ```autoload.php```:
+Checkout [the code](https://github.com/ihor/Nspl) and include ```autoload.php```:
 ```php
 include 'path/to/nspl/autoload.php';
 ```
@@ -90,15 +90,15 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 * [nspl\f](#nsplf)
     * [id](#idvalue)
     * [apply](#applyfunction-array-args--)
-    * [flipped](#flippedfunction)
     * [partial](#partialfunction-arg1)
     * [rpartial](#rpartialfunction-arg1)
     * [ppartial](#ppartialfunction-array-args)
-    * [memoized](#memoizedfunction)
+    * [flipped](#flippedfunction)
     * [compose](#composef-g)
     * [pipe](#pipeinput-function1-function2)
     * [curried](#curriedfunction-withoptionalargs--false)
     * [uncurried](#uncurriedfunction)
+    * [memoized](#memoizedfunction)
     * [Callbacks](#callbacks)
 * [nspl\op](#nsplop)
     * [Callbacks](#callbacks-1)
@@ -109,21 +109,21 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
     * [map](#mapfunction-sequence)
+    * [zip](#zipsequence1-sequence2)
     * [reduce](#reducefunction-sequence-initial--0)
     * [filter](#filterpredicate-sequence)
-    * [partition](#partitionpredicate-sequence)
-    * [span](#spanpredicate-sequence)
-    * [merge](#mergesequence1-sequence2)
-    * [zip](#zipsequence1-sequence2)
-    * [flatten](#flattensequence-depth--null)
-    * [pairs](#pairssequence-valuekey--false)
-    * [sorted](#sortedsequence-reversed--false-key--null-cmp--null)
-    * [keySorted](#keysortedsequence-reversed--false)
-    * [indexed](#indexedsequence-by-keeplast--true-transform--null)
     * [take](#takesequence-n-step--1)
     * [first](#firstsequence)
     * [drop](#dropsequence-n)
     * [last](#lastsequence)
+    * [partition](#partitionpredicate-sequence)
+    * [span](#spanpredicate-sequence)
+    * [indexed](#indexedsequence-by-keeplast--true-transform--null)
+    * [sorted](#sortedsequence-reversed--false-key--null-cmp--null)
+    * [keySorted](#keysortedsequence-reversed--false)
+    * [flatten](#flattensequence-depth--null)
+    * [pairs](#pairssequence-valuekey--false)
+    * [merge](#mergesequence1-sequence2)
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
     * [isList](#islistvar)
@@ -164,10 +164,6 @@ Applies given function to arguments and returns the result
 assert([1, 3, 5, 7, 9] === apply('range', [1, 10, 2]));
 ```
 
-##### flipped($function)
-
-Returns function which accepts arguments in the reversed order
-
 ##### partial($function, $arg1)
 
 Returns new partial function which will behave like ```$function``` with predefined *left* arguments passed to partial
@@ -190,25 +186,9 @@ Returns new partial function which will behave like ```$function``` with predefi
 $oddNumbers = ppartial('range', array(0 => 1, 2 => 2));
 ```
 
-##### memoized($function)
+##### flipped($function)
 
-Returns memoized ```$function``` which returns the cached result when the same inputs occur again
-```php
-$f = function($arg) {
-    echo sprintf("Performing heavy calculations with '%s'\n", $arg);
-    return $arg;
-};
-
-$memoized = memoized($f);
-echo $memoized('Hello world!') . "\n";
-echo $memoized('Hello world!') . "\n";
-```
-which outputs
-```
-Performing heavy calculations with 'Hello world!'
-Hello world!
-Hello world!
-```
+Returns function which accepts arguments in the reversed order
 
 ##### compose($f, $g)
 
@@ -257,6 +237,26 @@ If the second argument is true then curry function with optional args otherwise 
 ##### uncurried($function)
 
 Returns normal (uncurried) version of a [curried function](https://en.wikipedia.org/wiki/Currying)
+
+##### memoized($function)
+
+Returns memoized ```$function``` which returns the cached result when the same inputs occur again
+```php
+$f = function($arg) {
+    echo sprintf("Performing heavy calculations with '%s'\n", $arg);
+    return $arg;
+};
+
+$memoized = memoized($f);
+echo $memoized('Hello world!') . "\n";
+echo $memoized('Hello world!') . "\n";
+```
+which outputs
+```
+Performing heavy calculations with 'Hello world!'
+Hello world!
+Hello world!
+```
 
 ##### Callbacks
 
@@ -376,6 +376,13 @@ Applies function of one argument to each sequence item.
 assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
 ```
 
+##### zip($sequence1, $sequence2)
+
+Zips two or more sequences
+```php
+assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
+```
+
 ##### reduce($function, $sequence, $initial = 0)
 
 Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
@@ -388,100 +395,6 @@ assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 Returns list items that satisfy the predicate
 ```php
 assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-```
-
-##### partition($predicate, $sequence)
-
-Returns two lists, one containing values for which your predicate returned true, and the other containing the elements that returned false
-```php
-assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
-```
-
-##### span($predicate, $sequence)
-
-Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
-```php
-assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
-```
-
-##### value($array, $key, $default = null)
-
-Returns array value by key if it exists otherwise returns the default value
-```php
-$data = array('a' => 1, 'b' => 2, 'c' => 3);
-assert(2 === value($data, 'b', -1));
-assert(-1 === value($data, 'd', -1));
-```
-
-##### merge($sequence1, $sequence2)
-
-Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
-```php
-assert([1, 2, 3, 4, 5, 6] === merge([1, 2, 3], [4, 5, 6]));
-```
-
-##### zip($sequence1, $sequence2)
-
-Zips two or more sequences
-```php
-assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
-```
-
-##### flatten($sequence, $depth = null)
-
-Flattens multidimensional list
-```php
-assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
-assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
-```
-
-##### pairs($sequence, $valueKey = false)
-
-Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
-```php
-assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
-```
-
-##### sorted($sequence, $reversed = false, $key = null, $cmp = null)
-
-Returns array which contains sorted items the passed sequence
-
-If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
-```$key``` is a function of one argument that is used to extract a comparison key from each element  
-```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
-```php
-assert([1, 2, 3] === sorted([2, 3, 1]));
-assert(['c', 'b', 'a'] === sorted(['c', 'a', 'b'], true));
-
-$usersSortedByName = sorted($users, function($u) { return $u->getName(); });
-// Which is the same as
-use function nspl\op\methodCaller;
-$usersSortedByName = sorted($users, methodCaller('getName'));
-```
-
-Check more ```\nspl\a\sorted``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a_sorted.php).
-
-##### keySorted($sequence, $reversed = false)
-
-Returns array which contains sequence items sorted by keys
-```php
-assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 3, 'a' => 1));
-```
-
-##### indexed($sequence, $by, $keepLast = true, $transform = null)
-
-Returns array which contains indexed sequence items
-
-```$by``` is an array key or a function  
-If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
-```$transform``` is a function that transforms list item after indexing
-
-```php
-$indexedById = indexed([
-    array('id' => 1, 'name' => 'John'),
-    array('id' => 2, 'name' => 'Kate'),
-    array('id' => 3, 'name' => 'Robert'),
-], 'id');
 ```
 
 ##### take($sequence, $N, $step = 1)
@@ -512,11 +425,98 @@ Returns the last sequence item
 assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
+##### partition($predicate, $sequence)
+
+Returns two lists, one containing values for which your predicate returned true, and the other containing the elements that returned false
+```php
+assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+```
+
+##### span($predicate, $sequence)
+
+Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
+```php
+assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
+```
+
+##### indexed($sequence, $by, $keepLast = true, $transform = null)
+
+Returns array which contains indexed sequence items
+
+```$by``` is an array key or a function  
+If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
+```$transform``` is a function that transforms list item after indexing
+
+```php
+$indexedById = indexed([
+    array('id' => 1, 'name' => 'John'),
+    array('id' => 2, 'name' => 'Kate'),
+    array('id' => 3, 'name' => 'Robert'),
+], 'id');
+```
+
+##### sorted($sequence, $reversed = false, $key = null, $cmp = null)
+
+Returns array which contains sorted items the passed sequence
+
+If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
+```$key``` is a function of one argument that is used to extract a comparison key from each element  
+```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
+```php
+assert([1, 2, 3] === sorted([2, 3, 1]));
+assert(['c', 'b', 'a'] === sorted(['c', 'a', 'b'], true));
+
+$usersSortedByName = sorted($users, function($u) { return $u->getName(); });
+// Which is the same as
+use function nspl\op\methodCaller;
+$usersSortedByName = sorted($users, methodCaller('getName'));
+```
+
+Check more ```\nspl\a\sorted``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a_sorted.php).
+
+##### keySorted($sequence, $reversed = false)
+
+Returns array which contains sequence items sorted by keys
+```php
+assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 3, 'a' => 1));
+```
+
+##### flatten($sequence, $depth = null)
+
+Flattens multidimensional list
+```php
+assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
+assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));
+```
+
+##### pairs($sequence, $valueKey = false)
+
+Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
+```php
+assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
+```
+
+##### merge($sequence1, $sequence2)
+
+Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
+```php
+assert([1, 2, 3, 4, 5, 6] === merge([1, 2, 3], [4, 5, 6]));
+```
+
 ##### reorder(array $list, $from, $to)
 
 Moves list element to another position
 ```php
 assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
+```
+
+##### value($array, $key, $default = null)
+
+Returns array value by key if it exists otherwise returns the default value
+```php
+$data = array('a' => 1, 'b' => 2, 'c' => 3);
+assert(2 === value($data, 'b', -1));
+assert(-1 === value($data, 'd', -1));
 ```
 
 ##### isList($var)

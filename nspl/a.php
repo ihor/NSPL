@@ -8,8 +8,8 @@ use nspl\op;
 use nspl\args;
 
 /**
- * Returns true if all elements of the $sequence satisfy the predicate are true (or if the $sequence is empty).
- * If predicate was not passed return true if all elements of the $sequence are true.
+ * Returns true if all $sequence items satisfy the predicate are true (or if the $sequence is empty).
+ * If predicate was not passed return true if all $sequence items are true.
  *
  * @param array|\Traversable $sequence
  * @param callable $predicate
@@ -30,8 +30,8 @@ function all($sequence, callable $predicate = null)
 const all = '\nspl\a\all';
 
 /**
- * Returns true if any element of the $sequence satisfies the predicate. If predicate was not passed returns true if
- * any element of the $sequence is true. If the $sequence is empty, returns false.
+ * Returns true if any $sequence item satisfies the predicate. If predicate was not passed returns true if
+ * any $sequence item is true. If the $sequence is empty, returns false.
  *
  * @param array|\Traversable $sequence
  * @param callable $predicate
@@ -286,7 +286,7 @@ const last = '\nspl\a\last';
 
 /**
  * Returns two lists, one containing values for which your predicate returned true, and the other containing
- * the elements that returned false
+ * the items that returned false
  *
  * @param callable $predicate
  * @param array|\Traversable $sequence
@@ -313,7 +313,7 @@ const partition = '\nspl\a\partition';
 
 /**
  * Returns two lists, one containing values for which your predicate returned true until the predicate returned
- * false, and the other containing all the elements that left
+ * false, and the other containing all the items that left
  *
  * @param callable $predicate
  * @param array|\Traversable $sequence
@@ -388,7 +388,7 @@ const indexed = '\nspl\a\indexed';
  *
  * @param array|\Traversable $sequence
  * @param bool $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
- * @param callable $key Function of one argument that is used to extract a comparison key from each element
+ * @param callable $key Function of one argument that is used to extract a comparison key from each item
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
@@ -554,7 +554,7 @@ function merge($sequence1, $sequence2)
 const merge = '\nspl\a\merge';
 
 /**
- * Moves list element to another position
+ * Moves list item to another position
  *
  * @param array $list
  * @param int $from

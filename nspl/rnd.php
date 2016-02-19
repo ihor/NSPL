@@ -6,7 +6,7 @@ use \nspl\a;
 use \nspl\args;
 
 /**
- * Returns a k length list of unique elements chosen from the population sequence
+ * Returns a k length list of unique items chosen from the population sequence
  *
  * @param array|\Traversable $population
  * @param int $length
@@ -41,7 +41,7 @@ function sample($population, $length, $preserveKeys = false)
 }
 
 /**
- * Returns a random element from a non-empty sequence
+ * Returns a random item from a non-empty sequence
  *
  * @param array|\Traversable $sequence
  * @return mixed
@@ -62,7 +62,7 @@ function choice($sequence)
 }
 
 /**
- * Returns a random element from a non-empty sequence of items with associated weights.
+ * Returns a random item from a non-empty sequence of items with associated weights.
  * Weights can have up to 6 numbers after decimal point.
  *
  * @param array $weightPairs List of pairs [[item, weight], ...]

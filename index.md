@@ -355,7 +355,7 @@ Provides missing array functions which also can be applied to traversable sequen
 
 ##### all($sequence, $predicate)
 
-Returns true if all elements of the ```$sequence``` satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all elements of the ```$sequence``` are true.
+Returns true if all ```$sequence``` items satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all ```$sequence``` items are true.
 
 ```php
 assert(true === all([true, true, true]));
@@ -363,7 +363,7 @@ assert(true === all([true, true, true]));
 
 ##### any($sequence, $predicate)
 
-Returns true if any element of the ```$sequence``` satisfies the predicate. If predicate was not passed returns true if any element of the ```$sequence``` is true. If the ```$sequence``` is empty, returns false.
+Returns true if any ```$sequence``` items satisfies the predicate. If predicate was not passed returns true if any ```$sequence``` item is true. If the ```$sequence``` is empty, returns false.
 
 ```php
 assert(true === any([true, false, false]));
@@ -427,14 +427,14 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 ##### partition($predicate, $sequence)
 
-Returns two lists, one containing values for which your predicate returned true, and the other containing the elements that returned false
+Returns two lists, one containing values for which your predicate returned true, and the other containing the items that returned false
 ```php
 assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 ##### span($predicate, $sequence)
 
-Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the elements that left
+Returns two lists, one containing values for which your predicate returned true until the predicate returned false, and the other containing all the items that left
 ```php
 assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, 'c']));
 ```
@@ -776,16 +776,15 @@ Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/mast
 
 ## nspl\rnd
 
-Helps to pick random elements from sequences of data
-
+Helps to pick random items from sequences of data
 
 ##### choice($sequence)
 
-Returns a random element from a non-empty sequence
+Returns a random item from a non-empty sequence
 
 ##### weightedChoice($weightPairs)
 
-Returns a random element from a non-empty sequence of items with associated weights presented as pairs (item, weight)
+Returns a random item from a non-empty sequence of items with associated weights presented as pairs (item, weight)
 
 ```php
 use function \nspl\rnd\weightedChoice;

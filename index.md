@@ -7,7 +7,7 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
  - [nspl\args](#nsplargs) - helps to validate function arguments
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
- - [nspl\rnd](#nsplrnd) - helps to pick random elements from sequences of data
+ - [nspl\rnd](#nsplrnd) - helps to pick random items from sequences of data
 
 NSPL aims to make code compact and less verbose but still clear and readable. Look at the following example:
 ```php
@@ -460,7 +460,7 @@ $indexedById = indexed([
 Returns array which contains sorted items the passed sequence
 
 If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
-```$key``` is a function of one argument that is used to extract a comparison key from each element  
+```$key``` is a function of one argument that is used to extract a comparison key from each item  
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 assert([1, 2, 3] === sorted([2, 3, 1]));
@@ -505,9 +505,9 @@ assert([1, 2, 3, 4, 5, 6] === merge([1, 2, 3], [4, 5, 6]));
 
 ##### reorder(array $list, $from, $to)
 
-Moves list element to another position
+Moves list item to another position
 ```php
-assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move element from the 2nd position to the begining of the list
+assert([2, 0, 1] === reorder([0, 1, 2], 2, 0)); // move item from the 2nd position to the begining of the list
 ```
 
 ##### value($array, $key, $default = null)
@@ -800,7 +800,7 @@ $nextFavouriteColor = weightedChoice(pairs(array(
 
 ##### sample($population, $length, $preserveKeys = false)
 
-Returns a k length list of unique elements chosen from the population sequence
+Returns a k length list of unique items chosen from the population sequence
 
 Check more ```\nspl\rnd``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/rnd.php).
 

@@ -109,7 +109,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
     * [map](#mapfunction-sequence)
-    * [flatMap](#flatMapfunction-sequence)
+    * [flatMap](#flatmapfunction-sequence)
     * [zip](#zipsequence1-sequence2)
     * [reduce](#reducefunction-sequence-initial--0)
     * [filter](#filterpredicate-sequence)

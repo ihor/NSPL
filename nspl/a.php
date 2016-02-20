@@ -72,6 +72,28 @@ function map(callable $function, $sequence)
 const map = '\nspl\a\map';
 
 /**
+ * Applies function of one argument to each sequence item and flattens the result
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function flatMap(callable $function, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $result = [];
+    foreach ($sequence as $item) {
+        foreach ($function($item) as $resultValue) {
+            $result[] = $resultValue;
+        }
+    }
+
+    return $result;
+}
+const flatMap = '\nspl\a\flatMap';
+
+/**
  * Zips two or more sequences
  *
  * @param array|\Traversable $sequence1

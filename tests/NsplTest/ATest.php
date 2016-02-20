@@ -5,6 +5,7 @@ namespace NsplTest;
 use function \nspl\a\all;
 use function \nspl\a\any;
 use function \nspl\a\map;
+use function \nspl\a\flatMap;
 use function \nspl\a\reduce;
 use function \nspl\a\filter;
 use function \nspl\a\partition;
@@ -27,6 +28,7 @@ use function \nspl\a\isList;
 use const \nspl\a\all;
 use const \nspl\a\any;
 use const \nspl\a\map;
+use const \nspl\a\flatMap;
 use const \nspl\a\reduce;
 use const \nspl\a\filter;
 use const \nspl\a\partition;
@@ -111,6 +113,25 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['A', 'B', 'C'], call_user_func(map, 'strtoupper', ['a', 'b', 'c']));
         $this->assertEquals('\nspl\a\map', map);
+    }
+
+    public function testFlatMap()
+    {
+        $this->assertEquals(
+            [1, 2, 3, 4],
+            flatMap(function($v) { return [$v, $v + 1]; }, [1, 3])
+        );
+
+        $this->assertEquals(
+            ['hello', 'world', 'answer', 'is', '42'],
+            flatMap(function($v) { return explode(' ', $v); }, ['hello world', 'answer is 42'])
+        );
+
+        $this->assertEquals(
+            [1, 2, 3, 4],
+            call_user_func(flatMap, function($v) { return [$v, $v + 1]; }, [1, 3])
+        );
+        $this->assertEquals('\nspl\a\flatMap', flatMap);
     }
 
     public function testReduce()

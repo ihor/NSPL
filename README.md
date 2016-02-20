@@ -109,6 +109,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
     * [map](#mapfunction-sequence)
+    * [flatMap](#flatMapfunction-sequence)
     * [zip](#zipsequence1-sequence2)
     * [reduce](#reducefunction-sequence-initial--0)
     * [filter](#filterpredicate-sequence)
@@ -371,9 +372,17 @@ assert(true === any([true, false, false]));
 
 ##### map($function, $sequence)
 
-Applies function of one argument to each sequence item.
+Applies function of one argument to each sequence item
 ```php
 assert(['A', 'B', 'C'] === map('strtoupper', ['a', 'b', 'c']));
+```
+
+##### flatMap($function, $sequence)
+
+Applies function of one argument to each sequence item and flattens the result
+```php
+$duplicate = function($v) { return [$v, $v]; }
+assert(['hello', 'hello', 'world', 'world'] === flatMap($duplicate, ['hello', 'world']));
 ```
 
 ##### zip($sequence1, $sequence2)
@@ -385,7 +394,7 @@ assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
 
 ##### reduce($function, $sequence, $initial = 0)
 
-Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value.
+Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value
 ```php
 assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 ```

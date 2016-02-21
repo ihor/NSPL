@@ -407,6 +407,12 @@ assert([101, 1002, 10003] === zipWith(sum, [1, 2, 3], [100, 1000, 10000]));
 Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value
 ```php
 assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
+
+// Which is the same as
+use const \nspl\op\sum;
+
+assert(6 === reduce(sum, [1, 2, 3]));
+
 ```
 
 ##### filter($predicate, $sequence)

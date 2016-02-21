@@ -135,6 +135,53 @@ function zip($sequence1, $sequence2)
 const zip = '\nspl\a\zip';
 
 /**
+ * Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
+ * @return array
+ */
+function zipWith(callable $function, $sequence1, $sequence2)
+{
+    $lists = func_get_args();
+    array_shift($lists);
+    $count = count($lists);
+
+    for ($j = 0; $j < $count; ++$j) {
+        args\expects(args\traversable, $lists[$j], $j + 1);
+        if ($lists[$j] instanceof \Iterator) {
+            $lists[$j] = iterator_to_array($lists[$j]);
+        }
+
+        if (!isList($lists[$j])) {
+            $lists[$j] = array_values($lists[$j]);
+        }
+    }
+
+    $i = 0;
+    $result = array();
+    do {
+        $zipped = array();
+        for ($j = 0; $j < $count; ++$j) {
+            if (!isset($lists[$j][$i]) && !array_key_exists($i, $lists[$j])) {
+                break 2;
+            }
+            $zipped[] = $lists[$j][$i];
+        }
+
+        $result[] = $count === 2
+            ? $function($zipped[0], $zipped[1])
+            : call_user_func_array($function, $zipped);
+
+        ++$i;
+    } while (true);
+
+    return $result;
+}
+const zipWith = '\nspl\a\zipWith';
+
+/**
  * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
  * to a single value.
  *

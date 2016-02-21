@@ -6,13 +6,14 @@ use function \nspl\a\all;
 use function \nspl\a\any;
 use function \nspl\a\map;
 use function \nspl\a\flatMap;
+use function \nspl\a\zip;
+use function \nspl\a\zipWith;
 use function \nspl\a\reduce;
 use function \nspl\a\filter;
 use function \nspl\a\partition;
 use function \nspl\a\span;
 use function \nspl\a\value;
 use function \nspl\a\merge;
-use function \nspl\a\zip;
 use function \nspl\a\flatten;
 use function \nspl\a\pairs;
 use function \nspl\a\sorted;
@@ -29,13 +30,14 @@ use const \nspl\a\all;
 use const \nspl\a\any;
 use const \nspl\a\map;
 use const \nspl\a\flatMap;
+use const \nspl\a\zip;
+use const \nspl\a\zipWith;
 use const \nspl\a\reduce;
 use const \nspl\a\filter;
 use const \nspl\a\partition;
 use const \nspl\a\span;
 use const \nspl\a\value;
 use const \nspl\a\merge;
-use const \nspl\a\zip;
 use const \nspl\a\flatten;
 use const \nspl\a\pairs;
 use const \nspl\a\sorted;
@@ -221,6 +223,18 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], call_user_func(zip, [1, 2, 3], ['a', 'b', 'c']));
         $this->assertEquals('\nspl\a\zip', zip);
+    }
+
+    public function testZipWith()
+    {
+        $sum = function($x, $y) { return $x + $y; };
+        $sum3 = function($x, $y, $z) { return $x + $y + $z; };
+
+        $this->assertEquals([2, 4, 6], zipWith($sum, [1, 2, 3], [1, 2, 3]));
+        $this->assertEquals([3, 6, 9], zipWith($sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3]));
+
+        $this->assertEquals([3, 6, 9], call_user_func(zipWith, $sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3]));
+        $this->assertEquals('\nspl\a\zipWith', zipWith);
     }
 
     public function testFlatten()

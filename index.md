@@ -111,6 +111,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [map](#mapfunction-sequence)
     * [flatMap](#flatmapfunction-sequence)
     * [zip](#zipsequence1-sequence2)
+    * [zipWith](#zipwithfunction-sequence1-sequence2)
     * [reduce](#reducefunction-sequence-initial--0)
     * [filter](#filterpredicate-sequence)
     * [take](#takesequence-n-step--1)
@@ -390,6 +391,15 @@ assert(['hello', 'hello', 'world', 'world'] === flatMap($duplicate, ['hello', 'w
 Zips two or more sequences
 ```php
 assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
+```
+
+##### zipWith($function, $sequence1, $sequence2)
+
+Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
+```php
+use const \nspl\op\sum;
+
+assert([101, 1002, 10003] === zipWith(sum, [1, 2, 3], [100, 1000, 10000]));
 ```
 
 ##### reduce($function, $sequence, $initial = 0)
@@ -828,4 +838,4 @@ Roadmap
 Feedback
 ========
 
-There are no mailing lists or discussion groups yet. Please use GitHub issues and pull request or follow me on Twitter [@IhorBurlachenko](https://twitter.com/IhorBurlachenko)Update
+There are no mailing lists or discussion groups yet. Please use GitHub issues and pull request or follow me on Twitter [@IhorBurlachenko](https://twitter.com/IhorBurlachenko)

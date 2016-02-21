@@ -410,7 +410,6 @@ assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 
 // Which is the same as
 use const \nspl\op\sum;
-
 assert(6 === reduce(sum, [1, 2, 3]));
 
 ```
@@ -492,6 +491,7 @@ assert([1, 2, 3] === sorted([2, 3, 1]));
 assert(['c', 'b', 'a'] === sorted(['c', 'a', 'b'], true));
 
 $usersSortedByName = sorted($users, function($u) { return $u->getName(); });
+
 // Which is the same as
 use function nspl\op\methodCaller;
 $usersSortedByName = sorted($users, methodCaller('getName'));

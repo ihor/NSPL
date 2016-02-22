@@ -4,12 +4,12 @@ namespace nspl\ds;
 
 use nspl\args;
 
-class Set extends ArrayObject
+class Set extends Collection
 {
     public function __construct(/* $e1, $e2, ..., $eN */)
     {
         foreach (func_get_args() as $element) {
-            $this->array[$this->getElementKey($element)] = $element;
+            $this->array[static::getElementKey($element)] = $element;
         }
     }
 
@@ -19,7 +19,7 @@ class Set extends ArrayObject
      */
     public function add($element)
     {
-        $this->array[$this->getElementKey($element)] = $element;
+        $this->array[static::getElementKey($element)] = $element;
         return $this;
     }
 
@@ -36,7 +36,7 @@ class Set extends ArrayObject
             args\expects(args\traversable, $sequence, $position);
 
             foreach ($sequence as $element) {
-                $this->array[$this->getElementKey($element)] = $element;
+                $this->array[static::getElementKey($element)] = $element;
             }
         }
 
@@ -49,7 +49,7 @@ class Set extends ArrayObject
      */
     public function contains($element)
     {
-        $elementKey = $this->getElementKey($element);
+        $elementKey = static::getElementKey($element);
         return isset($this->array[$elementKey]) || array_key_exists($elementKey, $this->array);
     }
 
@@ -59,7 +59,7 @@ class Set extends ArrayObject
      */
     public function delete($element)
     {
-        unset($this->array[$this->getElementKey($element)]);
+        unset($this->array[static::getElementKey($element)]);
         return $this;
     }
 
@@ -73,7 +73,7 @@ class Set extends ArrayObject
 
         $result = new Set();
         foreach ($sequence as $element) {
-            $elementKey = $this->getElementKey($element);
+            $elementKey = static::getElementKey($element);
             if (isset($this->array[$elementKey])) {
                 $result->array[$elementKey] = $element;
             }
@@ -93,7 +93,7 @@ class Set extends ArrayObject
         $result = new Set();
         $intersection = $this->intersection($sequence);
         foreach ($this->array as $element) {
-            $elementKey = $this->getElementKey($element);
+            $elementKey = static::getElementKey($element);
             if (!isset($intersection->array[$elementKey])) {
                 $result->array[$elementKey] = $element;
             }
@@ -112,7 +112,7 @@ class Set extends ArrayObject
 
         $result = $this->copy();
         foreach ($sequence as $element) {
-            $result->array[$this->getElementKey($element)] = $element;
+            $result->array[static::getElementKey($element)] = $element;
         }
 
         return $result;
@@ -127,7 +127,7 @@ class Set extends ArrayObject
         args\expects(args\traversable, $sequence);
 
         foreach ($sequence as $element) {
-            $elementKey = $this->getElementKey($element);
+            $elementKey = static::getElementKey($element);
             if (!isset($this->array[$elementKey]) && !array_key_exists($element, $this->array)) {
                 return false;
             }
@@ -148,7 +148,7 @@ class Set extends ArrayObject
         $size = count($this->array);
         $present = array();
         foreach ($sequence as $element) {
-            $elementKey = $this->getElementKey($element);
+            $elementKey = static::getElementKey($element);
             if (isset($this->array[$elementKey]) || array_key_exists($element, $this->array)) {
                 $present[$element] = true;
 
@@ -193,7 +193,7 @@ class Set extends ArrayObject
      * @param mixed $element
      * @return int|string
      */
-    protected function getElementKey($element)
+    protected static function getElementKey($element)
     {
         if (is_scalar($element)) {
             return $element;
@@ -202,7 +202,29 @@ class Set extends ArrayObject
         return md5(serialize($element));
     }
 
-    //region ArrayAccess methods
+    /**
+     * @param array $array
+     * @return static
+     */
+    public static function fromArray(array $array)
+    {
+        $result = new static();
+        foreach ($array as $element) {
+            $result->array[static::getElementKey($element)] = $element;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array_values($this->array);
+    }
+
+    //region ArrayAccess
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Whether a offset exists
@@ -251,7 +273,7 @@ class Set extends ArrayObject
     public function offsetSet($index, $value)
     {
         if (null === $index) {
-            $this->array[$this->getElementKey($value)] = $value;
+            $this->array[static::getElementKey($value)] = $value;
         }
         else {
             throw new \BadMethodCallException('Set does not support indexing');
@@ -274,7 +296,7 @@ class Set extends ArrayObject
     }
     //endregion
 
-    //region Iterator methods
+    //region Iterator
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the key of the current element
@@ -287,52 +309,24 @@ class Set extends ArrayObject
     }
     //endregion
 
+    //region __toString
     /**
      * @return string
      */
     public function __toString()
     {
-        return sprintf('set(%s)', implode(', ', array_map(function($v) {
-            if (is_array($v)) {
-                return $this->stringifyArray($v);
-            }
-            else if (is_object($v)) {
-                return get_class($v);
-            }
-
-            return var_export($v, true);
-        }, $this->array)));
+        return 'set' . substr($this->stringifyArray(array_values($this->array)), 5);
     }
+    //endregion
 
-    /**
-     * @param array $array
-     * @return static
-     */
-    public static function fromArray(array $array)
-    {
-        $result = new static();
-        foreach ($array as $element) {
-            $result[] = $element;
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return array_values($this->array);
-    }
 }
 
 /**
- * @todo
+ * Returns new Set object
  *
  * @return Set
  */
-function set()
+function set(/* $e1, $e2, ..., $eN */)
 {
     return Set::fromArray(func_get_args());
 }

@@ -2,7 +2,7 @@
 
 namespace nspl\ds;
 
-class DefaultArray extends ArrayObject
+class DefaultArray extends Collection
 {
     /**
      * @var mixed|callable
@@ -13,29 +13,12 @@ class DefaultArray extends ArrayObject
      * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the array for the key, and returned.
      *
      * @param mixed|callable $default
-     * @param array|null $data Provides initial data
+     * @param array $data Provides initial data
      */
-    public function __construct($default, $data = array())
+    public function __construct($default, array $data = array())
     {
         $this->default = $default;
-        $this->array = (array) $data;
-    }
-
-    /**
-     * @param array $array
-     * @return static
-     */
-    public static function fromArray($default, array $array)
-    {
-        $result = new static($default);
-        $result->array = $array;
-
-        return $result;
-    }
-
-    public function __toString()
-    {
-        return 'defaultarray' . substr(parent::__toString(), 5);
+        $this->array = $data;
     }
 
     private function getDefault()
@@ -47,7 +30,20 @@ class DefaultArray extends ArrayObject
         return $this->default;
     }
 
-    //region ArrayAccess methods
+    /**
+     * @param mixed $default
+     * @param array $array
+     * @return static
+     */
+    public static function fromArray($default, array $array)
+    {
+        $result = new static($default);
+        $result->array = $array;
+
+        return $result;
+    }
+
+    //region ArrayAccess
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Offset to retrieve
@@ -55,7 +51,6 @@ class DefaultArray extends ArrayObject
      * @param int $index <p>
      * The offset to retrieve.
      * </p>
-     * @throws \Exception
      * @return mixed Can return all value types.
      */
     public function &offsetGet($index)
@@ -67,16 +62,27 @@ class DefaultArray extends ArrayObject
         return parent::offsetGet($index);
     }
     //endregion
+
+    //region __toString
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return 'defaultarray' . substr(parent::__toString(), 5);
+    }
+    //endregion
+
 }
 
 /**
  * If you pass a function as default value it will be called without arguments to provide a default value for the given key, this value will be inserted in the dictionary for the key, and returned.
  *
  * @param mixed|callable $default
- * @param array|null $data
+ * @param array $data
  * @return DefaultArray
  */
-function defaultarray($default, $data = array())
+function defaultarray($default, array $data = array())
 {
     return new DefaultArray($default, $data);
 }

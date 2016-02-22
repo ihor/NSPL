@@ -22,12 +22,14 @@ class DefaultArray extends ArrayObject
     }
 
     /**
+     * Create an instance of default array using `null` for the default value.
+     *
      * @param array $array
      * @return static
      */
-    public static function fromArray($default, array $array)
+    public static function fromArray(array $array)
     {
-        $result = new static($default);
+        $result = new static(null);
         $result->array = $array;
 
         return $result;
@@ -64,7 +66,7 @@ class DefaultArray extends ArrayObject
             $this->offsetSet($index, $this->getDefault());
         }
 
-        return parent::offsetGet($index);
+        return $this->array[$index];
     }
     //endregion
 }

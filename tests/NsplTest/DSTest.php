@@ -90,6 +90,11 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $array['oranges']);
         $this->assertEquals(20, $array['apples']);
         $this->assertEquals(30, $array['bananas']);
+
+        $array = DefaultArray::fromArray(array('apples' => 20, 'bananas' => 30));
+        $this->assertEquals(20, $array['apples']);
+        $this->assertEquals(30, $array['bananas']);
+        $this->assertNull($array['invalid']);
     }
 
     public function testSet()

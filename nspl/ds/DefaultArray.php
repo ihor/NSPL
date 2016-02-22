@@ -57,7 +57,6 @@ class DefaultArray extends ArrayObject
      * @param int $index <p>
      * The offset to retrieve.
      * </p>
-     * @throws \Exception
      * @return mixed Can return all value types.
      */
     public function &offsetGet($index)

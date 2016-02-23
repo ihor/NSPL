@@ -367,12 +367,15 @@ function partition(callable $predicate, $sequence)
 
     $isList = isList($sequence);
     $result = [[], []];
+
     foreach ($sequence as $k => $v) {
+        $resultIndex = (int) !$predicate($v);
+
         if ($isList) {
-            $result[(int)!$predicate($v)][] = $v;
+            $result[$resultIndex][] = $v;
         }
         else {
-            $result[(int)!$predicate($v)][$k] = $v;
+            $result[$resultIndex][$k] = $v;
         }
     }
 
@@ -395,17 +398,17 @@ function span(callable $predicate, $sequence)
     $isList = isList($sequence);
     $result = [[], []];
 
-    $listIndex = 0;
+    $resultIndex = 0;
     foreach ($sequence as $k => $v) {
-        if (0 === $listIndex && !$predicate($v)) {
-            $listIndex = 1;
+        if (0 === $resultIndex && !$predicate($v)) {
+            $resultIndex = 1;
         }
 
         if ($isList) {
-            $result[$listIndex][] = $v;
+            $result[$resultIndex][] = $v;
         }
         else {
-            $result[$listIndex][$k] = $v;
+            $result[$resultIndex][$k] = $v;
         }
     }
 

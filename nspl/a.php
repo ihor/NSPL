@@ -397,7 +397,7 @@ function span(callable $predicate, $sequence)
 
     $listIndex = 0;
     foreach ($sequence as $k => $v) {
-        if (!$predicate($v)) {
+        if (0 === $listIndex && !$predicate($v)) {
             $listIndex = 1;
         }
 

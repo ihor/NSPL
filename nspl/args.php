@@ -88,6 +88,8 @@ const int = 'is_int';
 const float = 'is_float';
 const numeric = 'is_numeric';
 const string = 'is_string';
+const array_ = 'is_array';
+const object = 'is_object';
 const callable_ = 'is_callable';
 const arrayKey = '\nspl\args\_p\isArrayKey';
 const traversable = '\nspl\args\_p\isTraversable';
@@ -580,6 +582,8 @@ class Checker
         \nspl\args\float => true,
         \nspl\args\numeric => true,
         \nspl\args\string => true,
+        \nspl\args\array_ => true,
+        \nspl\args\object => true,
         \nspl\args\arrayKey => true,
         \nspl\args\callable_ => true,
         \nspl\args\traversable => true,
@@ -597,6 +601,8 @@ class ErrorMessage
         \nspl\args\numeric => 'be numeric',
         \nspl\args\string => 'be a string',
         \nspl\args\arrayKey => 'be an integer or a string',
+        \nspl\args\array_ => 'be an array',
+        \nspl\args\object => 'be an object',
         \nspl\args\callable_ => 'be callable',
         \nspl\args\traversable => 'be an array or traversable',
         \nspl\args\arrayAccess => 'be an array or implement array access',

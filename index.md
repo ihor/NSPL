@@ -640,6 +640,8 @@ int                                 | Checks that argument is an int            
 float                               | Checks that argument is a float                                        | OR
 numeric                             | Checks that argument is numeric                                        | OR
 string                              | Checks that argument is a string                                       | OR
+array_                              | Checks that argument is array                                          | OR
+object                              | Checks that argument is object                                         | OR
 callable_                           | Checks that argument is callable                                       | OR
 arrayKey                            | Checks that argument can be an array key                               | OR
 traversable                         | Checks that argument can be traversed with foreach                     | OR

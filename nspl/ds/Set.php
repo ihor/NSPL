@@ -64,11 +64,18 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence
+     * @param Set|array|\Traversable $sequence
      * @return Set
      */
     public function intersection($sequence)
     {
+        if ($sequence instanceof Set) {
+            $result = new Set();
+            $result->array = array_intersect_key($this->array, $sequence->array);
+
+            return $result;
+        }
+
         args\expects(args\traversable, $sequence);
 
         $result = new Set();
@@ -83,11 +90,18 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence
+     * @param Set|array|\Traversable $sequence
      * @return Set
      */
     public function difference($sequence)
     {
+        if ($sequence instanceof Set) {
+            $result = new Set();
+            $result->array = array_diff_key($this->array, $sequence->array);
+
+            return $result;
+        }
+
         args\expects(args\traversable, $sequence);
 
         $result = new Set();
@@ -103,11 +117,18 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence
+     * @param Set|array|\Traversable $sequence
      * @return Set
      */
     public function union($sequence)
     {
+        if ($sequence instanceof Set) {
+            $result = new Set();
+            $result->array = $this->array + $sequence->array;
+
+            return $result;
+        }
+
         args\expects(args\traversable, $sequence);
 
         $result = $this->copy();
@@ -119,11 +140,15 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence
+     * @param Set|array|\Traversable $sequence
      * @return bool
      */
     public function isSuperset($sequence)
     {
+        if ($sequence instanceof Set) {
+            return array_intersect_key($this->array, $sequence->array) === $sequence->array;
+        }
+
         args\expects(args\traversable, $sequence);
 
         foreach ($sequence as $element) {
@@ -138,11 +163,15 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence
+     * @param Set|array|\Traversable $sequence
      * @return bool
      */
     public function isSubset($sequence)
     {
+        if ($sequence instanceof Set) {
+            return array_intersect_key($this->array, $sequence->array) === $this->array;
+        }
+
         args\expects(args\traversable, $sequence);
 
         $size = count($this->array);
@@ -195,7 +224,7 @@ class Set extends Collection
      */
     protected static function getElementKey($element)
     {
-        if (is_scalar($element)) {
+        if (is_int($element) || is_string($element)) {
             return $element;
         }
 

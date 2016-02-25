@@ -651,6 +651,7 @@ positive                            | Checks that argument is positive (> 0)    
 nonNegative                         | Checks that argument is not negative (>= 0)                            | AND
 nonZero                             | Checks that argument is not zero (!== 0)                               | AND
 any(constraint1, ..., constraintN)  | Checks constraints as if they were OR-constraints                      | AND
+and(constraint1, ..., constraintN)  | Checks constraints as if they were AND-constraints                     | AND
 not(constraint1, ..., constraintN)  | Checks that argument does't satisfy all listed constraints             | AND
 values(value1, ..., valueN)         | Checks that argument is one of the specified values                    | AND
 longerThan($threshold)              | Checks that string argument is longer than given threshold             | AND

@@ -23,6 +23,7 @@ use const \nspl\args\positive;
 use const \nspl\args\nonNegative;
 use const \nspl\args\nonZero;
 use function \nspl\args\any;
+use function \nspl\args\all;
 use function \nspl\args\not;
 use function \nspl\args\values;
 use function \nspl\args\withMethod;
@@ -209,36 +210,35 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     #region Classes
     public function testExpectsUserDefinedType_Positive()
     {
-        function expectsUserDefinedTypePositiveTest($arg1) { expects([int, TestClass::class], $arg1); }
+        function expectsUserDefinedTypePositiveTest($arg1) { expects([int, TestClass1::class], $arg1); }
         $this->assertNull(expectsUserDefinedTypePositiveTest(1));
-        $this->assertNull(expectsUserDefinedTypePositiveTest(new TestClass()));
+        $this->assertNull(expectsUserDefinedTypePositiveTest(new TestClass1()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsUserDefinedTypeNegativeTest() must be an integer or be NsplTest\TestClass, string 'hello world' given
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsUserDefinedTypeNegativeTest() must be an integer or NsplTest\TestClass, string 'hello world' given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsUserDefinedTypeNegativeTest() must be an integer or be NsplTest\TestClass1, string 'hello world' given
      */
     public function testExpectsWithCustomType_Negative()
     {
-        function expectsUserDefinedTypeNegativeTest($arg1) { expects([int, TestClass::class], $arg1); }
+        function expectsUserDefinedTypeNegativeTest($arg1) { expects([int, TestClass1::class], $arg1); }
         $this->assertNull(expectsUserDefinedTypeNegativeTest('hello world'));
     }
 
     public function testExpectsTwoClasses_Positive()
     {
-        function expectsTwoClassesPositiveTest($arg1) { expects([TestClass::class, TestClass2::class], $arg1); }
-        $this->assertNull(expectsTwoClassesPositiveTest(new TestClass()));
+        function expectsTwoClassesPositiveTest($arg1) { expects([TestClass1::class, TestClass2::class], $arg1); }
+        $this->assertNull(expectsTwoClassesPositiveTest(new TestClass1()));
         $this->assertNull(expectsTwoClassesPositiveTest(new TestClass2()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsTwoClassesNegativeTest() must be NsplTest\TestClass or be NsplTest\TestClass2, integer 1 given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsTwoClassesNegativeTest() must be NsplTest\TestClass1 or be NsplTest\TestClass2, integer 1 given
      */
     public function testExpectsTwoClasses_Negative()
     {
-        function expectsTwoClassesNegativeTest($arg1) { expects([TestClass::class, TestClass2::class], $arg1); }
+        function expectsTwoClassesNegativeTest($arg1) { expects([TestClass1::class, TestClass2::class], $arg1); }
         $this->assertNull(expectsTwoClassesNegativeTest(1));
     }
     #endregion
@@ -413,17 +413,17 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     public function testExpectWithMethod_Positive()
     {
         function expectsWithMethodPositiveTest($arg1) { expects(withMethod('testMethod1'), $arg1); }
-        $this->assertNull(expectsWithMethodPositiveTest(new TestClass()));
+        $this->assertNull(expectsWithMethodPositiveTest(new TestClass1()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodNegativeTest() must be an object with public method(s) 'test_Method_1', NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodNegativeTest() must be an object with public method(s) 'test_Method_1', NsplTest\TestClass1 given
      */
     public function testExpectsWithMethod_Negative()
     {
         function expectsWithMethodNegativeTest($arg1) { expects(withMethod('test_Method_1'), $arg1); }
-        $this->assertNull(expectsWithMethodNegativeTest(new TestClass()));
+        $this->assertNull(expectsWithMethodNegativeTest(new TestClass1()));
     }
     #endregion
 
@@ -431,17 +431,17 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     public function testExpectsWithMethods_Positive()
     {
         function expectsWithMethodsPositiveTest($arg1) { expects(withMethods('testMethod1', 'testMethod2'), $arg1); }
-        $this->assertNull(expectsWithMethodsPositiveTest(new TestClass()));
+        $this->assertNull(expectsWithMethodsPositiveTest(new TestClass1()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodsNegativeTest() must be an object with public method(s) 'testMethod1', 'test_Method_2', NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsWithMethodsNegativeTest() must be an object with public method(s) 'testMethod1', 'test_Method_2', NsplTest\TestClass1 given
      */
     public function testExpectsWithMethods_Negative()
     {
         function expectsWithMethodsNegativeTest($arg1) { expects(withMethods('testMethod1', 'test_Method_2'), $arg1); }
-        $this->assertNull(expectsWithMethodsNegativeTest(new TestClass()));
+        $this->assertNull(expectsWithMethodsNegativeTest(new TestClass1()));
     }
     #endregion
 
@@ -494,7 +494,7 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsNotPositiveNegativeTest() must not be be positive, integer 1 given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsNotPositiveNegativeTest() must not be positive, integer 1 given
      */
     public function testExpectsNotPositive_Negative()
     {
@@ -513,12 +513,31 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsAnyNegativeTest() must be be shorter than 6 or be longer than 10, string 'answer' given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsAnyNegativeTest() must be shorter than 6 or be longer than 10, string 'answer' given
      */
     public function testExpectsAny_Negative()
     {
         function expectsAnyNegativeTest($arg) { expects(any(shorterThan(6), longerThan(10)), $arg); }
         $this->assertNull(expectsAnyNegativeTest('answer'));
+    }
+    #endregion
+
+    #region all
+    public function testExpectsAll_Positive()
+    {
+        function expectsAllPositiveTest($arg) { expects(all(I1::class, I2::class), $arg); }
+        $this->assertNull(expectsAllPositiveTest(new TestClass1()));
+        $this->assertNull(expectsAllPositiveTest(new TestClass2()));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\expectsAllNegativeTest() must be NsplTest\I1 and be NsplTest\I2, string 'hello world' given
+     */
+    public function testExpectsAll_Negative()
+    {
+        function expectsAllNegativeTest($arg) { expects(all(I1::class, I2::class), $arg); }
+        $this->assertNull(expectsAllNegativeTest('hello world'));
     }
     #endregion
 
@@ -902,33 +921,33 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
     public function testDeprecatedExpectWithMethod_Positive()
     {
         function deprecatedExpectsWithMethodPositiveTest($arg1) { expectsWithMethod($arg1, 'testMethod1'); }
-        $this->assertNull(deprecatedExpectsWithMethodPositiveTest(new TestClass()));
+        $this->assertNull(deprecatedExpectsWithMethodPositiveTest(new TestClass1()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\deprecatedExpectsWithMethodNegativeTest() must be an object with public method "test_Method_1", NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\deprecatedExpectsWithMethodNegativeTest() must be an object with public method "test_Method_1", NsplTest\TestClass1 given
      */
     public function testDeprecatedExpectWithMethod_Negative()
     {
         function deprecatedExpectsWithMethodNegativeTest($arg1) { expectsWithMethod($arg1, 'test_Method_1'); }
-        $this->assertNull(deprecatedExpectsWithMethodNegativeTest(new TestClass()));
+        $this->assertNull(deprecatedExpectsWithMethodNegativeTest(new TestClass1()));
     }
 
     public function testDeprecatedExpectWithMethods_Positive()
     {
         function deprecatedExpectsWithMethodsPositiveTest($arg1) { expectsWithMethods($arg1, ['testMethod1', 'testMethod2']); }
-        $this->assertNull(deprecatedExpectsWithMethodsPositiveTest(new TestClass()));
+        $this->assertNull(deprecatedExpectsWithMethodsPositiveTest(new TestClass1()));
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument 1 passed to NsplTest\deprecatedExpectsWithMethodsNegativeTest() must be an object with public methods "testMethod1", "test_Method_2", NsplTest\TestClass given
+     * @expectedExceptionMessage Argument 1 passed to NsplTest\deprecatedExpectsWithMethodsNegativeTest() must be an object with public methods "testMethod1", "test_Method_2", NsplTest\TestClass1 given
      */
     public function testDeprecatedExpectWithMethods_Negative()
     {
         function deprecatedExpectsWithMethodsNegativeTest($arg1) { expectsWithMethods($arg1, ['testMethod1', 'test_Method_2']); }
-        $this->assertNull(deprecatedExpectsWithMethodsNegativeTest(new TestClass()));
+        $this->assertNull(deprecatedExpectsWithMethodsNegativeTest(new TestClass1()));
     }
 
     public function testDeprecatedExpectWithKeys_Positive()
@@ -1026,14 +1045,24 @@ class ArgsTest extends \PHPUnit_Framework_TestCase
 }
 
 #region Helpers
-class TestClass
+interface I1
+{
+    public function testMethod1();
+}
+
+interface I2
+{
+    public function testMethod2();
+}
+
+class TestClass1 implements I1, I2
 {
     public function testMethod1() {}
     public function testMethod2() {}
 
 }
 
-class TestClass2
+class TestClass2 implements I1, I2
 {
     public function testMethod1() {}
     public function testMethod2() {}

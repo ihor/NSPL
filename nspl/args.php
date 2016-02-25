@@ -36,7 +36,7 @@ function expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\Inv
                     break;
                 }
             }
-            else if (!$passedOr && class_exists($constraint) && $arg instanceof $constraint) {
+            else if (!$passedOr && (class_exists($constraint) || interface_exists($constraint)) && $arg instanceof $constraint) {
                 $passedOr = true;
             }
         }
@@ -103,20 +103,32 @@ const nonZero = '\nspl\args\_p\isNotZero';
 
 /**
  * Returns a function which returns true when any of given constraints is satisfied
- * @param callable $constraints
+ * @param callable|string $constraint1 Callable or class name
+ * @param callable|string $constraint2 Callable or class name
  * @return _p\Any
  */
-function any(callable $constraints)
+function any($constraint1, $constraint2)
 {
     return new _p\Any(func_get_args());
 }
 
 /**
+ * Returns a function which returns true when all of given constraints is satisfied
+ * @param callable|string $constraint1 Callable or class name
+ * @param callable|string $constraint2 Callable or class name
+ * @return _p\All
+ */
+function all($constraint1, $constraint2)
+{
+    return new _p\All(func_get_args());
+}
+
+/**
  * Returns a function which returns true when none of given constraints are satisfied
- * @param callable $constraints
+ * @param callable|string $constraint1 Callable or class name
  * @return _p\Not
  */
-function not(callable $constraints)
+function not($constraint1)
 {
     return new _p\Not(func_get_args());
 }
@@ -626,7 +638,7 @@ class ErrorMessage
                 return implode(' or ', $messagesFor($type));
             }
             else {
-                $isOr = function ($t) { return isset(Checker::$isOr[$t]) || class_exists($t); };
+                $isOr = function ($t) { return isset(Checker::$isOr[$t]) || class_exists($t) || interface_exists($t); };
                 list($orTypes, $andTypes) = a\partition($isOr, $type);
 
                 return implode(' and ', array_filter([
@@ -640,7 +652,7 @@ class ErrorMessage
             return $type->__toString();
         }
 
-        $default = class_exists($type)
+        $default = class_exists($type) || interface_exists($type)
             ? $type
             : implode(' ', array_map('strtolower', preg_split('/(?=[A-Z])/', end(explode('\\', $type)))));
 
@@ -687,7 +699,7 @@ class HasMethods implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return 'be an object with public method(s) \'' . implode("', '", $this->methods) . "'";
     }
@@ -731,7 +743,7 @@ class HasKeys implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return 'be an array with key(s) ' . implode(', ', array_map(function($v) {
             return var_export($v, true);
@@ -782,7 +794,7 @@ class LessThan implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return 'be ' . $this->message . ' than ' . $this->threshold;
     }
@@ -831,7 +843,7 @@ class MoreThan implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return 'be ' . $this->message . ' than ' . $this->threshold;
     }
@@ -859,8 +871,12 @@ class Not implements Constraint
      */
     public function __invoke($value)
     {
-        foreach ($this->constraints as $expectation) {
-            if ($expectation($value)) {
+        foreach ($this->constraints as $constraint) {
+            if (
+                is_callable($constraint) && $constraint($value) ||
+                class_exists($constraint) && ($value instanceof $constraint) ||
+                interface_exists($constraint) && ($value instanceof $constraint)
+            ) {
                 return false;
             }
         }
@@ -871,9 +887,9 @@ class Not implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
-        return 'not be ' . ErrorMessage::getFor($this->constraints, true);
+        return 'not ' . ErrorMessage::getFor($this->constraints, true);
     }
 
 }
@@ -899,8 +915,12 @@ class Any implements Constraint
      */
     public function __invoke($value)
     {
-        foreach ($this->constraints as $expectation) {
-            if ($expectation($value)) {
+        foreach ($this->constraints as $constraint) {
+            if (
+                is_callable($constraint) && $constraint($value) ||
+                class_exists($constraint) && ($value instanceof $constraint) ||
+                interface_exists($constraint) && ($value instanceof $constraint)
+            ) {
                 return true;
             }
         }
@@ -911,12 +931,57 @@ class Any implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
-        return 'be ' . ErrorMessage::getFor($this->constraints, true);
+        return ErrorMessage::getFor($this->constraints, true);
     }
 
 }
+
+class All implements Constraint
+{
+    /**
+     * @var callable[]
+     */
+    private $constraints;
+
+    /**
+     * @param callable[] $constraints
+     */
+    public function __construct(array $constraints)
+    {
+        $this->constraints = $constraints;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    public function __invoke($value)
+    {
+        foreach ($this->constraints as $constraint) {
+            if (
+                is_callable($constraint) && !$constraint($value) ||
+                class_exists($constraint) && !($value instanceof $constraint) ||
+                interface_exists($constraint) && !($value instanceof $constraint)
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode(' and ', array_map(['\nspl\args\_p\ErrorMessage', 'getFor'], $this->constraints));
+    }
+
+}
+
 
 class Values implements Constraint
 {
@@ -945,7 +1010,7 @@ class Values implements Constraint
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return 'be one of the following values ' . implode(', ', array_map(function($v) {
             return var_export($v, true);

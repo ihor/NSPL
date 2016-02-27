@@ -344,7 +344,7 @@ function last($sequence)
     }
 
     if (is_array($sequence)) {
-        return $sequence[count($sequence) - 1];
+        return end($sequence);
     }
     else {
         foreach ($sequence as $item);

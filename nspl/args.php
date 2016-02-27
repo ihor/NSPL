@@ -654,7 +654,7 @@ class ErrorMessage
 
         $default = class_exists($type) || interface_exists($type)
             ? $type
-            : implode(' ', array_map('strtolower', preg_split('/(?=[A-Z])/', end(explode('\\', $type)))));
+            : implode(' ', array_map('strtolower', preg_split('/(?=[A-Z])/', a\last(explode('\\', $type)))));
 
         return a\value(self::$messages, $type, 'be ' . $default);
     }

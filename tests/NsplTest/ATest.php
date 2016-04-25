@@ -10,6 +10,7 @@ use function \nspl\a\zip;
 use function \nspl\a\zipWith;
 use function \nspl\a\reduce;
 use function \nspl\a\filter;
+use function \nspl\a\filterNot;
 use function \nspl\a\partition;
 use function \nspl\a\span;
 use function \nspl\a\value;
@@ -34,6 +35,7 @@ use const \nspl\a\zip;
 use const \nspl\a\zipWith;
 use const \nspl\a\reduce;
 use const \nspl\a\filter;
+use const \nspl\a\filterNot;
 use const \nspl\a\partition;
 use const \nspl\a\span;
 use const \nspl\a\value;
@@ -159,6 +161,19 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3], call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
         $this->assertEquals('\nspl\a\filter', filter);
+    }
+
+    public function testFilterNot()
+    {
+        $this->assertEquals(['a', 'b', 'c'], filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals(
+            array('a' => 1, 'c' => 3),
+            filterNot(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
+        );
+        $this->assertEquals([], filterNot('is_int', []));
+
+        $this->assertEquals(['a', 'b', 'c'], call_user_func(filterNot, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals('\nspl\a\filterNot', filterNot);
     }
 
     public function testPartition()

@@ -235,6 +235,38 @@ function filter(callable $predicate, $sequence)
 const filter = '\nspl\a\filter';
 
 /**
+ * Returns sequence items that don't satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function filterNot(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $prevKey = -1;
+    $isList = true;
+
+    $result = [];
+    foreach ($sequence as $key => $item) {
+        if (!$predicate($item)) {
+            $result[$key] = $item;
+        }
+
+        if ($isList) {
+            if ($key !== $prevKey + 1) {
+                $isList = false;
+            }
+            ++$prevKey;
+        }
+    }
+
+    return $isList ? array_values($result) : $result;
+}
+const filterNot = '\nspl\a\filterNot';
+
+/**
  * Returns first N sequence items
  *
  * @param array|\Traversable $list

@@ -116,6 +116,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [zipWith](#zipwithfunction-sequence1-sequence2)
     * [reduce](#reducefunction-sequence-initial--0)
     * [filter](#filterpredicate-sequence)
+    * [filterNot](#filternotpredicate-sequence)
     * [take](#takesequence-n-step--1)
     * [first](#firstsequence)
     * [drop](#dropsequence-n)
@@ -421,6 +422,13 @@ assert(6 === reduce(sum, [1, 2, 3]));
 Returns list items that satisfy the predicate
 ```php
 assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+```
+
+##### filterNot($predicate, $sequence)
+
+Returns list items that don't satisfy the predicate
+```php
+assert(['a', 'b', 'c'] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 ##### take($sequence, $N, $step = 1)

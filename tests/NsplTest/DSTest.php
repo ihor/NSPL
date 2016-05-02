@@ -118,17 +118,30 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $difference = $set->difference([1, 2, 3]);
         $this->assertEquals(['world'], $difference->toArray());
 
+        $difference = $set->difference(Set::fromArray([1, 2, 3]));
+        $this->assertEquals(['world'], $difference->toArray());
+
         $intersection = $set->intersection([1, 2, 3]);
+        $this->assertEquals([1, 2], $intersection->toArray());
+
+        $intersection = $set->intersection(Set::fromArray([1, 2, 3]));
         $this->assertEquals([1, 2], $intersection->toArray());
 
         $union = $set->union([1, 2, 3]);
         $this->assertEquals([1, 2, 3, 'world'], $union->toArray(), '', 0, 10, true);
 
+        $union = $set->union(Set::fromArray([1, 2, 3]));
+        $this->assertEquals([1, 2, 3, 'world'], $union->toArray(), '', 0, 10, true);
+
         $this->assertTrue($set->isSubset($union));
         $this->assertFalse($set->isSubset([1, 2, 3, 4]));
+        $this->assertFalse($set->isSubset(Set::fromArray([1, 2, 3, 4])));
 
         $this->assertTrue($set->isSuperset([1, 2]));
         $this->assertFalse($set->isSuperset(['hello', 'world']));
+
+        $this->assertTrue($set->isSuperset(Set::fromArray([1, 2])));
+        $this->assertFalse($set->isSuperset(Set::fromArray(['hello', 'world'])));
 
         $this->assertFalse($set->isEmpty());
 

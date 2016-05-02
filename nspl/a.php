@@ -320,15 +320,45 @@ function first($sequence)
 {
     args\expects(args\traversable, $sequence);
 
-    if (!$sequence) {
-        throw new \InvalidArgumentException('Can not return the first item of an empty list');
+    $counter = 0;
+    foreach ($sequence as $item) {
+        ++$counter;
+        break;
     }
 
-    foreach ($sequence as $item) break;
+    if ($counter < 1) {
+        throw new \InvalidArgumentException('Can not return the first item of an empty sequence');
+    }
 
     return $item;
 }
 const first = '\nspl\a\first';
+
+/**
+ * Returns the second sequence item
+ *
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function second($sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $counter = 0;
+    foreach ($sequence as $item) {
+        if (++$counter < 2) {
+            continue;
+        }
+        break;
+    }
+
+    if ($counter < 2) {
+        throw new \InvalidArgumentException('Can not return the second item of sequence with less than two items');
+    }
+
+    return $item;
+}
+const second = '\nspl\a\second';
 
 /**
  * Drops first N sequence items

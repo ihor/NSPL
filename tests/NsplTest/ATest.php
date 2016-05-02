@@ -22,6 +22,7 @@ use function \nspl\a\keySorted;
 use function \nspl\a\indexed;
 use function \nspl\a\take;
 use function \nspl\a\first;
+use function \nspl\a\second;
 use function \nspl\a\drop;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
@@ -47,6 +48,7 @@ use const \nspl\a\keySorted;
 use const \nspl\a\indexed;
 use const \nspl\a\take;
 use const \nspl\a\first;
+use const \nspl\a\second;
 use const \nspl\a\drop;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
@@ -416,9 +418,35 @@ class ATest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testFirstForEmptyList()
+    public function testFirstForEmptySequence()
     {
         first([]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFirstForEmptyIterator()
+    {
+        first(new \ArrayIterator([]));
+    }
+
+    public function testSecond()
+    {
+        $this->assertEquals(2, second([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals(2, second(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals(2, second(array('hello' => 1, 'world' => 2)));
+
+        $this->assertEquals(2, call_user_func(second, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals('\nspl\a\second', second);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFirstForSequenceWithOnlyOneItem()
+    {
+        second([1]);
     }
 
     public function testDrop()

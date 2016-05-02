@@ -119,6 +119,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [filterNot](#filternotpredicate-sequence)
     * [take](#takesequence-n-step--1)
     * [first](#firstsequence)
+    * [second](#secondsequence)
     * [drop](#dropsequence-n)
     * [last](#lastsequence)
     * [partition](#partitionpredicate-sequence)
@@ -443,6 +444,13 @@ assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
 Returns the first sequence item
 ```php
 assert(1 === first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+##### second($sequence)
+
+Returns the second sequence item
+```php
+assert(2 === second([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
 ##### drop($sequence, $N)

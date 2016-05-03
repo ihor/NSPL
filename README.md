@@ -118,6 +118,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [filter](#filterpredicate-sequence)
     * [filterNot](#filternotpredicate-sequence)
     * [take](#takesequence-n-step--1)
+    * [takeKeys](#takekeyssequence-array-keys)
     * [first](#firstsequence)
     * [second](#secondsequence)
     * [drop](#dropsequence-n)
@@ -437,6 +438,13 @@ assert(['a', 'b', 'c'] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 Returns first N sequence items
 ```php
 assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
+```
+
+##### takeKeys($sequence, array $keys)
+
+Returns array containing only given sequence keys
+```php
+assert(array('hello' => 1, 'world' => 2) === takeKeys(array('hello' => 1, 'world' => 2, 'foo' => 3), ['hello', 'world']));
 ```
 
 ##### first($sequence)

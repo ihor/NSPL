@@ -21,6 +21,7 @@ use function \nspl\a\sorted;
 use function \nspl\a\keySorted;
 use function \nspl\a\indexed;
 use function \nspl\a\take;
+use function \nspl\a\takeKeys;
 use function \nspl\a\first;
 use function \nspl\a\second;
 use function \nspl\a\drop;
@@ -47,6 +48,7 @@ use const \nspl\a\sorted;
 use const \nspl\a\keySorted;
 use const \nspl\a\indexed;
 use const \nspl\a\take;
+use const \nspl\a\takeKeys;
 use const \nspl\a\first;
 use const \nspl\a\second;
 use const \nspl\a\drop;
@@ -402,6 +404,16 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3], call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3));
         $this->assertEquals('\nspl\a\take', take);
+    }
+
+    public function testTakeKeys()
+    {
+        $this->assertEquals(array('hello' => 1, 'world' => 2), takeKeys(array('hello' => 1, 'world' => 2, 'foo' => 3, 'bar' => 4), ['hello', 'world']));
+        $this->assertEquals(array('hello' => 1), takeKeys(array('hello' => 1, 'foo' => 3, 'bar' => 4), ['hello', 'world']));
+        $this->assertEquals(array(), takeKeys(array(), ['hello', 'world']));
+
+        $this->assertEquals(array('hello' => 1, 'world' => 2), call_user_func(takeKeys, array('hello' => 1, 'world' => 2, 'foo' => 3, 'bar' => 4), ['hello', 'world']));
+        $this->assertEquals('\nspl\a\takeKeys', takeKeys);
     }
 
     public function testFirst()

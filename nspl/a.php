@@ -102,17 +102,17 @@ const flatMap = '\nspl\a\flatMap';
  */
 function zip($sequence1, $sequence2)
 {
-    $lists = func_get_args();
+    $sequences = func_get_args();
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $lists[$j], $j + 1);
-        if ($lists[$j] instanceof \Iterator) {
-            $lists[$j] = iterator_to_array($lists[$j]);
+        args\expects(args\traversable, $sequences[$j], $j + 1);
+        if ($sequences[$j] instanceof \Iterator) {
+            $sequences[$j] = iterator_to_array($sequences[$j]);
         }
 
-        if (!isList($lists[$j])) {
-            $lists[$j] = array_values($lists[$j]);
+        if (!isList($sequences[$j])) {
+            $sequences[$j] = array_values($sequences[$j]);
         }
     }
 
@@ -121,10 +121,10 @@ function zip($sequence1, $sequence2)
     do {
         $zipped = array();
         for ($j = 0; $j < $count; ++$j) {
-            if (!isset($lists[$j][$i]) && !array_key_exists($i, $lists[$j])) {
+            if (!isset($sequences[$j][$i]) && !array_key_exists($i, $sequences[$j])) {
                 break 2;
             }
-            $zipped[] = $lists[$j][$i];
+            $zipped[] = $sequences[$j][$i];
         }
         $result[] = $zipped;
         ++$i;
@@ -144,18 +144,18 @@ const zip = '\nspl\a\zip';
  */
 function zipWith(callable $function, $sequence1, $sequence2)
 {
-    $lists = func_get_args();
-    array_shift($lists);
-    $count = count($lists);
+    $sequences = func_get_args();
+    array_shift($sequences);
+    $count = count($sequences);
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $lists[$j], $j + 1);
-        if ($lists[$j] instanceof \Iterator) {
-            $lists[$j] = iterator_to_array($lists[$j]);
+        args\expects(args\traversable, $sequences[$j], $j + 1);
+        if ($sequences[$j] instanceof \Iterator) {
+            $sequences[$j] = iterator_to_array($sequences[$j]);
         }
 
-        if (!isList($lists[$j])) {
-            $lists[$j] = array_values($lists[$j]);
+        if (!isList($sequences[$j])) {
+            $sequences[$j] = array_values($sequences[$j]);
         }
     }
 
@@ -164,10 +164,10 @@ function zipWith(callable $function, $sequence1, $sequence2)
     do {
         $zipped = array();
         for ($j = 0; $j < $count; ++$j) {
-            if (!isset($lists[$j][$i]) && !array_key_exists($i, $lists[$j])) {
+            if (!isset($sequences[$j][$i]) && !array_key_exists($i, $sequences[$j])) {
                 break 2;
             }
-            $zipped[] = $lists[$j][$i];
+            $zipped[] = $sequences[$j][$i];
         }
 
         $result[] = $count === 2
@@ -269,33 +269,33 @@ const filterNot = '\nspl\a\filterNot';
 /**
  * Returns first N sequence items
  *
- * @param array|\Traversable $list
+ * @param array|\Traversable $sequence
  * @param int $N
  * @param int $step
  * @return array
  */
-function take($list, $N, $step = 1)
+function take($sequence, $N, $step = 1)
 {
-    args\expects(args\traversable, $list);
+    args\expects(args\traversable, $sequence);
     args\expects(args\int, $N);
     args\expects(args\int, $step, 3);
 
-    if (is_array($list)) {
+    if (is_array($sequence)) {
         if (1 === $step) {
-            return array_values(array_slice($list, 0, $N));
+            return array_values(array_slice($sequence, 0, $N));
         }
 
         $result = array();
-        $length = min(count($list), $N * $step);
+        $length = min(count($sequence), $N * $step);
         for ($i = 0; $i < $length; $i += $step) {
-            $result[] = $list[$i];
+            $result[] = $sequence[$i];
         }
     }
     else {
         $counter = 0;
         $result = array();
-        $length = min(count($list), $N * $step);
-        foreach ($list as $item) {
+        $length = min(count($sequence), $N * $step);
+        foreach ($sequence as $item) {
             if ($counter >= $length) {
                 break;
             }
@@ -309,6 +309,28 @@ function take($list, $N, $step = 1)
     return $result;
 }
 const take = '\nspl\a\take';
+
+/**
+ * Returns array containing only given sequence keys
+ *
+ * @param array|\ArrayAccess $sequence
+ * @param array $keys
+ * @return array
+ */
+function takeKeys($sequence, array $keys)
+{
+    args\expects(args\arrayAccess, $sequence);
+
+    $result = array();
+    foreach ($keys as $key) {
+        if (isset($sequence[$key]) || array_key_exists($key, $sequence)) {
+            $result[$key] = $sequence[$key];
+        }
+    }
+
+    return $result;
+}
+const takeKeys = '\nspl\a\takeKeys';
 
 /**
  * Returns the first sequence item
@@ -361,6 +383,30 @@ function second($sequence)
 const second = '\nspl\a\second';
 
 /**
+ * Returns the last sequence item
+ *
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function last($sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    if (!$sequence) {
+        throw new \InvalidArgumentException('Can not return the last item of an empty sequence');
+    }
+
+    if (is_array($sequence)) {
+        return end($sequence);
+    }
+    else {
+        foreach ($sequence as $item);
+        return $item;
+    }
+}
+const last = '\nspl\a\last';
+
+/**
  * Drops first N sequence items
  *
  * @param array|\Traversable $sequence
@@ -390,30 +436,6 @@ function drop($sequence, $N)
     }
 }
 const drop = '\nspl\a\drop';
-
-/**
- * Returns the last sequence item
- *
- * @param array|\Traversable $sequence
- * @return array
- */
-function last($sequence)
-{
-    args\expects(args\traversable, $sequence);
-
-    if (!$sequence) {
-        throw new \InvalidArgumentException('Can not return the last item of an empty list');
-    }
-
-    if (is_array($sequence)) {
-        return end($sequence);
-    }
-    else {
-        foreach ($sequence as $item);
-        return $item;
-    }
-}
-const last = '\nspl\a\last';
 
 /**
  * Returns two lists, one containing values for which your predicate returned true, and the other containing
@@ -589,7 +611,7 @@ function keySorted($sequence, $reversed = false)
 const keySorted = '\nspl\a\keySorted';
 
 /**
- * Flattens multidimensional list
+ * Flattens multidimensional sequence
  *
  * @param array|\Traversable $sequence
  * @param int|null $depth
@@ -748,6 +770,7 @@ function isList($var)
 }
 const isList = '\nspl\a\isList';
 
+//region deprecated
 /**
  * @deprecated
  * @param array|\Traversable $var
@@ -760,7 +783,6 @@ function traversableToArray($var)
         : (array) $var;
 }
 
-//region deprecated
 /**
  * @deprecated
  * @see \nspl\a\merge

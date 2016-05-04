@@ -450,7 +450,7 @@ assert(array('hello' => 1, 'world' => 2) === takeKeys(array('hello' => 1, 'world
 
 ##### takeWhile($predicate, $sequence)
 
-Returns array containing only given sequence keys
+Returns the longest sequence prefix of all items which satisfy the predicate
 ```php
 assert([1, 2, 3] === takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
 ```

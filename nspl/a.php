@@ -333,6 +333,31 @@ function takeKeys($sequence, array $keys)
 const takeKeys = '\nspl\a\takeKeys';
 
 /**
+ * Returns the longest sequence prefix of all items which satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function takeWhile(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $result = [];
+    foreach ($sequence as $item) {
+        if ($predicate($item)) {
+            $result[] = $item;
+        }
+        else {
+            break;
+        }
+    }
+
+    return $result;
+}
+const takeWhile = '\nspl\a\takeWhile';
+
+/**
  * Returns the first sequence item
  *
  * @param array|\Traversable $sequence

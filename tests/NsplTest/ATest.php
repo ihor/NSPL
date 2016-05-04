@@ -22,6 +22,7 @@ use function \nspl\a\keySorted;
 use function \nspl\a\indexed;
 use function \nspl\a\take;
 use function \nspl\a\takeKeys;
+use function \nspl\a\takeWhile;
 use function \nspl\a\first;
 use function \nspl\a\second;
 use function \nspl\a\drop;
@@ -49,12 +50,16 @@ use const \nspl\a\keySorted;
 use const \nspl\a\indexed;
 use const \nspl\a\take;
 use const \nspl\a\takeKeys;
+use const \nspl\a\takeWhile;
 use const \nspl\a\first;
 use const \nspl\a\second;
 use const \nspl\a\drop;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
 use const \nspl\a\isList;
+
+use function \nspl\f\rpartial;
+use const \nspl\op\lt;
 
 //region deprecated
 use function \nspl\a\moveElement;
@@ -414,6 +419,17 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array('hello' => 1, 'world' => 2), call_user_func(takeKeys, array('hello' => 1, 'world' => 2, 'foo' => 3, 'bar' => 4), ['hello', 'world']));
         $this->assertEquals('\nspl\a\takeKeys', takeKeys);
+    }
+
+    public function testTakeWhile()
+    {
+        $this->assertEquals([1, 2, 3], takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
+        $this->assertEquals([1, 2, 3], takeWhile(rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals([1, 2, 3], takeWhile(rpartial(lt, 4), new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals([], takeWhile(rpartial(lt, 4), []));
+
+        $this->assertEquals([1, 2, 3], call_user_func(takeWhile, rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals('\nspl\a\takeWhile', takeWhile);
     }
 
     public function testFirst()

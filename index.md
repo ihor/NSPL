@@ -123,6 +123,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [first](#firstsequence)
     * [second](#secondsequence)
     * [drop](#dropsequence-n)
+    * [dropWhile](#dropwhilepredicate-sequence)
     * [last](#lastsequence)
     * [partition](#partitionpredicate-sequence)
     * [span](#spanpredicate-sequence)
@@ -474,6 +475,13 @@ assert(2 === second([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 Drops first N sequence items
 ```php
 assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
+```
+
+##### dropWhile($predicate, $sequence)
+
+Drops the longest sequence prefix of all items which satisfy the predicate
+```php
+assert(['a', 'b', 'c', 4, 5, 6] === takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
 ```
 
 ##### last($sequence)

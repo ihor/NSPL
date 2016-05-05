@@ -26,6 +26,7 @@ use function \nspl\a\takeWhile;
 use function \nspl\a\first;
 use function \nspl\a\second;
 use function \nspl\a\drop;
+use function \nspl\a\dropWhile;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
 use function \nspl\a\isList;
@@ -54,6 +55,7 @@ use const \nspl\a\takeWhile;
 use const \nspl\a\first;
 use const \nspl\a\second;
 use const \nspl\a\drop;
+use const \nspl\a\dropWhile;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
 use const \nspl\a\isList;
@@ -486,6 +488,17 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([7, 8, 9], call_user_func(drop, [1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
         $this->assertEquals('\nspl\a\drop', drop);
+    }
+
+    public function testDropWhile()
+    {
+        $this->assertEquals(['a', 'b', 'c', 4, 5, 6], dropWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
+        $this->assertEquals([4, 5, 6, 7, 8, 9], dropWhile(rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals([4, 5, 6, 7, 8, 9], dropWhile(rpartial(lt, 4), new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals([], dropWhile(rpartial(lt, 4), []));
+
+        $this->assertEquals([4, 5, 6, 7, 8, 9], call_user_func(dropWhile, rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals('\nspl\a\dropWhile', dropWhile);
     }
 
     public function testLast()

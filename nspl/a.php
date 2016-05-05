@@ -463,6 +463,35 @@ function drop($sequence, $N)
 const drop = '\nspl\a\drop';
 
 /**
+ * Drops the longest sequence prefix of all items which satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function dropWhile(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $drop = true;
+    $result = [];
+    foreach ($sequence as $item) {
+        if ($drop) {
+            if (!$predicate($item)) {
+                $drop = false;
+                $result[] = $item;
+            }
+        }
+        else {
+            $result[] = $item;
+        }
+    }
+
+    return $result;
+}
+const dropWhile = '\nspl\a\dropWhile';
+
+/**
  * Returns two lists, one containing values for which your predicate returned true, and the other containing
  * the items that returned false
  *

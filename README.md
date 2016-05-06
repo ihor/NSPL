@@ -285,6 +285,13 @@ Check more ```\nspl\f``` examples [here](https://github.com/ihor/Nspl/blob/maste
 
 Class ```nspl\op``` provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module. For example:
 
+```php
+use const nspl\op\sum;
+use function nspl\a\reduce;
+
+assert(6 === reduce(sum, [1, 2, 3]));
+```
+
 ##### Callbacks
 
 The module provides the following operations both as functions and callbacks. See an example below.
@@ -324,13 +331,6 @@ float    | (float)
 str      | (string)
 array_   | (array)
 object   | (object)
-
-```php
-use const nspl\op\sum;
-use function nspl\a\reduce;
-
-assert(6 === reduce(sum, [1, 2, 3]));
-```
 
 ##### itemGetter($key)
 Returns a function that returns key value for a given array

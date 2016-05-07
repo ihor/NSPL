@@ -182,7 +182,7 @@ function zipWith(callable $function, $sequence1, $sequence2)
 const zipWith = '\nspl\a\zipWith';
 
 /**
- * Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence
+ * Applies function of two arguments cumulatively to the sequence items, from left to right to reduce the sequence
  * to a single value.
  *
  * @param callable $function
@@ -267,7 +267,7 @@ function filterNot(callable $predicate, $sequence)
 const filterNot = '\nspl\a\filterNot';
 
 /**
- * Returns first N sequence items
+ * Returns first N sequence items with given step
  *
  * @param array|\Traversable $sequence
  * @param int $N
@@ -492,7 +492,7 @@ function dropWhile(callable $predicate, $sequence)
 const dropWhile = '\nspl\a\dropWhile';
 
 /**
- * Returns two lists, one containing values for which your predicate returned true, and the other containing
+ * Returns two lists, one containing values for which the predicate returned true, and the other containing
  * the items that returned false
  *
  * @param callable $predicate
@@ -594,7 +594,7 @@ function indexed($sequence, $by, $keepLast = true, callable $transform = null)
 const indexed = '\nspl\a\indexed';
 
 /**
- * Returns array which contains sorted items the passed sequence
+ * Returns array which contains sorted items from the passed sequence
  *
  * @param array|\Traversable $sequence
  * @param bool $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter

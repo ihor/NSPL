@@ -411,7 +411,7 @@ assert([101, 1002, 10003] === zipWith(sum, [1, 2, 3], [100, 1000, 10000]));
 
 ##### reduce($function, $sequence, $initial = 0)
 
-Applies function of two arguments cumulatively to the items of sequence, from left to right to reduce the sequence to a single value
+Applies function of two arguments cumulatively to the sequence items, from left to right to reduce the sequence to a single value
 ```php
 assert(6 === reduce(function($a, $b) { return $a + $b; }, [1, 2, 3]));
 
@@ -423,21 +423,21 @@ assert(6 === reduce(sum, [1, 2, 3]));
 
 ##### filter($predicate, $sequence)
 
-Returns list items that satisfy the predicate
+Returns sequence items that satisfy the predicate
 ```php
 assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 ##### filterNot($predicate, $sequence)
 
-Returns list items that don't satisfy the predicate
+Returns sequence items that don't satisfy the predicate
 ```php
 assert(['a', 'b', 'c'] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 ##### take($sequence, $N, $step = 1)
 
-Returns first N sequence items
+Returns first N sequence items with given step
 ```php
 assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
 ```
@@ -493,7 +493,7 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 ##### partition($predicate, $sequence)
 
-Returns two lists, one containing values for which your predicate returned true, and the other containing the items that returned false
+Returns two lists, one containing values for which the predicate returned true, and the other containing the items that returned false
 ```php
 assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
@@ -523,7 +523,7 @@ $indexedById = indexed([
 
 ##### sorted($sequence, $reversed = false, $key = null, $cmp = null)
 
-Returns array which contains sorted items the passed sequence
+Returns array which contains sorted items from the passed sequence
 
 If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
 ```$key``` is a function of one argument that is used to extract a comparison key from each item  
@@ -550,7 +550,7 @@ assert(array('a' => 1, 'b' => 2, 'c' => 3) === keySorted(array('b' => 2, 'c' => 
 
 ##### flatten($sequence, $depth = null)
 
-Flattens multidimensional list
+Flattens multidimensional sequence
 ```php
 assert([1, 2, 3, 4, 5, 6, 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]]));
 assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2));

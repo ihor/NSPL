@@ -673,7 +673,7 @@ function splitBy($string, $separator = ' ', $limit = null)
 
 The module provides predefined constraints. Which can be one of the two types:
 - OR-constraints which are evaluated with ```or``` operator (e.g. ```expects([int, string], $arg)``` evaluates as ```$arg``` has to be an ```int``` or a ```string```)
-- AND-constraints which are evaluated with ```and``` operator (e.g. ```expects([string, longerThan(3), shorterThan(10)], $arg)``` evaluates as ```$arg``` has to be a string longer than 3 characters and shorter than 10 characters). If you want to evaluate several AND-constraints as they were OR-constraints you can use ```any``` constraint
+- AND-constraints which are evaluated with ```and``` operator (e.g. ```expects([string, longerThan(3), shorterThan(10)], $arg)``` evaluates as ```$arg``` has to be a string longer than 3 characters and shorter than 10 characters). If you want to evaluate several AND-constraints as they were OR-constraints you can use ```any``` constraint. If you want to evaluate several OR-constraints as they were AND-constraints you can use ```all``` constraint
 
 Callback                            | Explanation                                                            | Type
 ------------------------------------|------------------------------------------------------------------------|----------
@@ -682,8 +682,8 @@ int                                 | Checks that argument is an int            
 float                               | Checks that argument is a float                                        | OR
 numeric                             | Checks that argument is numeric                                        | OR
 string                              | Checks that argument is a string                                       | OR
-array_                              | Checks that argument is array                                          | OR
-object                              | Checks that argument is object                                         | OR
+array_                              | Checks that argument is an array                                          | OR
+object                              | Checks that argument is an object                                         | OR
 callable_                           | Checks that argument is callable                                       | OR
 arrayKey                            | Checks that argument can be an array key                               | OR
 traversable                         | Checks that argument can be traversed with foreach                     | OR

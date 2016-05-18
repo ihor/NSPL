@@ -224,11 +224,14 @@ use const \nspl\a\map;
 use const \nspl\a\reduce;
 use function \nspl\f\partial;
 
+$isEven = function($x) { return $x % 2 === 0; };
+$square = function($x) { return $x * $x; };
+
 // sum of squares of all even numbers less than 20
 $sum = pipe(
     range(1, 20),
-    partial(filter, function($x) { return $x % 2 === 0; }),
-    partial(map, function($x) { return $x * $x; }),
+    partial(filter, $isEven),
+    partial(map, $square),
     partial(reduce, sum)
 );
 ```

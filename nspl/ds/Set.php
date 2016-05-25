@@ -8,6 +8,7 @@ class Set extends Collection
 {
     public function __construct(/* $e1, $e2, ..., $eN */)
     {
+        $this->array = array();
         foreach (func_get_args() as $element) {
             $this->array[static::getElementKey($element)] = $element;
         }

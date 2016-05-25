@@ -162,6 +162,9 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($set->contains(1));
         $this->assertTrue($set->contains(2));
         $this->assertTrue($set->contains(3));
+        
+        $set = set();
+        $this->assertEquals($set->toArray(), array());
     }
 
     //region deprecated

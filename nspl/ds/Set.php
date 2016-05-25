@@ -8,6 +8,7 @@ class Set extends Collection
 {
     public function __construct(/* $e1, $e2, ..., $eN */)
     {
+        $this->array = [];
         foreach (func_get_args() as $element) {
             $this->array[static::getElementKey($element)] = $element;
         }
@@ -250,7 +251,7 @@ class Set extends Collection
      */
     public function toArray()
     {
-        return array_values($this->array);
+        return is_null($this->array) ? [] : array_values($this->array);
     }
 
     //region ArrayAccess

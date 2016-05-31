@@ -435,7 +435,7 @@ assert([1, 2, 3] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 
 Returns sequence items that don't satisfy the predicate
 ```php
-assert(['a', 'b', 'c'] === filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+assert(['a', 'b', 'c'] === filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 ```
 
 ##### take($sequence, $N, $step = 1)

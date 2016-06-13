@@ -236,6 +236,22 @@ $sum = pipe(
 );
 ```
 
+> **Tip**
+>
+> To make your code compact you can use a short function aliases. For example:
+>  
+> ```php
+> use function \nspl\f\partial as p;
+> 
+> $sum = pipe(
+>    range(1, 20),
+>    p(filter, $isEven),
+>    p(map, $square),
+>    p(reduce, sum)
+> );
+> ```
+> Note, while sometimes it can improve readability by removing extra characters it also may confuse your team members
+
 ##### I($input, $function1, $function2)
 
 Alias for the pipe

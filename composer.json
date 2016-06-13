@@ -1,7 +1,7 @@
 {
   "name": "ihor/nspl",
   "description": "Compact functional programming oriented code and more in Non-standard PHP library (NSPL)",
-  "keywords": ["functional", "programming", "higher-order", "partial", "partial application", "curry", "curried", "memoize", "weighted", "random", "weighted random", "list", "zip", "flatten", "defaultarray", "python", "itemGetter", "propertyGetter", "iterator", "generator"],
+  "keywords": ["functional", "programming", "higher-order", "partial", "partial application", "curry", "curried", "memoize", "weighted", "random", "weighted random", "list", "zip", "flatten", "defaultarray", "python", "itemGetter", "propertyGetter", "iterator", "generator", "spl", "standard php library"],
   "license": "MIT",
   "authors": [
     {

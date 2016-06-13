@@ -238,7 +238,7 @@ $sum = pipe(
 
 > **Tip**
 >
-> To make your code compact you can use a short function aliases. For example:
+> To make your code compact you can use short function aliases. For example:
 >  
 > ```php
 > use function \nspl\f\partial as p;

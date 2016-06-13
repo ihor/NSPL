@@ -889,6 +889,11 @@ Roadmap
 
 - Add laziness in version 1.2
 
+Contributing
+============
+
+This project uses [semantic versioning](http://semver.org/) to tag releases. Please submit your pull requests to the latest release branch where the issue was introduced.
+
 Feedback
 ========
 

@@ -252,10 +252,6 @@ $sum = pipe(
 > ```
 > Note, while sometimes it can improve readability by removing extra characters it also may confuse your team members
 
-##### I($input, $function1, $function2)
-
-Alias for the pipe
-
 ##### curried($function, $withOptionalArgs = false)
 
 Returns a [curried](https://en.wikipedia.org/wiki/Currying) version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass a number of args as the 2nd argument.

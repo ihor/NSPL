@@ -538,19 +538,36 @@ function throwExpectsException($arg, $hadTo, $atPosition = null, $exception = '\
             $has ? 'has' : 'must',
             $hadTo,
             is_scalar($arg)
-                ? (', ' . \nspl\getType($arg) . ' ' . var_export($arg, true) . ' given')
+                ? (', ' . \nspl\getType($arg) . ' ' . (is_double($arg) ? $arg : var_export($arg, true)) . ' given')
                 : (', ' . \nspl\getType($arg) . (is_array($arg) ? (' ' . json_encode($arg)): '') . ' given')
         ));
     }
 
-    $setter = function($property, $arg) { $this->{$property} = $arg; };
+    if (PHP_MAJOR_VERSION >= 7) {
+        $filePropertyReflection = new \ReflectionProperty(get_class($exception), 'file');
+        $filePropertyReflection->setAccessible(true);
+        $filePropertyReflection->setValue($exception, $file);
 
-    $exceptionSetter = $setter->bindTo($exception, $exception);
-    $exceptionSetter('file', $file);
-    $exceptionSetter('line', $line);
+        $linePropertyReflection = new \ReflectionProperty(get_class($exception), 'line');
+        $linePropertyReflection->setAccessible(true);
+        $linePropertyReflection->setValue($exception, $line);
 
-    $baseExceptionSetter = $setter->bindTo($exception, 'Exception');
-    $baseExceptionSetter('trace', a\drop($exception->getTrace(), 2));
+        $tracePropertyReflection = new \ReflectionProperty('Exception', 'trace');
+        $tracePropertyReflection->setAccessible(true);
+        $tracePropertyReflection->setValue($exception, a\drop($exception->getTrace(), 2));
+    }
+    else {
+        $setter = function($property, $arg) {
+            $this->{$property} = $arg;
+        };
+
+        $exceptionSetter = $setter->bindTo($exception, $exception);
+        $exceptionSetter('file', $file);
+        $exceptionSetter('line', $line);
+
+        $baseExceptionSetter = $setter->bindTo($exception, 'Exception');
+        $baseExceptionSetter('trace', a\drop($exception->getTrace(), 2));
+    }
 
     throw $exception;
 }

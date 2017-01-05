@@ -57,14 +57,14 @@ Installation
 Define the following requirement in your composer.json file:
 ```
 "require": {
-    "ihor/nspl": "~1.1"
+    "ihor/nspl": "~1.2"
 }
 ```
 or simply execute the following in the command line:
 ```
 composer require ihor/nspl
 ```
-For the latest changes require version ```1.2.*-dev```
+For the latest changes require version ```1.3.*-dev```
 
 #### Manually
 Checkout [the code](https://github.com/ihor/Nspl) and include ```autoload.php```:
@@ -74,7 +74,7 @@ include 'path/to/nspl/autoload.php';
 
 Reference
 =========
-This is documentation for the dev version ```1.2.*-dev``` which contains the latest changes. For the version ```1.1``` (last stable version) documentation click [here](https://github.com/ihor/Nspl/tree/1.1#reference).
+This is documentation for the dev version ```1.3.*-dev``` which contains the latest changes. For the version ```1.2``` (last stable version) documentation click [here](https://github.com/ihor/Nspl/tree/1.1#reference).
 
 Here I assume that described functions are imported with [use function](http://php.net/manual/en/language.namespaces.importing.php):
 ```php

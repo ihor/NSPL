@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2 / 2017-01-05
+
+* Made ```\nspl\args``` PHP 7 compatible
+
 ## 1.1.1 / 2016-06-13
 
 * Fixed ```Set::toArray()``` behaviour for empty sets. Thanks [Thomas Denoréaz](https://github.com/ThmX)

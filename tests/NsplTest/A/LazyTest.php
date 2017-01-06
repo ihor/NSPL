@@ -3,8 +3,10 @@
 namespace NsplTest\A;
 
 use function \nspl\a\lazy\map;
+use function \nspl\a\lazy\flatMap;
 
 use const \nspl\a\lazy\map;
+use const \nspl\a\lazy\flatMap;
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,4 +25,26 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['A', 'B', 'C'], iterator_to_array(call_user_func(map, 'strtoupper', ['a', 'b', 'c'])));
         $this->assertEquals('\nspl\a\lazy\map', map);
     }
+
+    public function testFlatMap()
+    {
+        $this->assertInstanceOf(\Generator::class, flatMap(function($v) { return [$v, $v + 1]; }, [1, 3]));
+
+        $this->assertEquals(
+            [1, 2, 3, 4],
+            iterator_to_array(flatMap(function($v) { return [$v, $v + 1]; }, [1, 3]))
+        );
+
+        $this->assertEquals(
+            ['hello', 'world', 'answer', 'is', '42'],
+            iterator_to_array(flatMap(function($v) { return explode(' ', $v); }, ['hello world', 'answer is 42']))
+        );
+
+        $this->assertEquals(
+            [1, 2, 3, 4],
+            iterator_to_array(call_user_func(flatMap, function($v) { return [$v, $v + 1]; }, [1, 3]))
+        );
+        $this->assertEquals('\nspl\a\lazy\flatMap', flatMap);
+    }
+
 }

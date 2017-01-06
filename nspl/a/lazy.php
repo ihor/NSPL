@@ -20,3 +20,22 @@ function map(callable $function, $sequence)
     }
 }
 const map = '\nspl\a\lazy\map';
+
+/**
+ * Lazily applies function of one argument to each sequence item and flattens the result
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function flatMap(callable $function, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    foreach ($sequence as $item) {
+        foreach ($function($item) as $resultValue) {
+            yield $resultValue;
+        }
+    }
+}
+const flatMap = '\nspl\a\lazy\flatMap';

@@ -550,7 +550,7 @@ assert(['c', 'b', 'a'] === sorted(['c', 'a', 'b'], true));
 $usersSortedByName = sorted($users, function($u) { return $u->getName(); });
 
 // Which is the same as
-use function nspl\op\methodCaller;
+use function \nspl\op\methodCaller;
 $usersSortedByName = sorted($users, methodCaller('getName'));
 ```
 

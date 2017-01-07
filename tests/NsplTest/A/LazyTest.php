@@ -5,10 +5,12 @@ namespace NsplTest\A;
 use function \nspl\a\lazy\map;
 use function \nspl\a\lazy\flatMap;
 use function \nspl\a\lazy\zip;
+use function \nspl\a\lazy\zipWith;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
 use const \nspl\a\lazy\zip;
+use const \nspl\a\lazy\zipWith;
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,6 +69,20 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], iterator_to_array(call_user_func(zip, [1, 2, 3], ['a', 'b', 'c'])));
         $this->assertEquals('\nspl\a\lazy\zip', zip);
+    }
+
+    public function testZipWith()
+    {
+        $sum = function($x, $y) { return $x + $y; };
+        $sum3 = function($x, $y, $z) { return $x + $y + $z; };
+
+        $this->assertInstanceOf(\Generator::class, zipWith($sum, [1, 2, 3], [1, 2, 3]));
+
+        $this->assertEquals([2, 4, 6], iterator_to_array(zipWith($sum, [1, 2, 3], [1, 2, 3])));
+        $this->assertEquals([3, 6, 9], iterator_to_array(zipWith($sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3])));
+
+        $this->assertEquals([3, 6, 9], iterator_to_array(call_user_func(zipWith, $sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3])));
+        $this->assertEquals('\nspl\a\lazy\zipWith', zipWith);
     }
 
 }

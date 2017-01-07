@@ -68,3 +68,36 @@ function zip($sequence1, $sequence2)
     } while (true);
 }
 const zip = '\nspl\a\lazy\zip';
+
+/**
+ * Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
+ *
+ * @param callable $function
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
+ * @return \Generator
+ */
+function zipWith(callable $function, $sequence1, $sequence2)
+{
+    $sequences = func_get_args();
+    array_shift($sequences);
+    $count = count($sequences);
+
+    for ($j = 0; $j < $count; ++$j) {
+        args\expects(args\traversable, $sequences[$j], $j + 1);
+    }
+
+    do {
+        $zipped = [];
+        for ($j = 0; $j < $count; ++$j) {
+            if (!$data = each($sequences[$j])) {
+                return;
+            }
+            $zipped[] = $data['value'];
+        }
+        yield $count === 2
+            ? $function($zipped[0], $zipped[1])
+            : call_user_func_array($function, $zipped);;
+    } while (true);
+}
+const zipWith = '\nspl\a\lazy\zipWith';

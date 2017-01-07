@@ -4,9 +4,11 @@ namespace NsplTest\A;
 
 use function \nspl\a\lazy\map;
 use function \nspl\a\lazy\flatMap;
+use function \nspl\a\lazy\zip;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
+use const \nspl\a\lazy\zip;
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,6 +47,26 @@ class LazyTest extends \PHPUnit_Framework_TestCase
             iterator_to_array(call_user_func(flatMap, function($v) { return [$v, $v + 1]; }, [1, 3]))
         );
         $this->assertEquals('\nspl\a\lazy\flatMap', flatMap);
+    }
+
+    public function testZip()
+    {
+        $this->assertInstanceOf(\Generator::class, zip([1, 2, 3], ['a', 'b', 'c']));
+
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], iterator_to_array(zip([1, 2, 3], ['a', 'b', 'c'])));
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], iterator_to_array(zip(new \ArrayIterator([1, 2, 3]), ['a', 'b', 'c'])));
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], iterator_to_array(zip([1, 2, 3], new \ArrayIterator(['a', 'b', 'c']))));
+        $this->assertEquals([[1, 'a'], [2, 'b']], iterator_to_array(zip([1, 2, 3], ['a', 'b'])));
+        $this->assertEquals([], iterator_to_array(zip([], ['a', 'b', 'c'])));
+        $this->assertEquals([], iterator_to_array((zip([1, 2, 3], []))));
+
+        $this->assertEquals(
+            [[1, 'a', ['x']], [2, 'b', ['y']], [3, 'c', ['z']]],
+            iterator_to_array(zip([1, 2, 3], ['a', 'b', 'c'], [['x'], ['y'], ['z']]))
+        );
+
+        $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], iterator_to_array(call_user_func(zip, [1, 2, 3], ['a', 'b', 'c'])));
+        $this->assertEquals('\nspl\a\lazy\zip', zip);
     }
 
 }

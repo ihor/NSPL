@@ -7,12 +7,14 @@ use function \nspl\a\lazy\flatMap;
 use function \nspl\a\lazy\zip;
 use function \nspl\a\lazy\zipWith;
 use function \nspl\a\lazy\filter;
+use function \nspl\a\lazy\filterNot;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
 use const \nspl\a\lazy\zip;
 use const \nspl\a\lazy\zipWith;
 use const \nspl\a\lazy\filter;
+use const \nspl\a\lazy\filterNot;
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -100,6 +102,21 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3], iterator_to_array(call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
         $this->assertEquals('\nspl\a\lazy\filter', filter);
+    }
+
+    public function testFilterNot()
+    {
+        $this->assertInstanceOf(\Generator::class, filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+
+        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEquals(
+            array('a' => 1, 'c' => 3),
+            iterator_to_array(filterNot(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3)))
+        );
+        $this->assertEquals([], iterator_to_array(filterNot('is_int', [])));
+
+        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(call_user_func(filterNot, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEquals('\nspl\a\lazy\filterNot', filterNot);
     }
 
 }

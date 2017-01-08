@@ -120,3 +120,22 @@ function filter(callable $predicate, $sequence)
     }
 }
 const filter = '\nspl\a\lazy\filter';
+
+/**
+ * Lazily returns sequence items that don't satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function filterNot(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    foreach ($sequence as $key => $item) {
+        if (!$predicate($item)) {
+            yield $key => $item;
+        }
+    }
+}
+const filterNot = '\nspl\a\lazy\filterNot';

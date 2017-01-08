@@ -101,3 +101,22 @@ function zipWith(callable $function, $sequence1, $sequence2)
     } while (true);
 }
 const zipWith = '\nspl\a\lazy\zipWith';
+
+/**
+ * Lazily returns sequence items that satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function filter(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    foreach ($sequence as $key => $item) {
+        if ($predicate($item)) {
+            yield $key => $item;
+        }
+    }
+}
+const filter = '\nspl\a\lazy\filter';

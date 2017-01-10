@@ -139,3 +139,32 @@ function filterNot(callable $predicate, $sequence)
     }
 }
 const filterNot = '\nspl\a\lazy\filterNot';
+
+/**
+ * Returns first N sequence items with given step
+ *
+ * @param array|\Traversable $sequence
+ * @param int $N
+ * @param int $step
+ * @return \Generator
+ */
+function take($sequence, $N, $step = 1)
+{
+    args\expects(args\traversable, $sequence);
+    args\expects(args\int, $N);
+    args\expects(args\int, $step, 3);
+
+    $counter = 0;
+    $result = array();
+    $length = min(count($sequence), $N * $step);
+    foreach ($sequence as $item) {
+        if ($counter >= $length) {
+            break;
+        }
+
+        if ($counter++ % $step === 0) {
+            yield $item;
+        }
+    }
+}
+const take = '\nspl\a\lazy\take';

@@ -8,6 +8,7 @@ use function \nspl\a\lazy\zip;
 use function \nspl\a\lazy\zipWith;
 use function \nspl\a\lazy\filter;
 use function \nspl\a\lazy\filterNot;
+use function \nspl\a\lazy\take;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -15,6 +16,7 @@ use const \nspl\a\lazy\zip;
 use const \nspl\a\lazy\zipWith;
 use const \nspl\a\lazy\filter;
 use const \nspl\a\lazy\filterNot;
+use const \nspl\a\lazy\take;
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -118,5 +120,23 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['a', 'b', 'c'], iterator_to_array(call_user_func(filterNot, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
         $this->assertEquals('\nspl\a\lazy\filterNot', filterNot);
     }
+
+    public function testTake()
+    {
+        $this->assertInstanceOf(\Generator::class, take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3));
+
+        $this->assertEquals([1, 2, 3], iterator_to_array(take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)));
+        $this->assertEquals([1, 2, 3], iterator_to_array(take(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 3)));
+        $this->assertEquals([1, 3, 5], iterator_to_array(take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2)));
+        $this->assertEquals([1, 3, 5], iterator_to_array(take(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 3, 2)));
+        $this->assertEquals([1, 4, 7], iterator_to_array(take([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, 3)));
+        $this->assertEquals([], iterator_to_array(take([1, 2, 3, 4, 5, 6, 7, 8, 9], 0)));
+        $this->assertEquals([], iterator_to_array(take([], 3)));
+        $this->assertEquals([], iterator_to_array(take([], 3, 2)));
+
+        $this->assertEquals([1, 2, 3], iterator_to_array(call_user_func(take, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3)));
+        $this->assertEquals('\nspl\a\lazy\take', take);
+    }
+
 
 }

@@ -168,3 +168,25 @@ function take($sequence, $N, $step = 1)
     }
 }
 const take = '\nspl\a\lazy\take';
+
+/**
+ * Returns the longest sequence prefix of all items which satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function takeWhile(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    foreach ($sequence as $item) {
+        if ($predicate($item)) {
+            yield $item;
+        }
+        else {
+            break;
+        }
+    }
+}
+const takeWhile = '\nspl\a\lazy\takeWhile';

@@ -9,6 +9,7 @@ use function \nspl\a\lazy\zipWith;
 use function \nspl\a\lazy\filter;
 use function \nspl\a\lazy\filterNot;
 use function \nspl\a\lazy\take;
+use function \nspl\a\lazy\takeWhile;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -17,6 +18,11 @@ use const \nspl\a\lazy\zipWith;
 use const \nspl\a\lazy\filter;
 use const \nspl\a\lazy\filterNot;
 use const \nspl\a\lazy\take;
+use const \nspl\a\lazy\takeWhile;
+
+use function \nspl\f\rpartial;
+use const \nspl\op\lt;
+
 
 class LazyTest extends \PHPUnit_Framework_TestCase
 {
@@ -138,5 +144,17 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\lazy\take', take);
     }
 
+    public function testTakeWhile()
+    {
+        $this->assertInstanceOf(\Generator::class, takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
+
+        $this->assertEquals([1, 2, 3], iterator_to_array(takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6])));
+        $this->assertEquals([1, 2, 3], iterator_to_array(takeWhile(rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals([1, 2, 3], iterator_to_array(takeWhile(rpartial(lt, 4), new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]))));
+        $this->assertEquals([], iterator_to_array(takeWhile(rpartial(lt, 4), [])));
+
+        $this->assertEquals([1, 2, 3], iterator_to_array(call_user_func(takeWhile, rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals('\nspl\a\lazy\takeWhile', takeWhile);
+    }
 
 }

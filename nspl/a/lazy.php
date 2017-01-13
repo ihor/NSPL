@@ -213,3 +213,29 @@ function drop($sequence, $N)
     }
 }
 const drop = '\nspl\a\lazy\drop';
+
+/**
+ * Drops the longest sequence prefix of all items which satisfy the predicate
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function dropWhile(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $drop = true;
+    foreach ($sequence as $item) {
+        if ($drop) {
+            if (!$predicate($item)) {
+                $drop = false;
+                yield $item;
+            }
+        }
+        else {
+            yield $item;
+        }
+    }
+}
+const dropWhile = '\nspl\a\lazy\dropWhile';

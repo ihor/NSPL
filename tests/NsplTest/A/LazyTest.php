@@ -10,6 +10,7 @@ use function \nspl\a\lazy\filter;
 use function \nspl\a\lazy\filterNot;
 use function \nspl\a\lazy\take;
 use function \nspl\a\lazy\takeWhile;
+use function \nspl\a\lazy\drop;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -19,6 +20,7 @@ use const \nspl\a\lazy\filter;
 use const \nspl\a\lazy\filterNot;
 use const \nspl\a\lazy\take;
 use const \nspl\a\lazy\takeWhile;
+use const \nspl\a\lazy\drop;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -155,6 +157,19 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3], iterator_to_array(call_user_func(takeWhile, rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9])));
         $this->assertEquals('\nspl\a\lazy\takeWhile', takeWhile);
+    }
+
+    public function testDrop()
+    {
+        $this->assertInstanceOf(\Generator::class, drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
+
+        $this->assertEquals([7, 8, 9], iterator_to_array(drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6)));
+        $this->assertEquals([7, 8, 9], iterator_to_array(drop(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9]), 6)));
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 0)));
+        $this->assertEquals([], iterator_to_array(drop([], 3)));
+
+        $this->assertEquals([7, 8, 9], iterator_to_array(call_user_func(drop, [1, 2, 3, 4, 5, 6, 7, 8, 9], 6)));
+        $this->assertEquals('\nspl\a\lazy\drop', drop);
     }
 
 }

@@ -190,3 +190,26 @@ function takeWhile(callable $predicate, $sequence)
     }
 }
 const takeWhile = '\nspl\a\lazy\takeWhile';
+
+/**
+ * Drops first N sequence items
+ *
+ * @param array|\Traversable $sequence
+ * @param int $N
+ * @return \Generator
+ */
+function drop($sequence, $N)
+{
+    args\expects(args\traversable, $sequence);
+    args\expects(args\int, $N);
+
+    $counter = 0;
+    foreach ($sequence as $item) {
+        if ($counter++ < $N) {
+            continue;
+        }
+
+        yield $item;
+    }
+}
+const drop = '\nspl\a\lazy\drop';

@@ -899,7 +899,7 @@ Returns the variable type or its class name if it is an object
 Roadmap
 =======
 
-- Add laziness in version 1.2
+- Add laziness in version 1.3
 
 Contributing
 ============

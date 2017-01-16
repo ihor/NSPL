@@ -12,6 +12,7 @@ use function \nspl\a\lazy\take;
 use function \nspl\a\lazy\takeWhile;
 use function \nspl\a\lazy\drop;
 use function \nspl\a\lazy\dropWhile;
+use function \nspl\a\lazy\partition;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -23,6 +24,7 @@ use const \nspl\a\lazy\take;
 use const \nspl\a\lazy\takeWhile;
 use const \nspl\a\lazy\drop;
 use const \nspl\a\lazy\dropWhile;
+use const \nspl\a\lazy\partition;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -185,6 +187,21 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([4, 5, 6, 7, 8, 9], iterator_to_array(call_user_func(dropWhile, rpartial(lt, 4), [1, 2, 3, 4, 5, 6, 7, 8, 9])));
         $this->assertEquals('\nspl\a\lazy\dropWhile', dropWhile);
+    }
+
+    public function testPartition()
+    {
+        $result = partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]);
+
+        $this->assertInternalType('array', $result);
+        $this->assertArrayHasKey(0, $result);
+        $this->assertArrayHasKey(1, $result);
+        $this->assertInstanceOf(\Generator::class, $result[0]);
+        $this->assertInstanceOf(\Generator::class, $result[1]);
+        $this->assertEquals([1, 2, 3], array_values(iterator_to_array($result[0])));
+        $this->assertEquals(['a', 'b', 'c'], array_values(iterator_to_array($result[1])));
+
+        $this->assertEquals('\nspl\a\lazy\partition', partition);
     }
 
 }

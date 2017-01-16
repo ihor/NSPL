@@ -239,3 +239,45 @@ function dropWhile(callable $predicate, $sequence)
     }
 }
 const dropWhile = '\nspl\a\lazy\dropWhile';
+
+/**
+ * Returns two generators, one yielding values for which the predicate returned true, and the other one
+ * the items that returned false
+ *
+ * @param callable $predicate
+ * @param array|\Traversable $sequence
+ * @return \Generator[]
+ */
+function partition(callable $predicate, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $checked = array();
+
+    $first = function() use ($sequence, $predicate, &$checked) {
+        foreach ($sequence as $k => $v) {
+            if (!isset($checked[$k])) {
+                $checked[$k] = $predicate($v);
+            }
+
+            if ($checked[$k]) {
+                yield $k => $v;
+            }
+        }
+    };
+
+    $second = function() use ($sequence, $predicate, &$checked) {
+        foreach ($sequence as $k => $v) {
+            if (!isset($checked[$k])) {
+                $checked[$k] = $predicate($v);
+            }
+
+            if (!$checked[$k]) {
+                yield $k => $v;
+            }
+        }
+    };
+
+    return [$first(), $second()];
+}
+const partition = '\nspl\a\lazy\partition';

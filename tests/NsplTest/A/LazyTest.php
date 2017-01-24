@@ -13,6 +13,7 @@ use function \nspl\a\lazy\takeWhile;
 use function \nspl\a\lazy\drop;
 use function \nspl\a\lazy\dropWhile;
 use function \nspl\a\lazy\partition;
+use function \nspl\a\lazy\flatten;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -25,6 +26,7 @@ use const \nspl\a\lazy\takeWhile;
 use const \nspl\a\lazy\drop;
 use const \nspl\a\lazy\dropWhile;
 use const \nspl\a\lazy\partition;
+use const \nspl\a\lazy\flatten;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -202,6 +204,22 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['a', 'b', 'c'], array_values(iterator_to_array($result[1])));
 
         $this->assertEquals('\nspl\a\lazy\partition', partition);
+    }
+
+    public function testFlatten()
+    {
+        $this->assertInstanceOf(\Generator::class, flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]));
+
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]])));
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(flatten(new \ArrayIterator([[1, 2, 3], new \ArrayIterator([4, 5, 6]), [7, 8, 9]]))));
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]])));
+        $this->assertEquals([1, [2, [3]], [[4, 5, 6]], 7, 8, 9], iterator_to_array(flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 1)));
+        $this->assertEquals([1, 2, [3], [4, 5, 6], 7, 8, 9], iterator_to_array(flatten([[1, [2, [3]]], [[[4, 5, 6]]], 7, 8, [9]], 2)));
+        $this->assertEquals([1], iterator_to_array(flatten([1])));
+        $this->assertEquals([], iterator_to_array(flatten([])));
+
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(call_user_func(flatten, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])));
+        $this->assertEquals('\nspl\a\lazy\flatten', flatten);
     }
 
 }

@@ -281,3 +281,33 @@ function partition(callable $predicate, $sequence)
     return [$first(), $second()];
 }
 const partition = '\nspl\a\lazy\partition';
+
+/**
+ * Flattens multidimensional sequence
+ *
+ * @param array|\Traversable $sequence
+ * @param int|null $depth
+ * @return \Generator
+ */
+function flatten($sequence, $depth = null)
+{
+    args\expects(args\traversable, $sequence);
+    args\expectsOptional(args\int, $depth);
+
+    foreach ($sequence as $value) {
+        if (null == $depth && (is_array($value) || $value instanceof \Traversable)) {
+            foreach (flatten($value) as $subValue) {
+                yield $subValue;
+            }
+        }
+        else if ($depth && (is_array($value) || $value instanceof \Traversable)) {
+            foreach ($depth > 1 ? flatten($value, $depth - 1) : $value as $subValue) {
+                yield $subValue;
+            }
+        }
+        else {
+            yield $value;
+        }
+    }
+}
+const flatten = '\nspl\a\lazy\flatten';

@@ -311,3 +311,20 @@ function flatten($sequence, $depth = null)
     }
 }
 const flatten = '\nspl\a\lazy\flatten';
+
+/**
+ * Returns list of (key, value) pairs
+ * @param array|\Traversable $sequence
+ * @param bool $valueKey If true then convert array to (value, key) pairs
+ * @return \Generator
+ */
+function pairs($sequence, $valueKey = false)
+{
+    args\expects(args\traversable, $sequence);
+    args\expects(args\bool, $valueKey);
+
+    foreach ($sequence as $key => $value) {
+        yield ($valueKey ? [$value, $key] : [$key, $value]);
+    }
+}
+const pairs = '\nspl\a\lazy\pairs';

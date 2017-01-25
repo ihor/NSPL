@@ -286,6 +286,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([[0, 'a'], [1, 'b'], [2, 'c']], call_user_func(pairs, (['a', 'b', 'c'])));
         $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], call_user_func(pairs, (array('a' => 'hello', 'b' => 'world', 'c' => 42))));
         $this->assertEquals([], call_user_func(pairs, ([])));
+        $this->assertEquals('\nspl\a\pairs', pairs);
     }
 
     public function testSorted()

@@ -14,6 +14,7 @@ use function \nspl\a\lazy\drop;
 use function \nspl\a\lazy\dropWhile;
 use function \nspl\a\lazy\partition;
 use function \nspl\a\lazy\flatten;
+use function \nspl\a\lazy\pairs;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -27,6 +28,7 @@ use const \nspl\a\lazy\drop;
 use const \nspl\a\lazy\dropWhile;
 use const \nspl\a\lazy\partition;
 use const \nspl\a\lazy\flatten;
+use const \nspl\a\lazy\pairs;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -220,6 +222,20 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8, 9], iterator_to_array(call_user_func(flatten, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])));
         $this->assertEquals('\nspl\a\lazy\flatten', flatten);
+    }
+
+    public function testPairs()
+    {
+        $this->assertInstanceOf(\Generator::class, pairs(['a', 'b', 'c']));
+
+        $this->assertEquals([[0, 'a'], [1, 'b'], [2, 'c']], iterator_to_array(pairs(['a', 'b', 'c'])));
+        $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], iterator_to_array(pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42))));
+        $this->assertEquals([], iterator_to_array(pairs([])));
+
+        $this->assertEquals([[0, 'a'], [1, 'b'], [2, 'c']], iterator_to_array(call_user_func(pairs, (['a', 'b', 'c']))));
+        $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], iterator_to_array(call_user_func(pairs, (array('a' => 'hello', 'b' => 'world', 'c' => 42)))));
+        $this->assertEquals([], iterator_to_array(call_user_func(pairs, ([]))));
+        $this->assertEquals('\nspl\a\lazy\pairs', pairs);
     }
 
 }

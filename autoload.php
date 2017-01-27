@@ -2,7 +2,9 @@
 
 require_once __DIR__ . '/nspl/nspl.php';
 require_once __DIR__ . '/nspl/a.php';
-require_once __DIR__ . '/nspl/a/lazy.php';
+if (PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 4) {
+    require_once __DIR__ . '/nspl/a/lazy.php';
+}
 require_once __DIR__ . '/nspl/args.php';
 require_once __DIR__ . '/nspl/f.php';
 require_once __DIR__ . '/nspl/ds.php';

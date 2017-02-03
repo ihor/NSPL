@@ -714,7 +714,7 @@ If we used regular non-lazy versions of these functions we would generate all th
  4. It was the first number we took, so it passed through the ```take``` function as well
  5. And then we calculated its square and printed the result
 
-The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number and finished which stopped the whole iteration.
+The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number and finished, which stopped the whole iteration.
 
 Without the ```logged``` function the code which produces the same result looks cleaner:
  ```php

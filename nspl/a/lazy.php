@@ -94,17 +94,28 @@ function zipWith(callable $function, $sequence1, $sequence2)
     array_shift($sequences);
     $count = count($sequences);
 
+    $isArray = array();
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $sequences[$j], $j + 1);
+        $isArray[$j] = is_array($sequences[$j]);
     }
 
     do {
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
-            if (!$data = each($sequences[$j])) {
-                return;
+            if ($isArray[$j]) {
+                $data = each($sequences[$j])['value'];
             }
-            $zipped[] = $data['value'];
+            else {
+                $data = $sequences[$j]->current();
+                $sequences[$j]->next();
+            }
+
+            if (!$data) {
+                break 2;
+            }
+
+            $zipped[] = $data;
         }
         yield $count === 2
             ? $function($zipped[0], $zipped[1])

@@ -111,6 +111,15 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([2, 4, 6], iterator_to_array(zipWith($sum, [1, 2, 3], [1, 2, 3])));
         $this->assertEquals([3, 6, 9], iterator_to_array(zipWith($sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3])));
 
+        $this->assertEquals(
+            [2, 4, 6],
+            iterator_to_array(zipWith(
+                $sum,
+                (function() { foreach ([1, 2, 3] as $value) yield $value; })(),
+                (function() { foreach ([1, 2, 3] as $value) yield $value; })()
+            ))
+        );
+
         $this->assertEquals([3, 6, 9], iterator_to_array(call_user_func(zipWith, $sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3])));
         $this->assertEquals('\nspl\a\lazy\zipWith', zipWith);
     }

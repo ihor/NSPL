@@ -155,15 +155,15 @@ function take($sequence, $N, $step = 1)
     args\expects(args\int, $step, 3);
 
     $counter = 0;
-    $result = array();
-    $length = min(count($sequence), $N * $step);
+    $taken = 0;
     foreach ($sequence as $item) {
-        if ($counter >= $length) {
-            break;
-        }
-
         if ($counter++ % $step === 0) {
             yield $item;
+            ++$taken;
+        }
+
+        if ($taken >= $N) {
+            break;
         }
     }
 }

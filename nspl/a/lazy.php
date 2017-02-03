@@ -154,6 +154,10 @@ function take($sequence, $N, $step = 1)
     args\expects(args\int, $N);
     args\expects(args\int, $step, 3);
 
+    if ($N === 0) {
+        return;
+    }
+
     $counter = 0;
     $taken = 0;
     foreach ($sequence as $item) {

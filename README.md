@@ -138,7 +138,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [value](#valuearray-key-default--null)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
-* [nspl\a\lazy](#nsplalzy)
+* [nspl\a\lazy](#nsplalazy)
 * [nspl\args](#nsplargs)
     * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
     * [expectsAll](#expectsallconstraints-array-args-array-atpositions---otherwisethrow--invalidargumentexception)

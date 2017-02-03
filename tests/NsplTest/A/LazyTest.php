@@ -85,6 +85,14 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], iterator_to_array((zip([1, 2, 3], []))));
 
         $this->assertEquals(
+            [[1, 'a'], [2, 'b'], [3, 'c']],
+            iterator_to_array(zip(
+                (function() { foreach ([1, 2, 3] as $value) yield $value; })(),
+                (function() { foreach (['a', 'b', 'c'] as $value) yield $value; })()
+            ))
+        );
+
+        $this->assertEquals(
             [[1, 'a', ['x']], [2, 'b', ['y']], [3, 'c', ['z']]],
             iterator_to_array(zip([1, 2, 3], ['a', 'b', 'c'], [['x'], ['y'], ['z']]))
         );

@@ -52,17 +52,28 @@ function zip($sequence1, $sequence2)
     $sequences = func_get_args();
     $count = func_num_args();
 
+    $isArray = array();
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $sequences[$j], $j + 1);
+        $isArray[$j] = is_array($sequences[$j]);
     }
 
     do {
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
-            if (!$data = each($sequences[$j])) {
-                return;
+            if ($isArray[$j]) {
+                $data = each($sequences[$j])['value'];
             }
-            $zipped[] = $data['value'];
+            else {
+                $data = $sequences[$j]->current();
+                $sequences[$j]->next();
+            }
+
+            if (!$data) {
+                break 2;
+            }
+
+            $zipped[] = $data;
         }
         yield $zipped;
     } while (true);

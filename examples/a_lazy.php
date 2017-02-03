@@ -43,7 +43,7 @@ $result = pipe(
     logged(naturalNumbers)(), // from all natural numbers
     partial(logged(filter), isEven), // filter only even numbers
     rpartial(logged(take), 3), // take only first 3 odd numbers
-    partial(logged(map), sqr) // and calculate their square
+    partial(logged(map), sqr) // and calculate their squares
 );
 
 foreach ($result as $value) {

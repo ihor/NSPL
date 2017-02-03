@@ -627,9 +627,10 @@ Let's define a function which wraps a generator and logs all the values yielded 
 // Calls generator function and logs the yielded values
 function logged(callable $generatorFunction)
 {
-    return function(...$args) use ($generatorFunction) {
+    static $count = 1;
+    return function(...$args) use ($generatorFunction, &$count) {
         foreach ($generatorFunction(...$args) as $value) {
-            echo (string) $generatorFunction . ' -> ' . $value . "\n";
+            echo $count++ . '. ' .  (string) $generatorFunction . ' -> ' . $value . "\n";
             yield $value;
         };
     };
@@ -717,14 +718,14 @@ If we used regular non-lazy versions of these functions we would generate all th
 The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number and finished, which stopped the whole iteration.
 
 Without the ```logged``` function the code which produces the same result looks cleaner:
- ```php
+```php
  $result = pipe(
      naturalNumbers(),
      partial(filter, isEven),
      rpartial(take, 3),
      partial(map, sqr)
  );
- ```
+```
  Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
 
 > **Tip**

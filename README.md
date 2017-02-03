@@ -5,6 +5,7 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
  - [nspl\f](#nsplf) - provides functions that act on other functions. Helps to write code in functional programming paradigm
  - [nspl\op](#nsplop) - provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module
  - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
+ - [nspl\a\lazy](#nsplalazy) - provides lazy versions of functions from ```\nspl\a```
  - [nspl\args](#nsplargs) - helps to validate function arguments
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
  - [nspl\rnd](#nsplrnd) - helps to pick random items from sequences of data
@@ -137,6 +138,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [value](#valuearray-key-default--null)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
+* [nspl\a\lazy](#nsplalzy)
 * [nspl\args](#nsplargs)
     * [expects](#expectsconstraints-arg-atposition--null-otherwisethrow--invalidargumentexception)
     * [expectsAll](#expectsallconstraints-array-args-array-atpositions---otherwisethrow--invalidargumentexception)
@@ -615,6 +617,119 @@ assert([1, 2, 3] === map(first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 
 Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).
 
+## nspl\a\lazy
+Provides lazy versions of functions from ```\nspl\a```
+
+Sometimes instead of arrays we work with [iterators](http://php.net/manual/en/class.iterator.php). They might perform some heavy calculations, make API requests, etc. In case we don't need to fetch all the results it is reasonable to use functions from ```\nspl\a\lazy```. To understand how they work have a look at the following example.
+
+Let's define a function which wraps a generator and logs all the values yielded by the generator:
+```php
+// Calls generator function and logs the yielded values
+function logged(callable $generatorFunction)
+{
+    return function(...$args) use ($generatorFunction) {
+        foreach ($generatorFunction(...$args) as $value) {
+            echo (string) $generatorFunction . ' -> ' . $value . "\n";
+            yield $value;
+        };
+    };
+}
+```
+
+Also, let's define a function which returns all natural numbers. Since it returns all the natural numbers it never terminates:
+```php
+function naturalNumbers()
+{
+    $current = 1;
+    while (true) yield $current++;
+}
+const naturalNumbers = 'naturalNumbers';
+```
+
+And let's define some operations we want to perform on those numbers:
+```php
+// Returns square of a number
+function sqr($n)
+{
+    return $n * $n;
+}
+const sqr = 'sqr';
+
+// Checks if a number is even
+function isEven($n)
+{
+    return $n % 2 === 0;
+}
+const isEven = 'isEven';
+```
+
+Now let's take first three even natural numbers and calculate their squares:
+```php
+use const nspl\a\lazy\{take, map, filter};
+use function nspl\f\{pipe, partial, rpartial};
+
+$result = pipe(
+    logged(naturalNumbers)(), // from all natural numbers
+    partial(logged(filter), isEven), // filter only even numbers
+    rpartial(logged(take), 3), // take only first 3 even numbers
+    partial(logged(map), sqr) // and calculate their square
+);
+
+foreach ($result as $value) {
+    echo "\nNext value is $value \n\n";
+}
+```
+
+When we run this example we'll see the following output:
+```
+1. naturalNumbers -> 1
+2. naturalNumbers -> 2
+3. \nspl\a\lazy\filter -> 2
+4. \nspl\a\lazy\take -> 2
+5. \nspl\a\lazy\map -> 4
+
+Next value is 4
+
+6. naturalNumbers -> 3
+7. naturalNumbers -> 4
+8. \nspl\a\lazy\filter -> 4
+9. \nspl\a\lazy\take -> 4
+10. \nspl\a\lazy\map -> 16
+
+Next value is 16
+
+11. naturalNumbers -> 5
+12. naturalNumbers -> 6
+13. \nspl\a\lazy\filter -> 6
+14. \nspl\a\lazy\take -> 6
+15. \nspl\a\lazy\map -> 36
+
+Next value is 36
+```
+
+If we used regular non-lazy versions of these functions we would generate all the natural numbers, then filtered only even numbers, then took only the first three of them and then calculated their squares. Instead of that you see that functions were called one by one passing the result to the next function until we completed the full cycle:
+ 1. We took first natural number – 1. It wasn't even so we skipped it
+ 2. We took the next one – 2, it was even
+ 3. And passed the ```filter``` function
+ 4. It was the first number we took, so it passed through the ```take``` function as well
+ 5. And then we calculated its square and printed the result
+
+The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number and finished which stopped the whole iteration.
+
+Without the ```logged``` function the code which produces the same result looks cleaner:
+ ```php
+ $result = pipe(
+     naturalNumbers(),
+     partial(filter, isEven),
+     rpartial(take, 3),
+     partial(map, sqr)
+ );
+ ```
+ Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
+
+> **Tip**
+>
+> Note that while functions from ```\nspl\a\lazy``` allow you to avoid redundant computations, in case when you need to process all sequence values, functions from ```\nspl\a``` will do the job faster.
 
 ## nspl\args
 

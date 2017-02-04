@@ -618,9 +618,9 @@ assert([1, 2, 3] === map(first, [[1, 'a'], [2, 'b'], [3, 'c']]));
 Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/a.php).
 
 ## nspl\a\lazy
-Provides lazy versions of functions from ```\nspl\a```
+Provides lazy versions of functions from [nspl\a](#nspla)
 
-Sometimes instead of arrays we work with [iterators](http://php.net/manual/en/class.iterator.php). They might perform some heavy calculations, make API requests, etc. In case we don't need to fetch all the results, it is reasonable to use functions from ```\nspl\a\lazy```. To understand how they work have a look at the following example.
+This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how they work let's have a look at the following example.
 
 Let's define a function which wraps a generator function and logs all the values it yields:
 ```php

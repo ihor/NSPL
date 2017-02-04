@@ -620,7 +620,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 ## nspl\a\lazy
 Provides lazy versions of functions from [nspl\a](#nspla)
 
-This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how they work let's have a look at the following example.
+This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how these lazy functions work let's have a look at the following example.
 
 Let's define a function which wraps a generator function and logs all the values it yields:
 ```php

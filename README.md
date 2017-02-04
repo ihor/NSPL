@@ -620,7 +620,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 ## nspl\a\lazy
 Provides lazy versions of functions from ```\nspl\a```
 
-Sometimes instead of arrays we work with [iterators](http://php.net/manual/en/class.iterator.php). They might perform some heavy calculations, make API requests, etc. In case we don't need to fetch all the results it is reasonable to use functions from ```\nspl\a\lazy```. To understand how they work have a look at the following example.
+Sometimes instead of arrays we work with [iterators](http://php.net/manual/en/class.iterator.php). They might perform some heavy calculations, make API requests, etc. In case we don't need to fetch all the results, it is reasonable to use functions from ```\nspl\a\lazy```. To understand how they work have a look at the following example.
 
 Let's define a function which wraps a generator function and logs all the values it yields:
 ```php

@@ -622,7 +622,7 @@ Provides lazy versions of functions from [nspl\a](#nspla)
 
 This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how these lazy functions work let's have a look at the following example.
 
-Let's define a function which wraps a generator function and logs all the values it yields:
+Let's define a function which wraps a generator function and logs all the values it yields. It will help up us to debug the example:
 ```php
 // Calls generator function and logs the yielded values
 function logged(callable $generatorFunction)

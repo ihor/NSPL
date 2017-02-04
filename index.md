@@ -622,7 +622,7 @@ Provides lazy versions of functions from [nspl\a](#nspla)
 
 This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how these lazy functions work let's have a look at the following example.
 
-Let's define a function which wraps a generator function and logs all the values it yields. It will help up us to debug the example:
+Let's define a function which wraps a generator function and logs all the values it yields. It will help up us to see the order of function calls:
 ```php
 // Calls generator function and logs the yielded values
 function logged(callable $generatorFunction)
@@ -637,7 +637,7 @@ function logged(callable $generatorFunction)
 }
 ```
 
-Also, let's define a function which returns all natural numbers. Since it returns all the natural numbers it never terminates:
+To have some data to operate on, let's define a function which returns all natural numbers. Since it returns all the natural numbers it never terminates:
 ```php
 function naturalNumbers()
 {
@@ -647,7 +647,7 @@ function naturalNumbers()
 const naturalNumbers = 'naturalNumbers';
 ```
 
-And let's define some operations we want to perform on those numbers:
+And let's define the operations we want to perform on those numbers:
 ```php
 // Returns square of a number
 function sqr($n)
@@ -664,7 +664,7 @@ function isEven($n)
 const isEven = 'isEven';
 ```
 
-Now let's take first three even natural numbers and calculate their squares:
+Now let's assume we want to take the first three even natural numbers and calculate their squares:
 ```php
 use const nspl\a\lazy\{take, map, filter};
 use function nspl\f\{pipe, partial, rpartial};

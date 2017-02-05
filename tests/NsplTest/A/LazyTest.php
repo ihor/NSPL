@@ -92,6 +92,14 @@ class LazyTest extends \PHPUnit_Framework_TestCase
             ))
         );
 
+        $numbers = (function() {
+            for ($i = 0; $i < 9; ++$i) yield $i;
+        })();
+        $this->assertEquals(
+            [[0, 1, 2], [3, 4, 5], [6, 7, 8]],
+            iterator_to_array(zip($numbers, $numbers, $numbers))
+        );
+
         $this->assertEquals(
             [[1, 'a', ['x']], [2, 'b', ['y']], [3, 'c', ['z']]],
             iterator_to_array(zip([1, 2, 3], ['a', 'b', 'c'], [['x'], ['y'], ['z']]))
@@ -118,6 +126,14 @@ class LazyTest extends \PHPUnit_Framework_TestCase
                 (function() { foreach ([1, 2, 3] as $value) yield $value; })(),
                 (function() { foreach ([1, 2, 3] as $value) yield $value; })()
             ))
+        );
+
+        $numbers = (function() {
+            for ($i = 0; $i < 9; ++$i) yield $i;
+        })();
+        $this->assertEquals(
+            [3, 12, 21],
+            iterator_to_array(zipWith($sum3, $numbers, $numbers, $numbers))
         );
 
         $this->assertEquals([3, 6, 9], iterator_to_array(call_user_func(zipWith, $sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3])));

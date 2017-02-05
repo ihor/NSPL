@@ -62,15 +62,19 @@ function zip($sequence1, $sequence2)
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
             if ($isArray[$j]) {
-                $data = each($sequences[$j])['value'];
+                $data = each($sequences[$j]);
+                if (!$data) {
+                    break 2;
+                }
+                $data = $data['value'];
             }
             else {
                 $data = $sequences[$j]->current();
-                $sequences[$j]->next();
-            }
+                if (null === $data) {
+                    break 2;
+                }
 
-            if (!$data) {
-                break 2;
+                $sequences[$j]->next();
             }
 
             $zipped[] = $data;
@@ -104,15 +108,19 @@ function zipWith(callable $function, $sequence1, $sequence2)
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
             if ($isArray[$j]) {
-                $data = each($sequences[$j])['value'];
+                $data = each($sequences[$j]);
+                if (!$data) {
+                    break 2;
+                }
+                $data = $data['value'];
             }
             else {
                 $data = $sequences[$j]->current();
-                $sequences[$j]->next();
-            }
+                if (null === $data) {
+                    break 2;
+                }
 
-            if (!$data) {
-                break 2;
+                $sequences[$j]->next();
             }
 
             $zipped[] = $data;

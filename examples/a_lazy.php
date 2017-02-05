@@ -42,23 +42,10 @@ const isEven = 'isEven';
 $result = pipe(
     logged(naturalNumbers)(), // from all natural numbers
     partial(logged(filter), isEven), // filter only even numbers
-    rpartial(logged(take), 3), // take only first 3 odd numbers
+    rpartial(logged(take), 3), // take only first 3 even numbers
     partial(logged(map), sqr) // and calculate their squares
 );
 
 foreach ($result as $value) {
     echo "\nNext value is $value \n\n";
-}
-
-// Without the logger function the code looks cleaner
-$result = pipe(
-    naturalNumbers(),
-    partial(filter, isEven),
-    rpartial(take, 3),
-    partial(map, sqr)
-);
-
-
-foreach ($result as $value) {
-    echo "Next value is $value \n";
 }

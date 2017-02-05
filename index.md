@@ -667,14 +667,15 @@ const isEven = 'isEven';
 Now let's assume we want to take the first three even natural numbers and calculate their squares:
 ```php
 use const nspl\a\lazy\{take, map, filter};
-use function nspl\f\{pipe, partial, rpartial};
 
-$result = pipe(
-    logged(naturalNumbers)(), // from all natural numbers
-    partial(logged(filter), isEven), // filter only even numbers
-    rpartial(logged(take), 3), // take only first 3 even numbers
-    partial(logged(map), sqr) // and calculate their squares
-);
+$map = logged(map);
+$take = logged(take);
+$filter = logged(filter);
+$numbers = logged(naturalNumbers)();
+
+$evenNumbers = $filter(isEven, $numbers); // filter only even numbers
+$firstThreeEvenNumbers = $take($evenNumbers, 3); // take only first 3 even numbers
+$result = $map(sqr, $firstThreeEvenNumbers); // and calculate their squares
 
 foreach ($result as $value) {
     echo "\nNext value is $value \n\n";
@@ -715,18 +716,9 @@ If we used regular non-lazy versions of these functions we would generate all th
  4. It was the first number we took, so it passed through the ```take``` function as well
  5. And then we calculated its square and printed the result
 
-The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number and finished, which stopped the whole iteration.
+The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number. So after step 15,  when ```map``` requested the next value ```take``` didn't yield anything and the whole iteration was finished.
 
-Without the ```logged``` function the code which produces the same result looks cleaner:
-```php
- $result = pipe(
-     naturalNumbers(),
-     partial(filter, isEven),
-     rpartial(take, 3),
-     partial(map, sqr)
- );
-```
- Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
+Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
 
 > **Tip**
 >

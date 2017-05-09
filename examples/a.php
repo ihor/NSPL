@@ -12,10 +12,10 @@ use function nspl\a\keySorted;
 use function nspl\a\indexed;
 use function nspl\a\take;
 use function nspl\a\reorder;
+use const nspl\a\value;
 
 use const nspl\op\eq;
 use const nspl\op\object;
-use function nspl\op\itemGetter;
 use function nspl\op\propertyGetter;
 
 use function nspl\f\partial;
@@ -120,3 +120,13 @@ echo "New pets rating:\n";
 foreach ($petsRating as $pet) {
     echo sprintf("    %s\n", $pet);
 }
+
+// 13. Turn array into a function
+$ages = partial(value, array(
+   'John' => 15,
+   'Jack' => 35,
+   'Sarah' => 25,
+));
+
+echo "Jack's age is: ";
+echo $ages('Jack') . "\n";

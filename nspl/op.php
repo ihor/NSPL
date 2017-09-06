@@ -178,12 +178,6 @@ function instanceCreator($class)
 {
     args\expects(args\string, $class);
 
-    if (version_compare(PHP_VERSION, '5.6', '>=')) {
-        return function(...$args) use ($class) {
-            return new $class(...$args);
-        };
-    }
-
     $reflectionClass = new \ReflectionClass($class);
 
     return function() use ($class, $reflectionClass) {

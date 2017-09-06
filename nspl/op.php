@@ -168,3 +168,25 @@ function methodCaller($method, array $args = array())
         return call_user_func_array(array($object, $method), $args);
     };
 }
+
+/**
+ * Returns a function that returns a new instance of a predefined class, passing its parameters to the constructor
+ * @param string $class Class name
+ * @return callable
+ */
+function instanceCreator($class)
+{
+    args\expects(args\string, $class);
+
+    if (version_compare(PHP_VERSION, '5.6', '>=')) {
+        return function(...$args) use ($class) {
+            return new $class(...$args);
+        };
+    }
+
+    $reflectionClass = new \ReflectionClass($class);
+
+    return function() use ($class, $reflectionClass) {
+        return call_user_func_array(array($reflectionClass, 'newInstance'), func_get_args());
+    };
+}

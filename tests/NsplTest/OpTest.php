@@ -2,6 +2,7 @@
 
 namespace NsplTest\OpTest;
 
+use const nspl\f\apply;
 use const \nspl\op\sum;
 use const \nspl\op\sub;
 use const \nspl\op\mul;
@@ -40,6 +41,8 @@ use function \nspl\op\itemGetter;
 use function \nspl\op\propertyGetter;
 use function \nspl\op\methodCaller;
 use function \nspl\a\map;
+use function nspl\op\instanceCreator;
+use function nspl\f\partial;
 
 class OpTest extends \PHPUnit_Framework_TestCase
 {
@@ -311,6 +314,32 @@ class OpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([21, 23, 22], map(methodCaller('getAgeIn', [3]), $users));
     }
 
+    public function testInstanceCreatorSingleParameter()
+    {
+        $userNames = [
+            'John',
+            'Jack',
+            'Sarah',
+        ];
+
+        $users = map(instanceCreator(User::class), $userNames);
+        $this->assertEquals(['John', 'Jack', 'Sarah'], map(methodCaller('getName'), $users));
+    }
+
+    public function testInstanceCreatorVariadicConstructor() {
+        $userData = [
+            ['John', 18],
+            ['Jack', 20],
+            ['Sarah', 19],
+        ];
+
+        $users = map(partial(apply, instanceCreator(User::class)), $userData);
+
+        $this->assertEquals(['John', 'Jack', 'Sarah'], map(methodCaller('getName'), $users));
+        $this->assertEquals([18, 20, 19], map(methodCaller('getAge'), $users));
+        $this->assertEquals([21, 23, 22], map(methodCaller('getAgeIn', [3]), $users));
+    }
+
 }
 
 class User
@@ -318,7 +347,7 @@ class User
     public $name;
     public $age;
 
-    public function __construct($name, $age)
+    public function __construct($name, $age=0)
     {
         $this->name = $name;
         $this->age = $age;

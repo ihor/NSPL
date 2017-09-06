@@ -108,6 +108,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [itemGetter](#itemgetterkey)
     * [propertyGetter](#propertygetterproperty)
     * [methodCaller](#methodcallermethod-array-args--array)
+    * [instanceCreator](#instancecreatorclass)
 * [nspl\a](#nspla)
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
@@ -371,6 +372,13 @@ Returns a function that returns method result for a given object on predefined a
 
 ```php
 $userIds = map(methodCaller('getId'), $users);
+```
+
+##### instanceCreator($class)
+Returns a function that returns a new instance of a predefined class, passing its parameters to the constructor
+
+```php
+$users = map(instanceCreator(User::class), $usersData);
 ```
 
 Check more ```\nspl\op``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/op.php).

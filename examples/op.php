@@ -2,18 +2,29 @@
 
 require_once __DIR__ . '/../autoload.php';
 
-use const nspl\op\object;
+use const nspl\f\apply;
 use const nspl\op\gt;
-use function nspl\op\itemGetter;
-use function nspl\op\propertyGetter;
-
-use function nspl\f\rpartial;
-
+use const nspl\op\object;
 use function nspl\a\all;
-use function nspl\a\any;
 use function nspl\a\map;
 use function nspl\a\sorted;
+use function nspl\a\zip;
+use function nspl\f\partial;
+use function nspl\f\rpartial;
+use function nspl\op\instanceCreator;
+use function nspl\op\itemGetter;
 
+
+class User {
+
+	private $name;
+	private $age;
+
+	public function __construct($name, $age=0) {
+		$this->name = $name;
+		$this->age = $age;
+	}
+}
 
 $users = [
     array('name' => 'John', 'age' => 15),
@@ -26,6 +37,7 @@ $users = [
 
 // 1. Get user names from list of users presented with array data
 $names = map(itemGetter('name'), $users);
+$ages = map(itemGetter('age'), $users);
 
 echo sprintf("User names are: %s (users were presented with array data)\n", implode(', ', $names));
 
@@ -35,6 +47,13 @@ $objects = map(object, $users);
 
 echo sprintf("List of users converted to objects consists of types: %s\n", implode(', ', map(\nspl\getType, $objects)));
 
+$userClassObjectsWithName = map(instanceCreator(User::class), $names);
+
+echo sprintf("List of user class instances with name consists of types: %s\n", implode(', ', map(\nspl\getType, $userClassObjectsWithName)));
+
+$userClassObjectsWithNameAndAge = map(partial(apply, instanceCreator(User::class)), zip($names, $ages));
+
+echo sprintf("List of user class instances name and age consists of types: %s\n", implode(', ', map(\nspl\getType, $userClassObjectsWithNameAndAge)));
 
 // 3. Sort users by age
 $sorted = sorted($users, false, itemGetter('age'));

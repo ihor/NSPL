@@ -178,9 +178,7 @@ function instanceCreator($class)
 {
     args\expects(args\string, $class);
 
-    $reflectionClass = new \ReflectionClass($class);
-
-    return function() use ($class, $reflectionClass) {
-        return call_user_func_array(array($reflectionClass, 'newInstance'), func_get_args());
+    return function(...$args) use ($class) {
+        return new $class(...$args);
     };
 }

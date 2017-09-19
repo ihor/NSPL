@@ -15,6 +15,7 @@ use function \nspl\a\lazy\dropWhile;
 use function \nspl\a\lazy\partition;
 use function \nspl\a\lazy\flatten;
 use function \nspl\a\lazy\pairs;
+use function \nspl\a\lazy\keys;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -29,6 +30,7 @@ use const \nspl\a\lazy\dropWhile;
 use const \nspl\a\lazy\partition;
 use const \nspl\a\lazy\flatten;
 use const \nspl\a\lazy\pairs;
+use const \nspl\a\lazy\keys;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -269,6 +271,16 @@ class LazyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([['a', 'hello'], ['b', 'world'], ['c', 42]], iterator_to_array(call_user_func(pairs, (array('a' => 'hello', 'b' => 'world', 'c' => 42)))));
         $this->assertEquals([], iterator_to_array(call_user_func(pairs, ([]))));
         $this->assertEquals('\nspl\a\lazy\pairs', pairs);
+    }
+
+    public function testKeys()
+    {
+        $this->assertInstanceOf(\Generator::class, keys(array('a' => 1, 'b' => 2, 'c' => 3)));
+
+        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(keys(array('a' => 1, 'b' => 2, 'c' => 3))));
+
+        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(call_user_func(keys, array('a' => 1, 'b' => 2, 'c' => 3))));
+        $this->assertEquals('\nspl\a\lazy\keys', keys);
     }
 
 }

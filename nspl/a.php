@@ -813,6 +813,22 @@ function value($array, $key, $default = null)
 const value = '\nspl\a\value';
 
 /**
+ * Returns list of the sequence keys
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function keys($sequence)
+{
+    $result = array();
+    foreach ($sequence as $key => $_) {
+        $result[] = $key;
+    }
+
+    return $result;
+}
+const keys = '\nspl\a\keys';
+
+/**
  * Returns true if the variable is a list
  *
  * @param mixed $var

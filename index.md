@@ -108,6 +108,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [itemGetter](#itemgetterkey)
     * [propertyGetter](#propertygetterproperty)
     * [methodCaller](#methodcallermethod-array-args--array)
+    * [instanceCreator](#instancecreatorclass)
 * [nspl\a](#nspla)
     * [all](#allsequence-predicate)
     * [any](#anysequence-predicate)
@@ -136,6 +137,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [merge](#mergesequence1-sequence2)
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
+    * [keys](#keyssequence)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
@@ -373,6 +375,13 @@ Returns a function that returns method result for a given object on predefined a
 $userIds = map(methodCaller('getId'), $users);
 ```
 
+##### instanceCreator($class)
+Returns a function that returns a new instance of a predefined class, passing its parameters to the constructor
+
+```php
+$users = map(instanceCreator(User::class), $usersData);
+```
+
 Check more ```\nspl\op``` examples [here](https://github.com/ihor/Nspl/blob/master/examples/op.php).
 
 ## nspl\a
@@ -601,6 +610,13 @@ Returns array value by key if it exists otherwise returns the default value
 $data = array('a' => 1, 'b' => 2, 'c' => 3);
 assert(2 === value($data, 'b', -1));
 assert(-1 === value($data, 'd', -1));
+```
+
+##### keys($sequence)
+
+Returns list of the sequence keys
+```php
+assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
 ```
 
 ##### isList($var)

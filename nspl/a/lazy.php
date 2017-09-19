@@ -362,3 +362,16 @@ function pairs($sequence, $valueKey = false)
     }
 }
 const pairs = '\nspl\a\lazy\pairs';
+
+/**
+ * Returns list of the sequence keys
+ * @param array|\Traversable $sequence
+ * @return \Generator
+ */
+function keys($sequence)
+{
+    foreach ($sequence as $key => $_) {
+        yield $key;
+    }
+}
+const keys = '\nspl\a\lazy\keys';

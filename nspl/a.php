@@ -492,6 +492,28 @@ function dropWhile(callable $predicate, $sequence)
 const dropWhile = '\nspl\a\dropWhile';
 
 /**
+ * Returns array containing all keys except the given ones
+ *
+ * @param array|\ArrayAccess $sequence
+ * @param array $keys
+ * @return array
+ */
+function dropKeys($sequence, array $keys)
+{
+    args\expects(args\arrayAccess, $sequence);
+
+    $result = array();
+    foreach ($sequence as $key => $value) {
+        if (!in_array($key, $keys)) {
+            $result[$key] = $value;
+        }
+    }
+
+    return $result;
+}
+const dropKeys = '\nspl\a\dropKeys';
+
+/**
  * Returns two lists, one containing values for which the predicate returned true, and the other containing
  * the items that returned false
  *

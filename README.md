@@ -125,6 +125,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [first](#firstsequence)
     * [second](#secondsequence)
     * [drop](#dropsequence-n)
+    * [dropKeys](#dropkeyssequence-array-keys)
     * [dropWhile](#dropwhilepredicate-sequence)
     * [last](#lastsequence)
     * [partition](#partitionpredicate-sequence)
@@ -243,10 +244,10 @@ $sum = pipe(
 > **Tip**
 >
 > To make your code compact you can use short function aliases. For example:
->  
+>
 > ```php
 > use function \nspl\f\partial as p;
-> 
+>
 > $sum = pipe(
 >    range(1, 20),
 >    p(filter, $isEven),
@@ -503,6 +504,13 @@ Drops first N sequence items
 assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
 ```
 
+##### dropKeys($sequence, array $keys)
+
+Returns array containing all keys except the given ones
+```php
+assert(array('hello' => 1, 'world' => 2) === dropKeys(array('hello' => 1, 'world' => 2, 'foo' => 3), ['foo']));
+```
+
 ##### dropWhile($predicate, $sequence)
 
 Drops the longest sequence prefix of all items which satisfy the predicate
@@ -535,8 +543,8 @@ assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, '
 
 Returns array which contains indexed sequence items
 
-```$by``` is an array key or a function  
-If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned  
+```$by``` is an array key or a function
+If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
 ```$transform``` is a function that transforms list item after indexing
 
 ```php
@@ -551,8 +559,8 @@ $indexedById = indexed([
 
 Returns array which contains sorted items from the passed sequence
 
-If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter  
-```$key``` is a function of one argument that is used to extract a comparison key from each item  
+If ```$reversed``` is true then return reversed sorted sequence. If ```$reversed``` is not boolean and ```$key``` was not passed then acts as a ```$key``` parameter
+```$key``` is a function of one argument that is used to extract a comparison key from each item
 ```$cmp``` is a function of two arguments which returns a negative number, zero or positive number depending on whether the first argument is smaller than, equal to, or larger than the second argument
 ```php
 assert([1, 2, 3] === sorted([2, 3, 1]));
@@ -746,11 +754,11 @@ Helps to validate function arguments
 
 ##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument satisfies the required constraints otherwise throws the corresponding exception  
+Checks that argument satisfies the required constraints otherwise throws the corresponding exception
 
-```$constraints``` are callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)  
-If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function  
-```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be the exception class or exception object  
+```$constraints``` are callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)
+If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function
+```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be the exception class or exception object
 
 ```php
 use const \nspl\args\int;
@@ -780,7 +788,7 @@ Call Stack:
 
 ##### expectsAll($constraints, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception  
+Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception
 
 ```php
 use const \nspl\args\numeric;
@@ -796,7 +804,7 @@ function sum($x, $y)
 
 ##### expectsOptional($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception  
+Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception
 
 ```php
 function splitBy($string, $separator = ' ', $limit = null)
@@ -843,7 +851,7 @@ hasKey($key)                        | Checks that argument supports array index 
 hasKeys($key1, ..., $keyN)          | Checks that argument supports array index access and has given keys    | AND
 hasMethod($method)                  | Checks that argument is an object and has given method                 | AND
 hasMethods($method1, ..., $methodN) | Checks that argument is an object and has given methods                | AND
- 
+
 
 ```php
 function setUsername($username)
@@ -856,7 +864,7 @@ function setState($state)
 {
     expects(values('running', 'idle', 'stopped'), $state);
     // ...
-}    
+}
 ```
 
 Duck-typing example:

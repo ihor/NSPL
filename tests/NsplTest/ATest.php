@@ -27,6 +27,7 @@ use function \nspl\a\takeWhile;
 use function \nspl\a\first;
 use function \nspl\a\second;
 use function \nspl\a\drop;
+use function \nspl\a\dropKeys;
 use function \nspl\a\dropWhile;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
@@ -57,6 +58,7 @@ use const \nspl\a\takeWhile;
 use const \nspl\a\first;
 use const \nspl\a\second;
 use const \nspl\a\drop;
+use const \nspl\a\dropKeys;
 use const \nspl\a\dropWhile;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
@@ -501,6 +503,16 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\drop', drop);
     }
 
+    public function testDropKeys()
+    {
+        $this->assertEquals(array('hello' => 1, 'world' => 2), dropKeys(array('hello' => 1, 'world' => 2, 'foo' => 3, 'bar' => 4), ['foo', 'bar']));
+        $this->assertEquals(array('hello' => 1), dropKeys(array('hello' => 1, 'foo' => 3, 'bar' => 4), ['foo', 'bar', 'world']));
+        $this->assertEquals(array(), dropKeys(array(), ['hello', 'world']));
+
+        $this->assertEquals(array('hello' => 1, 'world' => 2), call_user_func(dropKeys, array('hello' => 1, 'world' => 2, 'foo' => 3, 'bar' => 4), ['foo', 'bar']));
+        $this->assertEquals('\nspl\a\dropKeys', dropKeys);
+    }
+
     public function testDropWhile()
     {
         $this->assertEquals(['a', 'b', 'c', 4, 5, 6], dropWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]));
@@ -577,7 +589,7 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(call_user_func(isList, [10, 11, 13]));
         $this->assertEquals('\nspl\a\isList', isList);
     }
-    
+
     //region deprecated
     public function testTraversableToArray()
     {

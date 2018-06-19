@@ -862,6 +862,19 @@ function isList($var)
 }
 const isList = '\nspl\a\isList';
 
+/**
+ * Alias for in_array
+ *
+ * @param mixed $item
+ * @param array $array
+ * @return mixed
+ */
+function in($item, array $array)
+{
+    return in_array($item, $array);
+}
+const in = 'in_array';
+
 //region deprecated
 /**
  * @deprecated

@@ -139,6 +139,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
     * [keys](#keyssequence)
+    * [in](#initem-array-array)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
@@ -625,6 +626,12 @@ assert(-1 === value($data, 'd', -1));
 Returns list of the sequence keys
 ```php
 assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
+```
+##### in($item, array $array)
+
+Returns array value by key if it exists otherwise returns the default value
+```php
+assert(true === in(1, [1, 2, 3]);
 ```
 
 ##### isList($var)

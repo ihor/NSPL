@@ -32,6 +32,7 @@ use function \nspl\a\dropWhile;
 use function \nspl\a\last;
 use function \nspl\a\reorder;
 use function \nspl\a\isList;
+use function \nspl\a\in;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -63,6 +64,7 @@ use const \nspl\a\dropWhile;
 use const \nspl\a\last;
 use const \nspl\a\reorder;
 use const \nspl\a\isList;
+use const \nspl\a\in;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
@@ -588,6 +590,15 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(call_user_func(isList, [10, 11, 13]));
         $this->assertEquals('\nspl\a\isList', isList);
+    }
+
+    public function testIn()
+    {
+        $this->assertTrue(in(1, [1, 2, 3]));
+        $this->assertFalse(in(1, [2, 3]));
+
+        $this->assertTrue(call_user_func(in, 1, [1, 2, 3]));
+        $this->assertEquals('in_array', in);
     }
 
     //region deprecated

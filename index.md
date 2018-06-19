@@ -125,6 +125,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [first](#firstsequence)
     * [second](#secondsequence)
     * [drop](#dropsequence-n)
+    * [dropKeys](#dropkeyssequence-array-keys)
     * [dropWhile](#dropwhilepredicate-sequence)
     * [last](#lastsequence)
     * [partition](#partitionpredicate-sequence)
@@ -138,6 +139,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
     * [keys](#keyssequence)
+    * [in](#initem-array-array)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
@@ -503,6 +505,13 @@ Drops first N sequence items
 assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
 ```
 
+##### dropKeys($sequence, array $keys)
+
+Returns array containing all keys except the given ones
+```php
+assert(array('hello' => 1, 'world' => 2) === dropKeys(array('hello' => 1, 'world' => 2, 'foo' => 3), ['foo']));
+```
+
 ##### dropWhile($predicate, $sequence)
 
 Drops the longest sequence prefix of all items which satisfy the predicate
@@ -617,6 +626,12 @@ assert(-1 === value($data, 'd', -1));
 Returns list of the sequence keys
 ```php
 assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
+```
+##### in($item, array $array)
+
+Returns array value by key if it exists otherwise returns the default value
+```php
+assert(true === in(1, [1, 2, 3]);
 ```
 
 ##### isList($var)

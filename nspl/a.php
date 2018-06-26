@@ -411,7 +411,7 @@ const second = '\nspl\a\second';
  * Returns the last sequence item
  *
  * @param array|\Traversable $sequence
- * @return array
+ * @return mixed
  */
 function last($sequence)
 {

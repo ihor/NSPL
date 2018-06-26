@@ -14,6 +14,7 @@ use function \nspl\f\pipe;
 use function \nspl\f\I;
 use function \nspl\f\curried;
 use function \nspl\f\uncurried;
+use function \nspl\f\throttled;
 
 use const \nspl\f\apply;
 use const \nspl\f\flipped;
@@ -26,6 +27,7 @@ use const \nspl\f\memoized;
 use const \nspl\f\pipe;
 use const \nspl\f\curried;
 use const \nspl\f\uncurried;
+use const \nspl\f\throttled;
 
 //region deprecated
 use function \nspl\f\map;
@@ -261,6 +263,8 @@ class FTest extends \PHPUnit_Framework_TestCase
         $f2 = $f1('b');
         $f3 = $f2('c');
         $this->assertEquals('abcd', $f3('d'));
+
+        $this->assertEquals('\nspl\f\curried', curried);
     }
 
     public function testUncurried()
@@ -269,6 +273,28 @@ class FTest extends \PHPUnit_Framework_TestCase
         $strReplace = uncurried($curriedStrReplace);
 
         $this->assertEquals('Hello world!', $strReplace('_', ' ', 'Hello_world!'));
+
+        $this->assertEquals('\nspl\f\uncurried', uncurried);
+    }
+
+    public function testThrottled()
+    {
+        $counter = 0;
+
+        $count = function() use (&$counter) {
+            ++$counter;
+        };
+
+        $throttled = throttled($count, 10);
+
+        $startedAt = microtime(true);
+        do {
+            $throttled();
+        } while((microtime(true) - $startedAt) * 1000 < 100); // 100ms
+
+        $this->assertEquals(10, $counter);
+
+        $this->assertEquals('\nspl\f\throttled', throttled);
     }
 
     //region deprecated

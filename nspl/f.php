@@ -238,6 +238,27 @@ function memoized(callable $function)
 }
 const memoized = '\nspl\f\memoized';
 
+/**
+ * Returns throttled version of the passed function, that, when invoked repeatedly, will only
+ * actually call the original function at most once per every wait milliseconds.
+ *
+ * @param callable $function
+ * @param int $wait
+ * @return callable
+ */
+function throttled(callable $function, $wait)
+{
+    return function () use ($function, $wait) {
+        static $invokedAt = 0;
+        $now = microtime(true);
+        if ($now - $invokedAt >= $wait / 1000) {
+            $invokedAt = $now;
+            $function();
+        }
+    };
+}
+const throttled = '\nspl\f\throttled';
+
 //region deprecated
 /**
  * @deprecated

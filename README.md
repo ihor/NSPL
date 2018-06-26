@@ -102,6 +102,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [curried](#curriedfunction-withoptionalargs--false)
     * [uncurried](#uncurriedfunction)
     * [memoized](#memoizedfunction)
+    * [throttled](#throttledfunction-wait))
     * [Callbacks](#callbacks)
 * [nspl\op](#nsplop)
     * [Callbacks](#callbacks-1)
@@ -286,6 +287,28 @@ which outputs
 Performing heavy calculations with 'Hello world!'
 Hello world!
 Hello world!
+```
+
+##### throttled($function, $wait)
+
+Returns throttled version of the passed function, that, when invoked repeatedly, will only actually call the original function at most once per every wait milliseconds.
+```php
+$f = function() {
+    echo "Invoked\n";
+};
+
+$throttled = throttled($f, 10);
+
+$startedAt = microtime(true);
+do {
+    $throttled();
+} while((microtime(true) - $startedAt) * 1000 < 30); // 30ms
+```
+which outputs
+```
+Invoked
+Invoked
+Invoked
 ```
 
 ##### Callbacks

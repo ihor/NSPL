@@ -249,11 +249,12 @@ const memoized = '\nspl\f\memoized';
 function throttled(callable $function, $wait)
 {
     return function () use ($function, $wait) {
+        $args = func_get_args();
         static $invokedAt = 0;
         $now = microtime(true);
         if ($now - $invokedAt >= $wait / 1000) {
             $invokedAt = $now;
-            $function();
+            call_user_func_array($function, $args);
         }
     };
 }

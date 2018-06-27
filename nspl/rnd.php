@@ -2,8 +2,21 @@
 
 namespace nspl\rnd;
 
-use \nspl\a;
 use \nspl\args;
+
+const ALPHA_NUM = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+/**
+ * Returns random string of the given length
+ *
+ * @param $length
+ * @param string $source Alpha-numeric by default
+ * @return bool|string
+ */
+function randomString($length, $source = ALPHA_NUM)
+{
+    return substr(str_shuffle(str_repeat($source, ceil($length / strlen($source)) )), 0, $length);
+}
 
 /**
  * Returns a k length list of unique items chosen from the population sequence

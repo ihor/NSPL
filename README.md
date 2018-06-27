@@ -155,6 +155,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [DefaultArray](#defaultarray)
     * [Set](#set)
 * [nspl\rnd](#nsplrnd)
+    * [randomString](#length)
     * [choice](#choicesequence)
     * [weightedChoice](#weightedchoiceweightpairs)
     * [sample](#samplepopulation-length-preservekeys--false)
@@ -1023,7 +1024,9 @@ Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/mast
 
 ## nspl\rnd
 
-Helps to pick random items from sequences of data
+##### randomString($length)
+
+Returns random alpha-numeric string of the given length
 
 ##### choice($sequence)
 

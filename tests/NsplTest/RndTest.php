@@ -5,12 +5,23 @@ namespace NsplTest;
 use \nspl\a;
 
 use function \nspl\a\isList;
+use function \nspl\rnd\randomString;
 use function \nspl\rnd\sample;
 use function \nspl\rnd\choice;
 use function \nspl\rnd\weightedChoice;
 
 class RndTest extends \PHPUnit_Framework_TestCase
 {
+    public function testRandomString()
+    {
+        for ($length = 1; $length <= 128; ++$length) {
+            for ($j = 0; $j < 8; ++$j) {
+                $string = randomString($length);
+                $this->assertEquals($length, strlen($string));
+            }
+        }
+    }
+
     public function testSample()
     {
         $list = ['a', 'b', 'c', 'd', 'e'];

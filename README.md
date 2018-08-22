@@ -141,9 +141,9 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
     * [keys](#keyssequence)
-    * [in](#initem-collection)
-    * [diff](#diffcollction1-collection2)
-    * [intersect](#diffcollction1-collection2)
+    * [in](#initem-sequence)
+    * [diff](#diffcollction1-sequence2)
+    * [intersect](#diffcollction1-sequence2)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
@@ -655,21 +655,21 @@ Returns list of the sequence keys
 assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
 ```
 
-##### in($item, $collection)
+##### in($item, $sequence)
 
 Checks if the item is preset in array or traversable object
 ```php
 assert(true === in(1, [1, 2, 3]);
 ```
 
-##### diff($collection1, $collection2)
+##### diff($sequence1, $sequence2)
 
 Computes the difference of arrays or traversable objects
 ```php
 assert([1] === diff([1, 2, 3], new ArrayObject([2, 3, 4]));
 ```
 
-##### intersect($collection1, $collection2)
+##### intersect($sequence1, $sequence2)
 
 Computes the intersection of arrays or traversable objects
 ```php

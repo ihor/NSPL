@@ -866,22 +866,22 @@ const isList = '\nspl\a\isList';
  * Checks if the item is preset in array or traversable object
  *
  * @param mixed $item
- * @param array|\Traversable $collection
+ * @param array|\Traversable $sequence
  * @return mixed
  */
-function in($item, $collection)
+function in($item, $sequence)
 {
-    if (is_array($collection)) {
-        return in_array($item, $collection);
+    if (is_array($sequence)) {
+        return in_array($item, $sequence);
     }
 
-    if (method_exists($collection, 'toArray')) {
-        return in_array($item, $collection->toArray());
+    if (method_exists($sequence, 'toArray')) {
+        return in_array($item, $sequence->toArray());
     }
 
-    args\expects(args\traversable, $collection);
-    foreach ($collection as $collectionItem) {
-        if ($collectionItem === $item) {
+    args\expects(args\traversable, $sequence);
+    foreach ($sequence as $sequenceItem) {
+        if ($sequenceItem === $item) {
             return true;
         }
     }
@@ -893,30 +893,30 @@ const in = '\nspl\a\in';
 /**
  * Computes the difference of arrays or traversable objects
  *
- * @param array|\Traversable $collection1
- * @param array|\Traversable $collection2
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
  * @return array
  */
-function diff($collection1, $collection2)
+function diff($sequence1, $sequence2)
 {
-    if (is_array($collection1)) {
-        $toDiff1 = $collection1;
+    if (is_array($sequence1)) {
+        $toDiff1 = $sequence1;
     }
-    else if (method_exists($collection1, 'toArray')) {
-        $toDiff1 = $collection1->toArray();
+    else if (method_exists($sequence1, 'toArray')) {
+        $toDiff1 = $sequence1->toArray();
     }
     else {
-        $toDiff1 = iterator_to_array($collection1);
+        $toDiff1 = iterator_to_array($sequence1);
     }
 
-    if (is_array($collection2)) {
-        $toDiff2 = $collection2;
+    if (is_array($sequence2)) {
+        $toDiff2 = $sequence2;
     }
-    else if (method_exists($collection2, 'toArray')) {
-        $toDiff2 = $collection2->toArray();
+    else if (method_exists($sequence2, 'toArray')) {
+        $toDiff2 = $sequence2->toArray();
     }
     else {
-        $toDiff2 = iterator_to_array($collection2);
+        $toDiff2 = iterator_to_array($sequence2);
     }
 
     return array_diff($toDiff1, $toDiff2);
@@ -926,30 +926,30 @@ const diff = '\nspl\a\diff';
 /**
  * Computes the intersection of arrays or traversable objects
  *
- * @param array|\Traversable $collection1
- * @param array|\Traversable $collection2
+ * @param array|\Traversable $sequence1
+ * @param array|\Traversable $sequence2
  * @return array
  */
-function intersect($collection1, $collection2)
+function intersect($sequence1, $sequence2)
 {
-    if (is_array($collection1)) {
-        $toDiff1 = $collection1;
+    if (is_array($sequence1)) {
+        $toDiff1 = $sequence1;
     }
-    else if (method_exists($collection1, 'toArray')) {
-        $toDiff1 = $collection1->toArray();
+    else if (method_exists($sequence1, 'toArray')) {
+        $toDiff1 = $sequence1->toArray();
     }
     else {
-        $toDiff1 = iterator_to_array($collection1);
+        $toDiff1 = iterator_to_array($sequence1);
     }
 
-    if (is_array($collection2)) {
-        $toDiff2 = $collection2;
+    if (is_array($sequence2)) {
+        $toDiff2 = $sequence2;
     }
-    else if (method_exists($collection2, 'toArray')) {
-        $toDiff2 = $collection2->toArray();
+    else if (method_exists($sequence2, 'toArray')) {
+        $toDiff2 = $sequence2->toArray();
     }
     else {
-        $toDiff2 = iterator_to_array($collection2);
+        $toDiff2 = iterator_to_array($sequence2);
     }
 
     return array_intersect($toDiff1, $toDiff2);

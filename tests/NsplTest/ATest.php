@@ -33,6 +33,8 @@ use function \nspl\a\last;
 use function \nspl\a\reorder;
 use function \nspl\a\isList;
 use function \nspl\a\in;
+use function \nspl\a\diff;
+use function \nspl\a\intersect;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -65,6 +67,8 @@ use const \nspl\a\last;
 use const \nspl\a\reorder;
 use const \nspl\a\isList;
 use const \nspl\a\in;
+use const \nspl\a\diff;
+use const \nspl\a\intersect;
 
 use function nspl\ds\arrayobject;
 use function \nspl\f\rpartial;
@@ -603,6 +607,44 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(call_user_func(in, 1, [1, 2, 3]));
         $this->assertEquals('\nspl\a\in', in);
+    }
+
+    public function testDiff()
+    {
+        $array1 = [1, 2, 3];
+        $array2 = [2, 3, 4];
+        $object1 = arrayobject(1, 2, 3);
+        $object2 = arrayobject(2, 3, 4);
+
+        $this->assertEquals([1], diff($array1, $array2), '', 0, 10, true);
+        $this->assertEquals([1], diff($array1, $object2), '', 0, 10, true);
+        $this->assertEquals([1], diff($object1, $array2), '', 0, 10, true);
+        $this->assertEquals([1], diff($object1, $object2), '', 0, 10, true);
+
+        $this->assertEquals([4], call_user_func(diff, $array2, $array1), '', 0, 10, true);
+        $this->assertEquals([4], call_user_func(diff, $array2, $object1), '', 0, 10, true);
+        $this->assertEquals([4], call_user_func(diff, $object2, $array1), '', 0, 10, true);
+        $this->assertEquals([4], call_user_func(diff, $object2, $object1), '', 0, 10, true);
+        $this->assertEquals('\nspl\a\diff', diff);
+    }
+
+    public function testIntersect()
+    {
+        $array1 = [1, 2, 3];
+        $array2 = [2, 3, 4];
+        $object1 = arrayobject(1, 2, 3);
+        $object2 = arrayobject(2, 3, 4);
+
+        $this->assertEquals([2, 3], intersect($array1, $array2), '', 0, 10, true);
+        $this->assertEquals([2, 3], intersect($array1, $object2), '', 0, 10, true);
+        $this->assertEquals([2, 3], intersect($object1, $array2), '', 0, 10, true);
+        $this->assertEquals([2, 3], intersect($object1, $object2), '', 0, 10, true);
+
+        $this->assertEquals([2, 3], call_user_func(intersect, $array2, $array1), '', 0, 10, true);
+        $this->assertEquals([2, 3], call_user_func(intersect, $array2, $object1), '', 0, 10, true);
+        $this->assertEquals([2, 3], call_user_func(intersect, $object2, $array1), '', 0, 10, true);
+        $this->assertEquals([2, 3], call_user_func(intersect, $object2, $object1), '', 0, 10, true);
+        $this->assertEquals('\nspl\a\intersect', intersect);
     }
 
     //region deprecated

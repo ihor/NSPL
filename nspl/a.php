@@ -866,18 +866,22 @@ const isList = '\nspl\a\isList';
  * Checks if the item is preset in array or traversable object
  *
  * @param mixed $item
- * @param array|\Traversable $array
+ * @param array|\Traversable $collection
  * @return mixed
  */
-function in($item, $array)
+function in($item, $collection)
 {
-    if (is_array($array)) {
-        return in_array($item, $array);
+    if (is_array($collection)) {
+        return in_array($item, $collection);
     }
 
-    args\expects(args\traversable, $array);
-    foreach ($array as $arrayItem) {
-        if ($arrayItem === $item) {
+    if (method_exists($collection, 'toArray')) {
+        return in_array($item, $collection->toArray());
+    }
+
+    args\expects(args\traversable, $collection);
+    foreach ($collection as $collectionItem) {
+        if ($collectionItem === $item) {
             return true;
         }
     }
@@ -885,6 +889,72 @@ function in($item, $array)
     return false;
 }
 const in = '\nspl\a\in';
+
+/**
+ * Computes the difference of arrays or traversable objects
+ *
+ * @param array|\Traversable $collection1
+ * @param array|\Traversable $collection2
+ * @return array
+ */
+function diff($collection1, $collection2)
+{
+    if (is_array($collection1)) {
+        $toDiff1 = $collection1;
+    }
+    else if (method_exists($collection1, 'toArray')) {
+        $toDiff1 = $collection1->toArray();
+    }
+    else {
+        $toDiff1 = iterator_to_array($collection1);
+    }
+
+    if (is_array($collection2)) {
+        $toDiff2 = $collection2;
+    }
+    else if (method_exists($collection2, 'toArray')) {
+        $toDiff2 = $collection2->toArray();
+    }
+    else {
+        $toDiff2 = iterator_to_array($collection2);
+    }
+
+    return array_diff($toDiff1, $toDiff2);
+}
+const diff = '\nspl\a\diff';
+
+/**
+ * Computes the intersection of arrays or traversable objects
+ *
+ * @param array|\Traversable $collection1
+ * @param array|\Traversable $collection2
+ * @return array
+ */
+function intersect($collection1, $collection2)
+{
+    if (is_array($collection1)) {
+        $toDiff1 = $collection1;
+    }
+    else if (method_exists($collection1, 'toArray')) {
+        $toDiff1 = $collection1->toArray();
+    }
+    else {
+        $toDiff1 = iterator_to_array($collection1);
+    }
+
+    if (is_array($collection2)) {
+        $toDiff2 = $collection2;
+    }
+    else if (method_exists($collection2, 'toArray')) {
+        $toDiff2 = $collection2->toArray();
+    }
+    else {
+        $toDiff2 = iterator_to_array($collection2);
+    }
+
+    return array_intersect($toDiff1, $toDiff2);
+}
+const intersect = '\nspl\a\intersect';
 
 //region deprecated
 /**

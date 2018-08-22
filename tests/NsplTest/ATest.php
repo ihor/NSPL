@@ -66,6 +66,7 @@ use const \nspl\a\reorder;
 use const \nspl\a\isList;
 use const \nspl\a\in;
 
+use function nspl\ds\arrayobject;
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
 
@@ -597,8 +598,11 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in(1, [1, 2, 3]));
         $this->assertFalse(in(1, [2, 3]));
 
+        $this->assertTrue(in(1, arrayobject(1, 2, 3)));
+        $this->assertFalse(in(1, arrayobject(2, 3)));
+
         $this->assertTrue(call_user_func(in, 1, [1, 2, 3]));
-        $this->assertEquals('in_array', in);
+        $this->assertEquals('\nspl\a\in', in);
     }
 
     //region deprecated

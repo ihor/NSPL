@@ -863,17 +863,28 @@ function isList($var)
 const isList = '\nspl\a\isList';
 
 /**
- * Alias for in_array
+ * Checks if the item is preset in array or traversable object
  *
  * @param mixed $item
- * @param array $array
+ * @param array|\Traversable $array
  * @return mixed
  */
-function in($item, array $array)
+function in($item, $array)
 {
-    return in_array($item, $array);
+    if (is_array($array)) {
+        return in_array($item, $array);
+    }
+
+    args\expects(args\traversable, $array);
+    foreach ($array as $arrayItem) {
+        if ($arrayItem === $item) {
+            return true;
+        }
+    }
+
+    return false;
 }
-const in = 'in_array';
+const in = '\nspl\a\in';
 
 //region deprecated
 /**

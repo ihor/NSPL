@@ -65,7 +65,8 @@ or simply execute the following in the command line:
 ```
 composer require ihor/nspl
 ```
-For the latest changes require version ```1.3.*-dev```
+
+For the latest version which contains way more functionality require version ```1.3.*-dev```
 
 #### Manually
 Checkout [the code](https://github.com/ihor/Nspl) and include ```autoload.php```:
@@ -653,7 +654,7 @@ assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
 ```
 ##### in($item, array $array)
 
-Returns array value by key if it exists otherwise returns the default value
+Checks if the item is preset in array or traversable object
 ```php
 assert(true === in(1, [1, 2, 3]);
 ```

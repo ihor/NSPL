@@ -36,12 +36,14 @@ use const \nspl\op\str;
 use const \nspl\op\bool;
 use const \nspl\op\object;
 use const \nspl\op\array_;
+use const \nspl\op\instanceOf_;
 
 use function \nspl\op\itemGetter;
 use function \nspl\op\propertyGetter;
 use function \nspl\op\methodCaller;
-use function \nspl\a\map;
 use function nspl\op\instanceCreator;
+use function nspl\op\instanceOf_;
+use function \nspl\a\map;
 use function nspl\f\partial;
 
 class OpTest extends \PHPUnit_Framework_TestCase
@@ -338,6 +340,21 @@ class OpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['John', 'Jack', 'Sarah'], map(methodCaller('getName'), $users));
         $this->assertEquals([18, 20, 19], map(methodCaller('getAge'), $users));
         $this->assertEquals([21, 23, 22], map(methodCaller('getAgeIn', [3]), $users));
+    }
+
+    public function testInstanceOf()
+    {
+        $object = new \StdClass();
+        $user = new User('John');
+
+        $this->assertTrue(instanceOf_($user, User::class));
+        $this->assertTrue(instanceOf_($object, \StdClass::class));
+        $this->assertFalse(instanceOf_($user, \StdClass::class));
+        $this->assertFalse(instanceOf_($user, 'random string'));
+        $this->assertFalse(instanceOf_($object, User::class));
+
+        $this->assertTrue(call_user_func(instanceOf_, $user, User::class));
+        $this->assertFalse(call_user_func(instanceOf_, $user, \StdClass::class));
     }
 
 }

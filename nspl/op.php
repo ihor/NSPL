@@ -89,6 +89,10 @@ function concat($a, $b) { return $a . $b; };
 const concat = '\nspl\op\concat';
 
 
+function instanceOf_($a, $b) { return $a instanceof $b; };
+const instanceOf_ = '\nspl\op\instanceOf_';
+
+
 function int($a) { return (int) $a; };
 const int = '\nspl\op\int';
 

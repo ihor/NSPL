@@ -10,6 +10,7 @@
 * Added \nspl\a\intersect which works both on arrays and traversable objects
 * Added \nspl\rnd\randomString
 * Added \nspl\f\throttled higher order function
+* Added \nspl\op\instanceOf_ function
 
 ## 1.2 / 2017-01-05
 

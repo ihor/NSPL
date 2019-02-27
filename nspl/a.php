@@ -7,8 +7,8 @@ use nspl\op;
 use nspl\args;
 
 /**
- * Returns true if all $sequence items satisfy the predicate are true (or if the $sequence is empty).
- * If predicate was not passed return true if all $sequence items are true.
+ * Returns true if all of the $sequence items satisfy the predicate (or if the $sequence is empty).
+ * If the predicate was not passed returns true if all of the $sequence items are true.
  *
  * @param array|\Traversable $sequence
  * @param callable $predicate
@@ -29,8 +29,8 @@ function all($sequence, callable $predicate = null)
 const all = '\nspl\a\all';
 
 /**
- * Returns true if any $sequence item satisfies the predicate. If predicate was not passed returns true if
- * any $sequence item is true. If the $sequence is empty, returns false.
+ * Returns true if any of the $sequence items satisfy the predicate.
+ * If the predicate was not passed returns true if any of the $sequence items are true.
  *
  * @param array|\Traversable $sequence
  * @param callable $predicate
@@ -181,8 +181,8 @@ function zipWith(callable $function, $sequence1, $sequence2)
 const zipWith = '\nspl\a\zipWith';
 
 /**
- * Applies function of two arguments cumulatively to the sequence items, from left to right to reduce the sequence
- * to a single value.
+ * Applies function of two arguments cumulatively to the sequence items, from left to right
+ * to reduce the sequence to a single value.
  *
  * @param callable $function
  * @param array|\Traversable $sequence
@@ -266,7 +266,7 @@ function filterNot(callable $predicate, $sequence)
 const filterNot = '\nspl\a\filterNot';
 
 /**
- * Returns first N sequence items with given step
+ * Returns the first N sequence items with the given step
  *
  * @param array|\Traversable $sequence
  * @param int $N
@@ -310,7 +310,7 @@ function take($sequence, $N, $step = 1)
 const take = '\nspl\a\take';
 
 /**
- * Returns array containing only given sequence keys
+ * Returns array containing only the given keys
  *
  * @param array|\ArrayAccess $sequence
  * @param array $keys
@@ -360,7 +360,7 @@ const takeWhile = '\nspl\a\takeWhile';
  * Returns the first sequence item
  *
  * @param array|\Traversable $sequence
- * @return array
+ * @return mixed
  */
 function first($sequence)
 {
@@ -384,7 +384,7 @@ const first = '\nspl\a\first';
  * Returns the second sequence item
  *
  * @param array|\Traversable $sequence
- * @return array
+ * @return mixed
  */
 function second($sequence)
 {
@@ -431,7 +431,7 @@ function last($sequence)
 const last = '\nspl\a\last';
 
 /**
- * Drops first N sequence items
+ * Drops the first N sequence items
  *
  * @param array|\Traversable $sequence
  * @param int $N
@@ -732,9 +732,10 @@ function flatten($sequence, $depth = null)
 const flatten = '\nspl\a\flatten';
 
 /**
- * Returns list of (key, value) pairs
+ * Returns a list of (key, value) pairs
+ *
  * @param array|\Traversable $sequence
- * @param bool $valueKey If true then convert array to (value, key) pairs
+ * @param bool $valueKey If true then returns (value, key) pairs
  * @return array
  */
 function pairs($sequence, $valueKey = false)
@@ -756,7 +757,7 @@ function pairs($sequence, $valueKey = false)
 const pairs = '\nspl\a\pairs';
 
 /**
- * Returns arrays containing $sequence1 items and $sequence2 items
+ * Returns array containing $sequence1 items and $sequence2 items
  *
  * @param array|\Traversable $sequence1
  * @param array|\Traversable $sequence2
@@ -835,6 +836,7 @@ const value = '\nspl\a\value';
 
 /**
  * Returns list of the sequence keys
+ *
  * @param array|\Traversable $sequence
  * @return array
  */
@@ -855,6 +857,7 @@ const keys = '\nspl\a\keys';
 
 /**
  * Returns list of the sequence values
+ *
  * @param array|\Traversable $sequence
  * @return array
  */
@@ -886,11 +889,11 @@ function isList($var)
 const isList = '\nspl\a\isList';
 
 /**
- * Checks if the item is preset in array or traversable object
+ * Checks if the item is present in array or traversable object
  *
  * @param mixed $item
  * @param array|\Traversable $sequence
- * @return mixed
+ * @return bool
  */
 function in($item, $sequence)
 {

@@ -420,7 +420,7 @@ Provides missing array functions which also can be applied to traversable sequen
 
 ##### all($sequence, $predicate)
 
-Returns true if all ```$sequence``` items satisfy the predicate are true (or if the ```$sequence``` is empty). If predicate was not passed return true if all ```$sequence``` items are true.
+Returns true if all of the ````$sequence``` items satisfy the predicate (or if the ```$sequence``` is empty). If the predicate was not passed returns true if all of the ```$sequence``` items are true.
 
 ```php
 assert(true === all([true, true, true]));
@@ -428,7 +428,7 @@ assert(true === all([true, true, true]));
 
 ##### any($sequence, $predicate)
 
-Returns true if any ```$sequence``` items satisfies the predicate. If predicate was not passed returns true if any ```$sequence``` item is true. If the ```$sequence``` is empty, returns false.
+Returns true if any of the ```$sequence``` items satisfy the predicate. If the predicate was not passed returns true if any of the ```$sequence``` items are true.
 
 ```php
 assert(true === any([true, false, false]));
@@ -493,14 +493,14 @@ assert(['a', 'b', 'c'] === filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 
 ##### take($sequence, $N, $step = 1)
 
-Returns first N sequence items with given step
+Returns the first N sequence items with the given step
 ```php
 assert([1, 3, 5] === take([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 2));
 ```
 
 ##### takeKeys($sequence, array $keys)
 
-Returns array containing only given sequence keys
+Returns sequence containing only the given keys
 ```php
 assert(array('hello' => 1, 'world' => 2) === takeKeys(array('hello' => 1, 'world' => 2, 'foo' => 3), ['hello', 'world']));
 ```
@@ -528,7 +528,7 @@ assert(2 === second([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 
 ##### drop($sequence, $N)
 
-Drops first N sequence items
+Drops the first N sequence items
 ```php
 assert([7, 8, 9] === drop([1, 2, 3, 4, 5, 6, 7, 8, 9], 6));
 ```
@@ -621,14 +621,14 @@ assert([1, 2, [3], [4, 5, 6], 7, 8, 9] === flatten([[1, [2, [3]]], [[[4, 5, 6]]]
 
 ##### pairs($sequence, $valueKey = false)
 
-Returns list of (key, value) pairs. If ```$valueKey``` is true then convert array to (value, key) pairs.
+Returns a list of (key, value) pairs. If ```$valueKey``` is true then returns (value, key) pairs.
 ```php
 assert([['a', 'hello'], ['b', 'world'], ['c', 42]] === pairs(array('a' => 'hello', 'b' => 'world', 'c' => 42)));
 ```
 
 ##### merge($sequence1, $sequence2)
 
-Returns arrays containing ```$sequence1``` items and ```$sequence2``` items
+Returns array containing ```$sequence1``` items and ```$sequence2``` items
 ```php
 assert([1, 2, 3, 4, 5, 6] === merge([1, 2, 3], [4, 5, 6]));
 ```
@@ -665,7 +665,7 @@ assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
 
 ##### in($item, $sequence)
 
-Checks if the item is preset in array or traversable object
+Checks if the item is present in array or traversable object
 ```php
 assert(true === in(1, [1, 2, 3]);
 ```

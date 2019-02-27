@@ -15,6 +15,7 @@ use function \nspl\a\partition;
 use function \nspl\a\span;
 use function \nspl\a\value;
 use function \nspl\a\keys;
+use function \nspl\a\values;
 use function \nspl\a\merge;
 use function \nspl\a\flatten;
 use function \nspl\a\pairs;
@@ -49,6 +50,7 @@ use const \nspl\a\partition;
 use const \nspl\a\span;
 use const \nspl\a\value;
 use const \nspl\a\keys;
+use const \nspl\a\values;
 use const \nspl\a\merge;
 use const \nspl\a\flatten;
 use const \nspl\a\pairs;
@@ -234,9 +236,19 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testKeys()
     {
         $this->assertEquals(['a', 'b', 'c'], keys(array('a' => 1, 'b' => 2, 'c' => 3)));
+        $this->assertEquals(['a', 'b', 'c'], keys(new \ArrayIterator(array('a' => 1, 'b' => 2, 'c' => 3))));
 
         $this->assertEquals(['a', 'b', 'c'], call_user_func(keys, array('a' => 1, 'b' => 2, 'c' => 3)));
         $this->assertEquals('\nspl\a\keys', keys);
+    }
+
+    public function testValues()
+    {
+        $this->assertEquals([1, 2, 3], values(array('a' => 1, 'b' => 2, 'c' => 3)));
+        $this->assertEquals([1, 2, 3], values(new \ArrayIterator(array('a' => 1, 'b' => 2, 'c' => 3))));
+
+        $this->assertEquals([1, 2, 3], call_user_func(values, array('a' => 1, 'b' => 2, 'c' => 3)));
+        $this->assertEquals('\nspl\a\values', values);
     }
 
     public function testMerge()

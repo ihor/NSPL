@@ -4,6 +4,7 @@
 
 * Added \nspl\a\lazy which contains lazy versions of function from \nspl\a where it made sense
 * Added \nspl\a\in which works both on arrays and traversable objects
+* Added \nspl\a\values which works both on arrays and traversable objects
 * Added \nspl\a\keys which works both on arrays and traversable objects
 * Added \nspl\a\dropKeys which works both on arrays and traversable objects
 * Added \nspl\a\diff which works both on arrays and traversable objects

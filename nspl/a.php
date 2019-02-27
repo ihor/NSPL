@@ -3,7 +3,6 @@
 namespace nspl\a;
 
 use nspl\f;
-use nspl\ds;
 use nspl\op;
 use nspl\args;
 
@@ -188,7 +187,7 @@ const zipWith = '\nspl\a\zipWith';
  * @param callable $function
  * @param array|\Traversable $sequence
  * @param mixed $initial
- * @return array
+ * @return mixed
  */
 function reduce(callable $function, $sequence, $initial = 0)
 {
@@ -841,6 +840,10 @@ const value = '\nspl\a\value';
  */
 function keys($sequence)
 {
+    if (is_array($sequence)) {
+        return array_keys($sequence);
+    }
+
     $result = array();
     foreach ($sequence as $key => $_) {
         $result[] = $key;
@@ -849,6 +852,26 @@ function keys($sequence)
     return $result;
 }
 const keys = '\nspl\a\keys';
+
+/**
+ * Returns list of the sequence values
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function values($sequence)
+{
+    if (is_array($sequence)) {
+        return array_values($sequence);
+    }
+
+    $result = array();
+    foreach ($sequence as $value) {
+        $result[] = $value;
+    }
+
+    return $result;
+}
+const values = '\nspl\a\values';
 
 /**
  * Returns true if the variable is a list

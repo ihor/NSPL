@@ -140,6 +140,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [merge](#mergesequence1-sequence2)
     * [reorder](#reorderarray-list-from-to)
     * [value](#valuearray-key-default--null)
+    * [values](#valuessequence)
     * [keys](#keyssequence)
     * [in](#initem-sequence)
     * [diff](#diffcollction1-sequence2)
@@ -646,6 +647,13 @@ Returns array value by key if it exists otherwise returns the default value
 $data = array('a' => 1, 'b' => 2, 'c' => 3);
 assert(2 === value($data, 'b', -1));
 assert(-1 === value($data, 'd', -1));
+```
+
+##### values($sequence)
+
+Returns list of the sequence values
+```php
+assert([1, 2, 3] === values(array('a' => 1, 'b' => 2, 'c' => 3)));
 ```
 
 ##### keys($sequence)

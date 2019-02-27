@@ -176,7 +176,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
         }
 
         return f\I(
-            var_export($this->array, true),
+            var_export($array, true),
             f\partial('str_replace', "\n", ''),
             f\partial('str_replace', 'array (  ', 'array('),
             f\partial('str_replace', '  ', ' '),

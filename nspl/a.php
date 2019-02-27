@@ -979,6 +979,36 @@ function intersect($sequence1, $sequence2)
 }
 const intersect = '\nspl\a\intersect';
 
+/**
+ * Computes the cartesian product of two or more arrays or traversable objects
+ *
+ * @param array|\Traversable $sequences
+ * @return array
+ */
+function cartesianProduct($sequences)
+{
+    $count = func_num_args();
+    if ($count > 1) {
+        $sequences = func_get_args();
+    }
+
+    $product = array(array());
+    foreach ($sequences as $key => $values) {
+        $newProduct = array();
+        foreach ($product as $vector) {
+            foreach ($values as $value) {
+                $vector[$key] = $value;
+                $newProduct[] = $vector;
+            }
+        }
+
+        $product = $newProduct;
+    }
+
+    return $product;
+}
+const cartesianProduct = '\nspl\a\cartesianProduct';
+
 //region deprecated
 /**
  * @deprecated

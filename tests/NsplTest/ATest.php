@@ -36,6 +36,7 @@ use function \nspl\a\isList;
 use function \nspl\a\in;
 use function \nspl\a\diff;
 use function \nspl\a\intersect;
+use function \nspl\a\cartesianProduct;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -71,6 +72,7 @@ use const \nspl\a\isList;
 use const \nspl\a\in;
 use const \nspl\a\diff;
 use const \nspl\a\intersect;
+use const \nspl\a\cartesianProduct;
 
 use function nspl\ds\arrayobject;
 use function \nspl\f\rpartial;
@@ -657,6 +659,41 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([2, 3], call_user_func(intersect, $object2, $array1), '', 0, 10, true);
         $this->assertEquals([2, 3], call_user_func(intersect, $object2, $object1), '', 0, 10, true);
         $this->assertEquals('\nspl\a\intersect', intersect);
+    }
+
+    public function testCartesianProduct()
+    {
+        $array1 = [1, 2, 3];
+        $array2 = ['a', 'b'];
+
+        $this->assertEquals([
+            [1, 'a'],
+            [1, 'b'],
+            [2, 'a'],
+            [2, 'b'],
+            [3, 'a'],
+            [3, 'b']
+        ], cartesianProduct($array1, $array2));
+
+        $this->assertEquals([
+            array('hello' => 1, 'world' => 'a'),
+            array('hello' => 1, 'world' => 'b'),
+            array('hello' => 2, 'world' => 'a'),
+            array('hello' => 2, 'world' => 'b'),
+            array('hello' => 3, 'world' => 'a'),
+            array('hello' => 3, 'world' => 'b'),
+        ], cartesianProduct(array('hello' => $array1, 'world' => $array2)));
+
+        $this->assertEquals([
+            [1, 'a'],
+            [1, 'b'],
+            [2, 'a'],
+            [2, 'b'],
+            [3, 'a'],
+            [3, 'b']
+        ], call_user_func(cartesianProduct, $array1, $array2));
+
+        $this->assertEquals('\nspl\a\cartesianProduct', cartesianProduct);
     }
 
     //region deprecated

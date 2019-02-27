@@ -145,6 +145,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [in](#initem-sequence)
     * [diff](#diffcollction1-sequence2)
     * [intersect](#diffcollction1-sequence2)
+    * [cartesianProduct](#cartesianproduct-sequences)
     * [isList](#islistvar)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
@@ -682,6 +683,27 @@ assert([1] === diff([1, 2, 3], new ArrayObject([2, 3, 4]));
 Computes the intersection of arrays or traversable objects
 ```php
 assert([2, 3] === intersect([1, 2, 3], new ArrayObject([2, 3, 4]));
+```
+
+##### cartesianProduct($sequences)
+
+Computes the cartesian product of two or more arrays or traversable objects
+```php
+assert([
+    [1, 'a'],
+    [1, 'b'],
+    [2, 'a'],
+    [2, 'b'],
+], cartesianProduct([1, 2], ['a', 'b']));
+```
+
+```php
+assert([
+    array('hello' => 1, 'world' => 'a'),
+    array('hello' => 1, 'world' => 'b'),
+    array('hello' => 2, 'world' => 'a'),
+    array('hello' => 2, 'world' => 'b'),
+], cartesianProduct(array('hello' => [1, 2], 'world' => ['a', 'b'])));
 ```
 
 ##### isList($var)

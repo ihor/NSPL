@@ -9,6 +9,7 @@
 * Added \nspl\a\dropKeys which works both on arrays and traversable objects
 * Added \nspl\a\diff which works both on arrays and traversable objects
 * Added \nspl\a\intersect which works both on arrays and traversable objects
+* Added \nspl\a\cartesianProduct which works both on arrays and traversable objects
 * Added \nspl\rnd\randomString
 * Added \nspl\f\throttled higher order function
 * Added \nspl\op\instanceOf_ function

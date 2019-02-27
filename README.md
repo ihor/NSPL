@@ -156,7 +156,6 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [Predefined constraints](#predefined-constraints)
     * [Custom constraints](#custom-constraints)
 * [nspl\ds](#nsplds)
-    * [ArrayObject](#arrayobject)
     * [DefaultArray](#defaultarray)
     * [Set](#set)
 * [nspl\rnd](#nsplrnd)
@@ -1004,14 +1003,6 @@ If you need to create a constraint which takes arguments you must create a calla
 ## nspl\ds
 
 Provides non-standard data structures and methods to work with them
-
-##### ArrayObject
-
-Alternative ArrayObject implementation
-
-##### arrayobject()
-
-Returns new ArrayObject
 
 ##### DefaultArray
 

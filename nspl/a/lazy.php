@@ -375,3 +375,14 @@ function keys($sequence)
     }
 }
 const keys = '\nspl\a\lazy\keys';
+
+/**
+ * Creates a lazy chainable sequence
+ *
+ * @param array|\Iterator|\IteratorAggregate $sequence
+ * @return LazyChainableSequence
+ */
+function with($sequence)
+{
+    return new LazyChainableSequence($sequence);
+}

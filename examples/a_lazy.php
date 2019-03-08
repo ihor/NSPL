@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../autoload.php';
 
 use const nspl\a\lazy\{take, map, filter};
+use function nspl\a\lazy\with;
 use function nspl\f\{pipe, partial, rpartial};
 
 // Calls generator function and logs the yielded values
@@ -26,11 +27,11 @@ function naturalNumbers()
 const naturalNumbers = 'naturalNumbers';
 
 // Returns square of a number
-function sqr($n)
+function square($n)
 {
     return $n * $n;
 }
-const sqr = 'sqr';
+const square = 'square';
 
 // Checks if a number is even
 function isEven($n)
@@ -39,12 +40,25 @@ function isEven($n)
 }
 const isEven = 'isEven';
 
+echo "Using f\pipe() function:\n\n";
+
 $result = pipe(
     logged(naturalNumbers)(), // from all natural numbers
     partial(logged(filter), isEven), // filter only even numbers
     rpartial(logged(take), 3), // take only first 3 even numbers
-    partial(logged(map), sqr) // and calculate their squares
+    partial(logged(map), square) // and calculate their squares
 );
+
+foreach ($result as $value) {
+    echo "\nNext value is $value \n\n";
+}
+
+echo "The same solution with chaining:\n\n";
+
+$result = with(logged(naturalNumbers)())
+    ->filter(isEven)
+    ->take(3)
+    ->map(square);
 
 foreach ($result as $value) {
     echo "\nNext value is $value \n\n";

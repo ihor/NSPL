@@ -37,6 +37,7 @@ use function \nspl\a\in;
 use function \nspl\a\diff;
 use function \nspl\a\intersect;
 use function \nspl\a\cartesianProduct;
+use function \nspl\a\with;
 
 use const \nspl\a\all;
 use const \nspl\a\any;
@@ -77,6 +78,7 @@ use const \nspl\a\cartesianProduct;
 use function nspl\ds\arrayobject;
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
+use const \nspl\op\sum;
 
 //region deprecated
 use function \nspl\a\moveElement;
@@ -694,6 +696,30 @@ class ATest extends \PHPUnit_Framework_TestCase
         ], call_user_func(cartesianProduct, $array1, $array2));
 
         $this->assertEquals('\nspl\a\cartesianProduct', cartesianProduct);
+    }
+
+    public function testWith()
+    {
+        $square = function($n) {
+            return $n * $n;
+        };
+
+        $isEven = function($n) {
+            return $n % 2 === 0;
+        };
+
+        $this->assertEquals(20, with(range(1, 5))
+            ->filter($isEven)
+            ->map($square)
+            ->reduce(sum)
+        );
+
+        $this->assertEquals([4, 16, 36],  with(new \ArrayIterator(range(1, 10)))
+            ->filter($isEven)
+            ->take(3)
+            ->map($square)
+            ->toArray()
+        );
     }
 
     //region deprecated

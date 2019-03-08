@@ -1012,6 +1012,19 @@ function cartesianProduct($sequences)
 }
 const cartesianProduct = '\nspl\a\cartesianProduct';
 
+/**
+ * Creates a chainable sequence
+ *
+ * @param array|\Iterator|\IteratorAggregate $sequence
+ * @return ChainableSequence
+ */
+function with($sequence)
+{
+    return is_array($sequence)
+        ? new ChainableArray($sequence)
+        : new ChainableSequence($sequence);
+}
+
 //region deprecated
 /**
  * @deprecated

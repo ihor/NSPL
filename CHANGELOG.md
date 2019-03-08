@@ -3,6 +3,7 @@
 ## 1.3 / not released
 
 * Added \nspl\a\lazy which contains lazy versions of function from \nspl\a where it made sense
+* Added array function chaining with the \nspl\a\with function
 * Added \nspl\a\in which works both on arrays and traversable objects
 * Added \nspl\a\values which works both on arrays and traversable objects
 * Added \nspl\a\keys which works both on arrays and traversable objects

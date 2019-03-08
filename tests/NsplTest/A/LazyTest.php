@@ -16,6 +16,7 @@ use function \nspl\a\lazy\partition;
 use function \nspl\a\lazy\flatten;
 use function \nspl\a\lazy\pairs;
 use function \nspl\a\lazy\keys;
+use function \nspl\a\lazy\with;
 
 use const \nspl\a\lazy\map;
 use const \nspl\a\lazy\flatMap;
@@ -34,6 +35,7 @@ use const \nspl\a\lazy\keys;
 
 use function \nspl\f\rpartial;
 use const \nspl\op\lt;
+use const \nspl\op\sum;
 
 
 class LazyTest extends \PHPUnit_Framework_TestCase
@@ -281,6 +283,37 @@ class LazyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['a', 'b', 'c'], iterator_to_array(call_user_func(keys, array('a' => 1, 'b' => 2, 'c' => 3))));
         $this->assertEquals('\nspl\a\lazy\keys', keys);
+    }
+
+    public function testWith()
+    {
+        $square = function($n) {
+            return $n * $n;
+        };
+
+        $isEven = function($n) {
+            return $n % 2 === 0;
+        };
+
+        $this->assertEquals(20, with((function() {
+            $current = 1;
+            while (true) yield $current++;
+        })())
+            ->take(5)
+            ->filter($isEven)
+            ->map($square)
+            ->reduce(sum)
+        );
+
+        $this->assertEquals([4, 16, 36],  with((function() {
+            $current = 1;
+            while (true) yield $current++;
+        })())
+            ->filter($isEven)
+            ->take(3)
+            ->map($square)
+            ->toArray()
+        );
     }
 
 }

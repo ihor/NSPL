@@ -147,6 +147,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [intersect](#intersectsequence1-sequence2)
     * [cartesianProduct](#cartesianproductsequences)
     * [isList](#islistvar)
+    * [Chaining](#chaining)
     * [Callbacks](#callbacks-2)
 * [nspl\a\lazy](#nsplalazy)
 * [nspl\args](#nsplargs)
@@ -250,19 +251,16 @@ $sum = pipe(
 
 > **Tip**
 >
-> To make your code compact you can use short function aliases. For example:
+> You can use [chaining](#chaining) to get rid of partials in sequence transformations:
 >
 > ```php
-> use function \nspl\f\partial as p;
+> use function \nspl\a\with;
 >
-> $sum = pipe(
->    range(1, 20),
->    p(filter, $isEven),
->    p(map, $square),
->    p(reduce, sum)
-> );
+> $sum = with(range(1, 20))
+>    ->filter($isEven)
+>    ->map($square)
+>    ->reduce(sum);
 > ```
-> Note, while sometimes it can improve readability by removing extra characters it also may confuse your team members
 
 ##### curried($function, $withOptionalArgs = false)
 
@@ -374,6 +372,7 @@ or_      | &#124;&#124;
 xor_     | xor
 not      | !
 concat   | .
+instanceof_   | instanceof
 int      | (int)
 bool     | (bool)
 float    | (float)
@@ -709,6 +708,25 @@ assert([
 
 Returns true if the variable is a list
 
+##### Chaining
+
+It is possible to chain array function calls using the `with` function:
+
+```php
+use function nspl\op\sum;
+
+$square = function($n) { return $n * $n; };
+
+$isEven = function($n) { return $n % 2 === 0; };
+
+$sum = with(range(1, 5))
+  ->filter($isEven)
+  ->map($square)
+  ->reduce(sum);
+
+assert(20 === $sum);
+```
+
 ##### Callbacks
 
 ```nspl\a``` provides all these functions as callbacks in its constants which have the same names as the functions.
@@ -752,11 +770,11 @@ const naturalNumbers = 'naturalNumbers';
 And let's define the operations we want to perform on those numbers:
 ```php
 // Returns square of a number
-function sqr($n)
+function square($n)
 {
     return $n * $n;
 }
-const sqr = 'sqr';
+const square = 'square';
 
 // Checks if a number is even
 function isEven($n)
@@ -777,7 +795,7 @@ $numbers = logged(naturalNumbers)();
 
 $evenNumbers = $filter(isEven, $numbers); // filter only even numbers
 $firstThreeEvenNumbers = $take($evenNumbers, 3); // take only first 3 even numbers
-$result = $map(sqr, $firstThreeEvenNumbers); // and calculate their squares
+$result = $map(square, $firstThreeEvenNumbers); // and calculate their squares
 
 foreach ($result as $value) {
     echo "\nNext value is $value \n\n";
@@ -821,6 +839,14 @@ If we used regular non-lazy versions of these functions we would generate all th
 The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number. So after step 15,  when ```map``` requested the next value ```take``` didn't yield anything and the whole iteration was finished.
 
 Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
+
+It possible to rewrite the code above using [chaining](#chaining):
+```php
+$result = with(naturalNumbers())
+    ->filter(isEven)
+    ->take(3)
+    ->map(square);
+```
 
 > **Tip**
 >

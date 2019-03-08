@@ -61,7 +61,7 @@ Define the following requirement in your composer.json file:
     "ihor/nspl": "~1.2"
 }
 ```
-or simply execute the following in the command line:
+or execute the following in the command line:
 ```
 composer require ihor/nspl
 ```
@@ -169,7 +169,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
 
 ## nspl\f
 
-Provides functions that act on other functions. Helps to write code in functional programming paradigm.
+Provides functions that act on other functions. Helps to write code in the functional programming paradigm.
 
 ##### id($value)
 
@@ -264,9 +264,9 @@ $sum = pipe(
 
 ##### curried($function, $withOptionalArgs = false)
 
-Returns a [curried](https://en.wikipedia.org/wiki/Currying) version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass a number of args as the 2nd argument.
+Returns a [curried](https://en.wikipedia.org/wiki/Currying) version of the function. If you are going to curry a function which reads args with ```func_get_args()``` then pass the number of args as the 2nd argument.
 
-If the second argument is true then curry function with optional args otherwise curry it only with required args. Or you can pass the exact number of args you want to curry.
+If the second argument is true, then curry function with optional args otherwise curry it only with required args. Alternatively, you can pass the exact number of args you want to curry.
 
 ##### uncurried($function)
 
@@ -572,7 +572,7 @@ assert([[1], ['a', 2, 'b', 3, 'c']] === span('is_numeric', [1, 'a', 2, 'b', 3, '
 Returns array which contains indexed sequence items
 
 ```$by``` is an array key or a function
-If ```$keepLast``` is true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
+If ```$keepLast``` is true only the last item with the key will be returned otherwise a list of items which share the same key value will be returned
 ```$transform``` is a function that transforms list item after indexing
 
 ```php
@@ -767,7 +767,7 @@ function naturalNumbers()
 const naturalNumbers = 'naturalNumbers';
 ```
 
-And let's define the operations we want to perform on those numbers:
+Also, let's define the operations we want to perform on those numbers:
 ```php
 // Returns square of a number
 function square($n)
@@ -829,14 +829,14 @@ Next value is 16
 Next value is 36
 ```
 
-If we used regular non-lazy versions of these functions we would generate all the natural numbers, then filtered only even numbers, then took only the first three of them and then calculated their squares. Instead of that you see that functions were called one by one passing the result to the next function until we completed the full cycle:
- 1. We took first natural number – 1. It wasn't even so we skipped it
+If we used regular non-lazy versions of these functions, we would generate all the natural numbers, then filtered only even numbers, then took only the first three of them and then calculated their squares. Instead of that, you see that functions were called one by one passing the result to the next function until we completed the full cycle:
+ 1. We took the first natural number – 1. It wasn't even, so we skipped it
  2. We took the next one – 2, it was even
- 3. And passed the ```filter``` function
+ 3. So it passed the ```filter``` function
  4. It was the first number we took, so it passed through the ```take``` function as well
- 5. And then we calculated its square and printed the result
+ 5. Then we calculated its square and printed the result
 
-The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number. So after step 15,  when ```map``` requested the next value ```take``` didn't yield anything and the whole iteration was finished.
+The same repeated on steps 6-10 and 11-15. On step 14 the ```take``` function took the last third number. So after step 15,  when ```map``` requested the next value ```take``` didn't yield anything, and the whole iteration was finished.
 
 Check this example [here](https://github.com/ihor/Nspl/blob/master/examples/a_lazy.php).
 
@@ -858,11 +858,11 @@ Helps to validate function arguments
 
 ##### expects($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument satisfies the required constraints otherwise throws the corresponding exception
+Checks that argument satisfies the required constraints otherwise throws the corresponding exception.
 
 ```$constraints``` are callable(s) which return(s) true if the argument satisfies the requirements or it also might contain the required class name(s)
-If ```$atPosition``` is null then position is calculated automatically comparing given argument to the actual arguments passed to the function
-```$otherwiseThrow``` defines exception which will be thrown if given argument is invalid, it can be the exception class or exception object
+If ```$atPosition``` is null, then the position is calculated automatically comparing given argument to the actual arguments passed to the function
+```$otherwiseThrow``` defines exception which will be thrown if the given argument is invalid, it can be the exception class or exception object
 
 ```php
 use const \nspl\args\int;
@@ -892,7 +892,7 @@ Call Stack:
 
 ##### expectsAll($constraints, array $args, array $atPositions = [], $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception
+Checks that all specified arguments satisfy the required constraints otherwise throws the corresponding exception.
 
 ```php
 use const \nspl\args\numeric;
@@ -908,7 +908,7 @@ function sum($x, $y)
 
 ##### expectsOptional($constraints, $arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 
-Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception
+Checks that argument is null or satisfies the required constraints otherwise throws the corresponding exception.
 
 ```php
 function splitBy($string, $separator = ' ', $limit = null)
@@ -1021,9 +1021,9 @@ Call Stack:
     0.0123     673984   2. half() /path/to/example.php:25
 ```
 
-If you need to create a constraint which takes arguments you must create a callable object which implements ```\nspl\args\Constraint``` interface. It contains two methods:
+If you need to create a constraint which takes arguments, you must create a callable object which implements ```\nspl\args\Constraint``` interface. It contains two methods:
 - ```__invoke($value)``` - returns true if the value satisfies the constraint
-- ```__toString()``` - returns text which will be used in the exception when value doesn't satisfy the constraint. The text must contain message which goes after "must" in the exception message.
+- ```__toString()``` - returns text which will be used in the exception when the value doesn't satisfy the constraint. The text must contain a message which goes after "must" in the exception message.
 
 
 ## nspl\ds
@@ -1057,7 +1057,7 @@ Returns new DefaultArray
 
 ##### Set
 
-Array-like collection that contains no duplicate elements. It supports basic set operations which take other sets, arrays and traversable objects as arguments
+An array-like collection that contains no duplicate elements. It supports basic set operations which take other sets, arrays and traversable objects as arguments
 
 ```php
 $set = set(1, 2);
@@ -1091,7 +1091,7 @@ Check more ```\nspl\ds``` examples [here](https://github.com/ihor/Nspl/blob/mast
 
 ##### randomString($length)
 
-Returns random alpha-numeric string of the given length
+Returns a random alpha-numeric string of the given length
 
 ##### choice($sequence)
 

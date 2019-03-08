@@ -316,7 +316,7 @@ Invoked
 
 ##### Callbacks
 
-```nspl\f``` provides all these functions as callbacks in its constants which have the same names as the functions.
+```nspl\f``` provides all its functions as callbacks in its constants which have the same names as the functions.
 ```php
 use const \nspl\a\map;
 use const \nspl\a\filter;
@@ -729,7 +729,7 @@ assert(20 === $sum);
 
 ##### Callbacks
 
-```nspl\a``` provides all these functions as callbacks in its constants which have the same names as the functions.
+```nspl\a``` provides all its functions as callbacks in its constants which have the same names as the functions.
 ```php
 use const \nspl\a\first;
 assert([1, 2, 3] === map(first, [[1, 'a'], [2, 'b'], [3, 'c']]));

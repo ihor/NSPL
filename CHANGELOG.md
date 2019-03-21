@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.3 / not released
+## 1.3 / 2019-03-21
 
 * Added \nspl\a\lazy which contains lazy versions of function from \nspl\a where it made sense
 * Added array function chaining with the \nspl\a\with function

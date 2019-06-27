@@ -630,7 +630,7 @@ function sorted($sequence, $reversed = false, callable $key = null, callable $cm
     args\expects([args\bool, args\callable_], $reversed);
 
     if (!$cmp) {
-        $cmp = function ($a, $b) { return $a > $b ? 1 : -1; };
+        $cmp = function ($a, $b) { return $a <=> $b; };
     }
 
     if (!is_bool($reversed) && !$key) {

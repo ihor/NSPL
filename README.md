@@ -125,6 +125,9 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [takeKeys](#takekeyssequence-array-keys)
     * [takeWhile](#takewhilepredicate-sequence)
     * [first](#firstsequence)
+    * [head](#headsequence)
+    * [tail](#tailsequence)
+    * [init](#initsequence)
     * [second](#secondsequence)
     * [drop](#dropsequence-n)
     * [dropKeys](#dropkeyssequence-array-keys)
@@ -516,6 +519,27 @@ assert([1, 2, 3] === takeWhile('is_numeric', [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]))
 Returns the first sequence item
 ```php
 assert(1 === first([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+##### head($sequence)
+
+Returns the first sequence item, alias of `first`.
+```php
+assert(1 === head([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+##### tail($sequence)
+
+Returns all but the first sequence item, alias of `drop($sequence, 1)`
+```php
+assert([2, 3, 4, 5, 6, 7, 8, 9] === tail([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+```
+
+##### init($sequence)
+
+Returns all but the last sequence item
+```php
+assert([1, 2, 3, 4, 5, 6, 7, 8] === init([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 ```
 
 ##### second($sequence)

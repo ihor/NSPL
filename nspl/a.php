@@ -93,15 +93,19 @@ function flatMap(callable $function, $sequence)
 const flatMap = '\nspl\a\flatMap';
 
 /**
- * Zips two or more sequences
+ * Zips one or more sequences
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * Zipping turns sequences 
+ *
+ * @param array|\Traversable[] ...$sequences
  * @return array
  */
-function zip($sequence1, $sequence2)
+function zip(...$sequences)
 {
-    $sequences = func_get_args();
+    if ($sequences === []) {
+        return [];
+    }
+    
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
@@ -137,14 +141,15 @@ const zip = '\nspl\a\zip';
  * Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
  *
  * @param callable $function
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param array|\Traversable[] ...$sequences
  * @return array
  */
-function zipWith(callable $function, $sequence1, $sequence2)
+function zipWith(callable $function, ...$sequences)
 {
-    $sequences = func_get_args();
-    array_shift($sequences);
+    if ($sequences === []) {
+        return [];
+    }
+    
     $count = count($sequences);
 
     for ($j = 0; $j < $count; ++$j) {

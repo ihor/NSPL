@@ -131,6 +131,7 @@ $pairs = a\zip([1, 2, 3], ['a', 'b', 'c']);
     * [dropWhile](#dropwhilepredicate-sequence)
     * [last](#lastsequence)
     * [partition](#partitionpredicate-sequence)
+    * [partitionBy](#partitionbypredicate-sequence)
     * [span](#spanpredicate-sequence)
     * [indexed](#indexedsequence-by-keeplast--true-transform--null)
     * [sorted](#sortedsequence-reversed--false-key--null-cmp--null)
@@ -558,6 +559,17 @@ assert(9 === last([1, 2, 3, 4, 5, 6, 7, 8, 9]));
 Returns two lists, one containing values for which the predicate returned true, and the other containing the items that returned false
 ```php
 assert([[1, 2, 3], ['a', 'b', 'c']] === partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+```
+
+##### partitionBy($partitioner, $sequence)
+
+Partitions a sequence into one or more lists, depending on the return value of the partition function. Items with the same index will be put in the same partition.
+
+```php
+assert(
+    partitionBy(rpartial(rpartial('substr', 1), 0), ['key1' => 'A foo', 'key2' => 'A bar', 'Baz']) ===
+    ['A' => ['key1' => 'A foo', 'key2' => 'A bar'], 'B' => ['Baz']]
+)
 ```
 
 ##### span($predicate, $sequence)

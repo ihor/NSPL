@@ -543,6 +543,42 @@ function partition(callable $predicate, $sequence)
 const partition = '\nspl\a\partition';
 
 /**
+ * Partitions a sequence into one or more lists, depending on the return value of the partition function.
+ *
+ * The usual "partition" partitions a sequence into two lists: one where the predicate is true and one where it is not.
+ * This one allows returning arbitrary values in the function that will be used as partition index. Items with the same
+ * index will be put in the same partition.
+ *
+ * The index should be a string or an integer as it will be used as key for the resulting partition list.
+ *
+ * @param callable(mixed):(int|string) $partitioner
+ * @param array|\Traversable           $sequence
+ * @return array
+ */
+function partitionBy(callable $partitioner, $sequence)
+{
+    args\expects(args\traversable, $sequence);
+    
+    $isList = isList($sequence);
+    $result = [];
+
+    foreach ($sequence as $k => $v) {
+        $key = $partitioner($v);
+        $result[$key] = $result[$key] ?? [];
+
+        if ($isList) {
+            $result[$key][] = $v;
+        }
+        else {
+            $result[$key][$k] = $v;
+        }
+    }
+    
+    return $result;
+}
+const partitionBy = '\nspl\a\partitionBy';
+
+/**
  * Returns two lists, one containing values for which your predicate returned true until the predicate returned
  * false, and the other containing all the items that left
  *

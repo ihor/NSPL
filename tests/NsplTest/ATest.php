@@ -12,6 +12,7 @@ use function \nspl\a\reduce;
 use function \nspl\a\filter;
 use function \nspl\a\filterNot;
 use function \nspl\a\partition;
+use function \nspl\a\partitionBy;
 use function \nspl\a\span;
 use function \nspl\a\value;
 use function \nspl\a\keys;
@@ -49,6 +50,7 @@ use const \nspl\a\reduce;
 use const \nspl\a\filter;
 use const \nspl\a\filterNot;
 use const \nspl\a\partition;
+use const \nspl\a\partitionBy;
 use const \nspl\a\span;
 use const \nspl\a\value;
 use const \nspl\a\keys;
@@ -215,6 +217,32 @@ class ATest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals([[1, 2, 3], ['a', 'b', 'c']], call_user_func(partition, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
         $this->assertEquals('\nspl\a\partition', partition);
+    }
+    
+    public function testPartitionBy()
+    {
+        // Behaves same as partition for predicates.
+        $this->assertEquals([['a', 'b', 'c'], [1, 2, 3]], partitionBy('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        $this->assertEquals(
+            [array('a' => 1, 'c' => 3),array('b' => 2)],
+            partitionBy(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3))
+        );
+        $this->assertEquals([], partitionBy('is_int', []));
+
+        $this->assertEquals([['a', 'b', 'c'], [1, 2, 3]], call_user_func(partitionBy, 'is_numeric', ['a', 1, 'b', 2, 'c', 3]));
+        
+        // Supports more than two partitions.
+        $this->assertEquals(
+            ['A' => ['A foo', 'A bar'], 'B' => ['Baz']],
+            partitionBy(rpartial(rpartial('substr', 1), 0), ['A foo', 'A bar', 'Baz'])
+        );
+        
+        $this->assertEquals(
+            ['A' => ['key1' => 'A foo', 'key2' => 'A bar'], 'B' => ['Baz']],
+            partitionBy(rpartial(rpartial('substr', 1), 0), ['key1' => 'A foo', 'key2' => 'A bar', 'Baz'])
+        );
+        
+        $this->assertEquals('\nspl\a\partitionBy', partitionBy);
     }
 
     public function testSpan()

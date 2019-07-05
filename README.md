@@ -365,8 +365,8 @@ eq       | ==
 idnt     | ===
 ne       | !=
 nidnt    | !==
-ge       | >
-gt       | >=
+gt       | >
+ge       | >=
 and_     | &&
 or_      | &#124;&#124;
 xor_     | xor

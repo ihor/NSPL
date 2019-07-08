@@ -113,7 +113,7 @@ const object = '\nspl\op\object';
 
 /**
  * Returns a function that returns key value for a given array
- * @param string $key Array key. Optionally it takes several keys as arguments and returns list of values
+ * @param string|int $key Array key. Optionally it takes several keys as arguments and returns list of values
  * @return callable
  */
 function itemGetter($key)

@@ -22,6 +22,7 @@ use const \nspl\op\le;
 use const \nspl\op\gt;
 use const \nspl\op\ge;
 use const \nspl\op\eq;
+use const \nspl\op\spaceship;
 use const \nspl\op\idnt;
 use const \nspl\op\nidnt;
 use const \nspl\op\ne;
@@ -180,6 +181,13 @@ class OpTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(call_user_func(nidnt, 2, 2));
         $this->assertTrue(call_user_func(nidnt, 2, '2'));
         $this->assertTrue(call_user_func(nidnt, 3, 6));
+    }
+
+    public function testSpaceship()
+    {
+        $this->assertSame(0, call_user_func(spaceship, 5, 5));
+        $this->assertSame(1, call_user_func(spaceship, 3, 2));
+        $this->assertSame(-1, call_user_func(spaceship, 2, 3));
     }
 
     public function testAnd()

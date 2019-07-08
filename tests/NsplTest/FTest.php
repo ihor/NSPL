@@ -75,8 +75,8 @@ class FTest extends \PHPUnit_Framework_TestCase
         $oneArgFuncPartial = partial('count', [1, 2, 3]);
         $this->assertEquals(3, $oneArgFuncPartial());
 
-        $noArgFuncPartial = partial('time', null);
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $noArgFuncPartial = partial('locale_get_default', null);
+        $this->assertEquals(locale_get_default(), $noArgFuncPartial(), '', 0.1);
 
         $sqrList = call_user_func(partial, 'array_map', function($v) { return $v * $v; });
         $this->assertEquals([1, 4, 9], $sqrList([1, 2, 3]));
@@ -92,8 +92,8 @@ class FTest extends \PHPUnit_Framework_TestCase
         $oneArgFuncPartial = rpartial('count', [1, 2, 3]);
         $this->assertEquals(3, $oneArgFuncPartial());
 
-        $noArgFuncPartial = rpartial('time', null);
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $noArgFuncPartial = rpartial('locale_get_default', null);
+        $this->assertEquals(locale_get_default(), $noArgFuncPartial(), '', 0.1);
 
         $cube = call_user_func(rpartial, 'pow', 3);
         $this->assertEquals(27, $cube(3));
@@ -109,8 +109,8 @@ class FTest extends \PHPUnit_Framework_TestCase
         $oneArgFuncPartial = ppartial('count', array(0 => [1, 2, 3]));
         $this->assertEquals(3, $oneArgFuncPartial());
 
-        $noArgFuncPartial = ppartial('time', array(0 => null));
-        $this->assertEquals(time(), $noArgFuncPartial(), '', 0.1);
+        $noArgFuncPartial = ppartial('locale_get_default', array(0 => null));
+        $this->assertEquals(locale_get_default(), $noArgFuncPartial());
 
         $f = function($a, $b, $c) { return $a . $b . $c; };
         $f1 = ppartial($f, array(0 => 'a'));

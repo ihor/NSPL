@@ -618,7 +618,7 @@ const indexed = '\nspl\a\indexed';
  * Returns array which contains sorted items from the passed sequence
  *
  * @param array|\Traversable $sequence
- * @param bool $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
+ * @param bool|callable $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each item
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument

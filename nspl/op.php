@@ -71,6 +71,9 @@ const ge = '\nspl\op\ge';
 function gt($a, $b) { return $a > $b; };
 const gt = '\nspl\op\gt';
 
+function spaceship($a, $b) { return $a <=> $b; };
+const spaceship = '\nspl\op\spaceship';
+
 
 function and_($a, $b) { return $a && $b; };
 const and_ = '\nspl\op\and_';

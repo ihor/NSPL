@@ -264,6 +264,36 @@ class ChainableSequence implements \Iterator
     {
         return first($this->sequence);
     }
+    
+    /**
+     * Returns the first sequence item, alias of "first"
+     *
+     * @return mixed
+     */
+    public function head()
+    {
+        return head($this->sequence);
+    }
+    
+    /**
+     * Returns all but the first sequence item, alias of "take(1)"
+     *
+     * @return mixed
+     */
+    public function tail()
+    {
+        return tail($this->sequence);
+    }
+    
+    /**
+     * Returns all but the last sequence item
+     *
+     * @return mixed
+     */
+    public function init()
+    {
+        return init($this->sequence);
+    }
 
     /**
      * Returns the second sequence item

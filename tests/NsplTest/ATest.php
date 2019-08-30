@@ -26,6 +26,7 @@ use function \nspl\a\take;
 use function \nspl\a\takeKeys;
 use function \nspl\a\takeWhile;
 use function \nspl\a\first;
+use function \nspl\a\init;
 use function \nspl\a\second;
 use function \nspl\a\drop;
 use function \nspl\a\dropKeys;
@@ -63,6 +64,7 @@ use const \nspl\a\take;
 use const \nspl\a\takeKeys;
 use const \nspl\a\takeWhile;
 use const \nspl\a\first;
+use const \nspl\a\init;
 use const \nspl\a\second;
 use const \nspl\a\drop;
 use const \nspl\a\dropKeys;
@@ -495,6 +497,33 @@ class ATest extends \PHPUnit_Framework_TestCase
     public function testFirstForEmptyIterator()
     {
         first(new \ArrayIterator([]));
+    }
+        
+    public function testInit()
+    {
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8], init([1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8], init(new \ArrayIterator([1, 2, 3, 4, 5, 6, 7, 8, 9])));
+        $this->assertEquals(['hello' => 1], init(array('hello' => 1, 'world' => 2)));
+        $this->assertEquals([], init([1]));
+
+        $this->assertEquals([1, 2, 3, 4, 5, 6, 7, 8], call_user_func(init, [1, 2, 3, 4, 5, 6, 7, 8, 9]));
+        $this->assertEquals('\nspl\a\init', init);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInitForEmptySequence()
+    {
+        init([]);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInitForEmptyIterator()
+    {
+        init(new \ArrayIterator([]));
     }
 
     public function testSecond()

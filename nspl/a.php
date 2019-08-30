@@ -381,6 +381,57 @@ function first($sequence)
 const first = '\nspl\a\first';
 
 /**
+ * Returns the first sequence item, alias of first
+ *
+ * @param array|\Traversable $sequence
+ * @return mixed
+ */
+function head($sequence)
+{
+    return first($sequence);
+}
+const head = '\nspl\a\head';
+
+/**
+ * Returns all but the first sequence item, alias of drop(1)
+ *
+ * @param array|\Traversable $sequence
+ * @return mixed
+ */
+function tail($sequence)
+{
+    return drop($sequence, 1);
+}
+const tail = '\nspl\a\tail';
+
+/**
+ * Returns all but the last sequence item
+ *
+ * @param array|\Traversable $sequence
+ * @return array
+ */
+function init($sequence)
+{
+    args\expects(args\traversable, $sequence);
+
+    $result = [];
+    if (is_array($sequence)) {
+        $result = $sequence;
+    } else {
+        foreach ($sequence as $item) {
+            $result[] = $item;
+        }
+    }
+    
+    if ($result === []) {
+        throw new \InvalidArgumentException('Can not return all but last item of sequence that is empty');
+    }
+    array_pop($result);
+    return $result;
+}
+const init = '\nspl\a\init';
+
+/**
  * Returns the second sequence item
  *
  * @param array|\Traversable $sequence

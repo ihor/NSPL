@@ -334,6 +334,27 @@ class ChainableSequence implements \Iterator
             new self($result[1])
         ]);
     }
+    
+    /**
+     * Partitions a sequence into one or more lists, depending on the return value of the partition function.
+     *
+     * The usual "partition" partitions a sequence into two lists: one where the predicate is true and one where it is not.
+     * This one allows returning arbitrary values in the function that will be used as partition index. Items with the same
+     * index will be put in the same partition.
+     *
+     * The index should be a string or an integer as it will be used as key for the resulting partition list.
+     *
+     * @param callable(mixed):(int|string) $partitioner
+     * @return $this
+     */
+    public function partitionBy(callable $partitioner)
+    {
+        $result = partitionBy($partitioner, $this->sequence);
+
+        return new self(map(function (array $partition) {
+            return new self($partition);
+        }, $result));
+    }
 
     /**
      * Returns two lists, one containing values for which your predicate returned true until the predicate returned

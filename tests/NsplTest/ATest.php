@@ -274,6 +274,8 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], zip(new \ArrayIterator([1, 2, 3]), ['a', 'b', 'c']));
         $this->assertEquals([[1, 'a'], [2, 'b'], [3, 'c']], zip([1, 2, 3], new \ArrayIterator(['a', 'b', 'c'])));
         $this->assertEquals([[1, 'a'], [2, 'b']], zip([1, 2, 3], ['a', 'b']));
+        $this->assertEquals([[1], [2], [3]], zip([1, 2, 3]));
+        $this->assertEquals([], zip());
         $this->assertEquals([], zip([], ['a', 'b', 'c']));
         $this->assertEquals([], zip([1, 2, 3], []));
 
@@ -288,11 +290,14 @@ class ATest extends \PHPUnit_Framework_TestCase
 
     public function testZipWith()
     {
+        $add5 = function($x) { return $x + 5; };
         $sum = function($x, $y) { return $x + $y; };
         $sum3 = function($x, $y, $z) { return $x + $y + $z; };
 
         $this->assertEquals([2, 4, 6], zipWith($sum, [1, 2, 3], [1, 2, 3]));
         $this->assertEquals([3, 6, 9], zipWith($sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3]));
+        $this->assertEquals([6, 7, 8], zipWith($add5, [1, 2, 3]));
+        $this->assertEquals([], zipWith($sum));
 
         $this->assertEquals([3, 6, 9], call_user_func(zipWith, $sum3, [1, 2, 3], [1, 2, 3], [1, 2, 3]));
         $this->assertEquals('\nspl\a\zipWith', zipWith);

@@ -448,14 +448,15 @@ $duplicate = function($v) { return [$v, $v]; }
 assert(['hello', 'hello', 'world', 'world'] === flatMap($duplicate, ['hello', 'world']));
 ```
 
-##### zip($sequence1, $sequence2)
+##### zip($sequence1, $sequence2, ...)
 
-Zips two or more sequences
+Zips one or more sequences
 ```php
 assert([[1, 'a'], [2, 'b'], [3, 'c']] === zip([1, 2, 3], ['a', 'b', 'c']));
+assert([[1], [2], [3]] === zip([1, 2, 3]));
 ```
 
-##### zipWith($function, $sequence1, $sequence2)
+##### zipWith($function, $sequence1, $sequence2, ...)
 
 Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
 ```php

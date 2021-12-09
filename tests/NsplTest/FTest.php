@@ -43,12 +43,12 @@ use const \nspl\f\partition;
 use const \nspl\f\span;
 //endregion
 
-class FTest extends \PHPUnit_Framework_TestCase
+class FTest extends \PHPUnit\Framework\TestCase
 {
     public function testApply()
     {
         $this->assertEquals([1, 3, 5, 7, 9], apply('range', [1, 10, 2]));
-        $this->assertEquals(time(), apply('time'), '', 0.1);
+        $this->assertEqualsWithDelta(time(), apply('time'), 0.1);
 
         $this->assertEquals([1, 3, 5, 7, 9], call_user_func(apply, 'range', [1, 10, 2]));
         $this->assertEquals('\nspl\f\apply', apply);
@@ -76,7 +76,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = partial('locale_get_default', null);
-        $this->assertEquals(locale_get_default(), $noArgFuncPartial(), '', 0.1);
+        $this->assertEqualsWithDelta(locale_get_default(), $noArgFuncPartial(), 0.1);
 
         $sqrList = call_user_func(partial, 'array_map', function($v) { return $v * $v; });
         $this->assertEquals([1, 4, 9], $sqrList([1, 2, 3]));
@@ -93,7 +93,7 @@ class FTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $oneArgFuncPartial());
 
         $noArgFuncPartial = rpartial('locale_get_default', null);
-        $this->assertEquals(locale_get_default(), $noArgFuncPartial(), '', 0.1);
+        $this->assertEqualsWithDelta(locale_get_default(), $noArgFuncPartial(), 0.1);
 
         $cube = call_user_func(rpartial, 'pow', 3);
         $this->assertEquals(27, $cube(3));

@@ -14,7 +14,7 @@ use function \nspl\ds\getType;
 use function \nspl\ds\isList;
 //endregion
 
-class DsTest extends \PHPUnit_Framework_TestCase
+class DsTest extends \PHPUnit\Framework\TestCase
 {
     public function testArrayObject()
     {
@@ -67,7 +67,7 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $array['bananas']);
 
         $array = new DefaultArray(function() { return time(); });
-        $this->assertEquals(time(), $array['apples'], '', 0.1);
+        $this->assertEqualsWithDelta(time(), $array['apples'], 0.1);
 
         $array = defaultarray(0);
         $this->assertEquals(0, $array['apples']);
@@ -79,7 +79,7 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(10, $array['bananas']);
 
         $array = defaultarray(function() { return time(); });
-        $this->assertEquals(time(), $array['apples'], '', 0.1);
+        $this->assertEqualsWithDelta(time(), $array['apples'], 0.1);
 
         $array = new DefaultArray(10, array('apples' => 20, 'bananas' => 30));
         $this->assertEquals(10, $array['oranges']);
@@ -128,10 +128,10 @@ class DsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([1, 2], $intersection->toArray());
 
         $union = $set->union([1, 2, 3]);
-        $this->assertEquals([1, 2, 3, 'world'], $union->toArray(), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([1, 2, 3, 'world'], $union->toArray());
 
         $union = $set->union(Set::fromArray([1, 2, 3]));
-        $this->assertEquals([1, 2, 3, 'world'], $union->toArray(), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([1, 2, 3, 'world'], $union->toArray());
 
         $this->assertTrue($set->isSubset($union));
         $this->assertFalse($set->isSubset([1, 2, 3, 4]));

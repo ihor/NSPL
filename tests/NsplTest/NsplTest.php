@@ -4,7 +4,7 @@ namespace NsplTest;
 
 use function \nspl\getType;
 
-class NsplTest extends \PHPUnit_Framework_TestCase
+class NsplTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetType()
     {

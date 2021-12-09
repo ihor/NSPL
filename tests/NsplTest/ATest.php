@@ -91,7 +91,7 @@ use const \nspl\a\extend;
 use const \nspl\a\getByKey;
 //endregion
 
-class ATest extends \PHPUnit_Framework_TestCase
+class ATest extends \PHPUnit\Framework\TestCase
 {
     public function testAll()
     {
@@ -481,19 +481,15 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\first', first);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testFirstForEmptySequence()
     {
+        $this->expectException(\InvalidArgumentException::class);
         first([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testFirstForEmptyIterator()
     {
+        $this->expectException(\InvalidArgumentException::class);
         first(new \ArrayIterator([]));
     }
 
@@ -507,11 +503,9 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\second', second);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testFirstForSequenceWithOnlyOneItem()
     {
+        $this->expectException(\InvalidArgumentException::class);
         second([1]);
     }
 
@@ -556,11 +550,9 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\last', last);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testLastForEmptyList()
     {
+        $this->expectException(\InvalidArgumentException::class);
         last([]);
     }
 
@@ -574,27 +566,21 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\reorder', reorder);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testReorderToInNotList()
     {
+        $this->expectException(\InvalidArgumentException::class);
         reorder(array(1 => 'a', 2 => 'b', 3 => 'c'), 1, 2);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testReorderToInvalidPosition()
     {
+        $this->expectException(\InvalidArgumentException::class);
         reorder([0, 1, 2], 0, 3);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testReorderFromInvalidPosition()
     {
+        $this->expectException(\InvalidArgumentException::class);
         reorder([0, 1, 2], 3, 0);
     }
 
@@ -632,15 +618,15 @@ class ATest extends \PHPUnit_Framework_TestCase
         $object1 = arrayobject(1, 2, 3);
         $object2 = arrayobject(2, 3, 4);
 
-        $this->assertEquals([1], diff($array1, $array2), '', 0, 10, true);
-        $this->assertEquals([1], diff($array1, $object2), '', 0, 10, true);
-        $this->assertEquals([1], diff($object1, $array2), '', 0, 10, true);
-        $this->assertEquals([1], diff($object1, $object2), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([1], diff($array1, $array2));
+        $this->assertEqualsCanonicalizing([1], diff($array1, $object2));
+        $this->assertEqualsCanonicalizing([1], diff($object1, $array2));
+        $this->assertEqualsCanonicalizing([1], diff($object1, $object2));
 
-        $this->assertEquals([4], call_user_func(diff, $array2, $array1), '', 0, 10, true);
-        $this->assertEquals([4], call_user_func(diff, $array2, $object1), '', 0, 10, true);
-        $this->assertEquals([4], call_user_func(diff, $object2, $array1), '', 0, 10, true);
-        $this->assertEquals([4], call_user_func(diff, $object2, $object1), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([4], call_user_func(diff, $array2, $array1));
+        $this->assertEqualsCanonicalizing([4], call_user_func(diff, $array2, $object1));
+        $this->assertEqualsCanonicalizing([4], call_user_func(diff, $object2, $array1));
+        $this->assertEqualsCanonicalizing([4], call_user_func(diff, $object2, $object1));
         $this->assertEquals('\nspl\a\diff', diff);
     }
 
@@ -651,15 +637,15 @@ class ATest extends \PHPUnit_Framework_TestCase
         $object1 = arrayobject(1, 2, 3);
         $object2 = arrayobject(2, 3, 4);
 
-        $this->assertEquals([2, 3], intersect($array1, $array2), '', 0, 10, true);
-        $this->assertEquals([2, 3], intersect($array1, $object2), '', 0, 10, true);
-        $this->assertEquals([2, 3], intersect($object1, $array2), '', 0, 10, true);
-        $this->assertEquals([2, 3], intersect($object1, $object2), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([2, 3], intersect($array1, $array2));
+        $this->assertEqualsCanonicalizing([2, 3], intersect($array1, $object2));
+        $this->assertEqualsCanonicalizing([2, 3], intersect($object1, $array2));
+        $this->assertEqualsCanonicalizing([2, 3], intersect($object1, $object2));
 
-        $this->assertEquals([2, 3], call_user_func(intersect, $array2, $array1), '', 0, 10, true);
-        $this->assertEquals([2, 3], call_user_func(intersect, $array2, $object1), '', 0, 10, true);
-        $this->assertEquals([2, 3], call_user_func(intersect, $object2, $array1), '', 0, 10, true);
-        $this->assertEquals([2, 3], call_user_func(intersect, $object2, $object1), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([2, 3], call_user_func(intersect, $array2, $array1));
+        $this->assertEqualsCanonicalizing([2, 3], call_user_func(intersect, $array2, $object1));
+        $this->assertEqualsCanonicalizing([2, 3], call_user_func(intersect, $object2, $array1));
+        $this->assertEqualsCanonicalizing([2, 3], call_user_func(intersect, $object2, $object1));
         $this->assertEquals('\nspl\a\intersect', intersect);
     }
 
@@ -770,27 +756,21 @@ class ATest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('\nspl\a\reorder', moveElement);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMoveElementToInNotList()
     {
+        $this->expectException(\InvalidArgumentException::class);
         moveElement(array(1 => 'a', 2 => 'b', 3 => 'c'), 1, 2);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMoveElementToInvalidPosition()
     {
+        $this->expectException(\InvalidArgumentException::class);
         moveElement([0, 1, 2], 0, 3);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testMoveElementFromInvalidPosition()
     {
+        $this->expectException(\InvalidArgumentException::class);
         moveElement([0, 1, 2], 3, 0);
     }
     //endregion

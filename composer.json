@@ -22,5 +22,8 @@
     "branch-alias": {
       "dev-master": "2.0-dev"
     }
+  },
+  "scripts": {
+    "test": "phpunit --verbose tests/"
   }
 }

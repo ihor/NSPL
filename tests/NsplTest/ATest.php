@@ -350,7 +350,7 @@ class ATest extends \PHPUnit\Framework\TestCase
             sorted(['orange', 'cat', 'apple'], false, null, function($v1, $v2) use ($isFruit) {
                 if (!$isFruit($v1)) return 1;
                 if (!$isFruit($v2)) return -1;
-                return $v1 > $v2;
+                return $v1 <=> $v2;
             })
         );
 

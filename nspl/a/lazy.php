@@ -52,30 +52,22 @@ function zip($sequence1, $sequence2)
     $sequences = func_get_args();
     $count = func_num_args();
 
-    $isArray = array();
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $sequences[$j], $j + 1);
-        $isArray[$j] = is_array($sequences[$j]);
+        if (is_array($sequences[$j])) {
+            $sequences[$j] = new \ArrayIterator($sequences[$j]);
+        }
     }
 
     do {
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
-            if ($isArray[$j]) {
-                $data = each($sequences[$j]);
-                if (!$data) {
-                    break 2;
-                }
-                $data = $data['value'];
+            $data = $sequences[$j]->current();
+            if (null === $data) {
+                break 2;
             }
-            else {
-                $data = $sequences[$j]->current();
-                if (null === $data) {
-                    break 2;
-                }
 
-                $sequences[$j]->next();
-            }
+            $sequences[$j]->next();
 
             $zipped[] = $data;
         }
@@ -98,30 +90,22 @@ function zipWith(callable $function, $sequence1, $sequence2)
     array_shift($sequences);
     $count = count($sequences);
 
-    $isArray = array();
     for ($j = 0; $j < $count; ++$j) {
         args\expects(args\traversable, $sequences[$j], $j + 1);
-        $isArray[$j] = is_array($sequences[$j]);
+        if (is_array($sequences[$j])) {
+            $sequences[$j] = new \ArrayIterator($sequences[$j]);
+        }
     }
 
     do {
         $zipped = [];
         for ($j = 0; $j < $count; ++$j) {
-            if ($isArray[$j]) {
-                $data = each($sequences[$j]);
-                if (!$data) {
-                    break 2;
-                }
-                $data = $data['value'];
+            $data = $sequences[$j]->current();
+            if (null === $data) {
+                break 2;
             }
-            else {
-                $data = $sequences[$j]->current();
-                if (null === $data) {
-                    break 2;
-                }
 
-                $sequences[$j]->next();
-            }
+            $sequences[$j]->next();
 
             $zipped[] = $data;
         }

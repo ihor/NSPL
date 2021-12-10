@@ -41,16 +41,13 @@ const apply = '\nspl\f\apply';
  * predefined left arguments passed to partial
  *
  * @param callable $function
- * @param mixed $arg1
- * @param mixed $arg2
- * @param mixed ...
+ * @param mixed[] ...$args
  * @return callable
  */
-function partial(callable $function, $arg1)
+function partial(callable $function, ...$args)
 {
-    $args = array_slice(func_get_args(), 1);
-    return function() use ($function, $args) {
-        return call_user_func_array($function, array_merge($args, func_get_args()));
+    return function(...$extraArgs) use ($function, $args) {
+        return call_user_func_array($function, array_merge($args, $extraArgs));
     };
 }
 const partial = '\nspl\f\partial';
@@ -60,16 +57,13 @@ const partial = '\nspl\f\partial';
  * predefined right arguments passed to rpartial
  *
  * @param callable $function
- * @param mixed $arg1
- * @param mixed $arg2
- * @param mixed ...
+ * @param mixed[] ...$args
  * @return callable
  */
-function rpartial(callable $function, $arg1)
+function rpartial(callable $function, ...$args)
 {
-    $args = array_slice(func_get_args(), 1);
-    return function() use ($function, $args) {
-        return call_user_func_array($function, array_merge(func_get_args(), $args));
+    return function(...$extraArgs) use ($function, $args) {
+        return call_user_func_array($function, array_merge($extraArgs, $args));
     };
 }
 const rpartial = '\nspl\f\rpartial';
@@ -84,15 +78,14 @@ const rpartial = '\nspl\f\rpartial';
  */
 function ppartial(callable $function, array $args)
 {
-    return function() use ($function, $args) {
-        $_args = func_get_args();
+    return function(...$extraArgs) use ($function, $args) {
         $position = 0;
-        do {
+        while ($extraArgs) {
             if (!isset($args[$position]) && !array_key_exists($position, $args)) {
-                $args[$position] = array_shift($_args);
+                $args[$position] = array_shift($extraArgs);
             }
             ++$position;
-        } while($_args);
+        };
         ksort($args);
         return call_user_func_array($function, $args);
     };

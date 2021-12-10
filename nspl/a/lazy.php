@@ -8,13 +8,11 @@ use nspl\args;
  * Applies function of one argument to each sequence item lazily
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function map(callable $function, $sequence)
+function map(callable $function, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $key => $item) {
         yield $key => $function($item);
     }
@@ -25,13 +23,11 @@ const map = '\nspl\a\lazy\map';
  * Lazily applies function of one argument to each sequence item and flattens the result
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function flatMap(callable $function, $sequence)
+function flatMap(callable $function, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $item) {
         foreach ($function($item) as $resultValue) {
             yield $resultValue;
@@ -43,17 +39,17 @@ const flatMap = '\nspl\a\lazy\flatMap';
 /**
  * Zips two or more sequences lazily
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return \Generator
  */
-function zip($sequence1, $sequence2)
+function zip(iterable $sequence1, iterable $sequence2)
 {
     $sequences = func_get_args();
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $sequences[$j], $j + 1);
+        args\expects(args\iterable_, $sequences[$j], $j + 1);
         if (is_array($sequences[$j])) {
             $sequences[$j] = new \ArrayIterator($sequences[$j]);
         }
@@ -80,18 +76,18 @@ const zip = '\nspl\a\lazy\zip';
  * Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
  *
  * @param callable $function
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return \Generator
  */
-function zipWith(callable $function, $sequence1, $sequence2)
+function zipWith(callable $function, iterable $sequence1, iterable $sequence2)
 {
     $sequences = func_get_args();
     array_shift($sequences);
     $count = count($sequences);
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $sequences[$j], $j + 1);
+        args\expects(args\iterable_, $sequences[$j], $j + 1);
         if (is_array($sequences[$j])) {
             $sequences[$j] = new \ArrayIterator($sequences[$j]);
         }
@@ -120,13 +116,11 @@ const zipWith = '\nspl\a\lazy\zipWith';
  * Lazily returns sequence items that satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function filter(callable $predicate, $sequence)
+function filter(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $key => $item) {
         if ($predicate($item)) {
             yield $key => $item;
@@ -139,13 +133,11 @@ const filter = '\nspl\a\lazy\filter';
  * Lazily returns sequence items that don't satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function filterNot(callable $predicate, $sequence)
+function filterNot(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $key => $item) {
         if (!$predicate($item)) {
             yield $key => $item;
@@ -157,14 +149,13 @@ const filterNot = '\nspl\a\lazy\filterNot';
 /**
  * Returns first N sequence items with given step
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int $N
  * @param int $step
  * @return \Generator
  */
-function take($sequence, $N, $step = 1)
+function take(iterable $sequence, $N, $step = 1)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\int, $N);
     args\expects(args\int, $step, 3);
 
@@ -191,13 +182,11 @@ const take = '\nspl\a\lazy\take';
  * Returns the longest sequence prefix of all items which satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function takeWhile(callable $predicate, $sequence)
+function takeWhile(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $item) {
         if ($predicate($item)) {
             yield $item;
@@ -212,13 +201,12 @@ const takeWhile = '\nspl\a\lazy\takeWhile';
 /**
  * Drops first N sequence items
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int $N
  * @return \Generator
  */
-function drop($sequence, $N)
+function drop(iterable $sequence, $N)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\int, $N);
 
     $counter = 0;
@@ -236,13 +224,11 @@ const drop = '\nspl\a\lazy\drop';
  * Drops the longest sequence prefix of all items which satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function dropWhile(callable $predicate, $sequence)
+function dropWhile(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $drop = true;
     foreach ($sequence as $item) {
         if ($drop) {
@@ -263,13 +249,11 @@ const dropWhile = '\nspl\a\lazy\dropWhile';
  * the items that returned false
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator[]
  */
-function partition(callable $predicate, $sequence)
+function partition(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $checked = array();
 
     $first = function() use ($sequence, $predicate, &$checked) {
@@ -303,13 +287,12 @@ const partition = '\nspl\a\lazy\partition';
 /**
  * Flattens multidimensional sequence
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int|null $depth
  * @return \Generator
  */
-function flatten($sequence, $depth = null)
+function flatten(iterable $sequence, $depth = null)
 {
-    args\expects(args\traversable, $sequence);
     args\expectsOptional(args\int, $depth);
 
     foreach ($sequence as $value) {
@@ -332,13 +315,12 @@ const flatten = '\nspl\a\lazy\flatten';
 
 /**
  * Returns list of (key, value) pairs
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param bool $valueKey If true then convert array to (value, key) pairs
  * @return \Generator
  */
-function pairs($sequence, $valueKey = false)
+function pairs(iterable $sequence, $valueKey = false)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\bool, $valueKey);
 
     foreach ($sequence as $key => $value) {
@@ -349,10 +331,10 @@ const pairs = '\nspl\a\lazy\pairs';
 
 /**
  * Returns list of the sequence keys
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return \Generator
  */
-function keys($sequence)
+function keys(iterable $sequence)
 {
     foreach ($sequence as $key => $_) {
         yield $key;
@@ -366,7 +348,7 @@ const keys = '\nspl\a\lazy\keys';
  * @param array|\Iterator|\IteratorAggregate $sequence
  * @return LazyChainableSequence
  */
-function with($sequence)
+function with(iterable $sequence)
 {
     return new LazyChainableSequence($sequence);
 }

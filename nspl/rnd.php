@@ -21,14 +21,13 @@ function randomString($length, $source = ALPHA_NUM)
 /**
  * Returns a k length list of unique items chosen from the population sequence
  *
- * @param array|\Traversable $population
+ * @param iterable $population
  * @param int $length
  * @param bool $preserveKeys
  * @return array
  */
-function sample($population, $length, $preserveKeys = false)
+function sample(iterable $population, $length, $preserveKeys = false)
 {
-    args\expects(args\traversable, $population);
     args\expects(args\int, $length);
     args\expects(args\bool, $preserveKeys);
 
@@ -56,16 +55,14 @@ function sample($population, $length, $preserveKeys = false)
 /**
  * Returns a random item from a non-empty sequence
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return mixed
  */
-function choice($sequence)
+function choice(iterable $sequence)
 {
     if (!$sequence) {
         throw new \InvalidArgumentException('Sequence is empty');
     }
-
-    args\expects(args\traversable, $sequence);
 
     if ($sequence instanceof \Iterator) {
         $sequence = iterator_to_array($sequence);

@@ -14,7 +14,7 @@ use const \nspl\args\numeric;
 use const \nspl\args\string;
 use const \nspl\args\callable_;
 use const \nspl\args\arrayKey;
-use const \nspl\args\traversable;
+use const \nspl\args\iterable_;
 use const \nspl\args\arrayAccess;
 
 // And-constraints
@@ -36,6 +36,7 @@ use function \nspl\args\biggerThan;
 use function \nspl\args\smallerThan;
 
 // @todo Move deprecated stuff into a separate test
+use const \nspl\args\traversable;
 use function \nspl\args\expectsNotEmpty;
 use function \nspl\args\expectsBool;
 use function \nspl\args\expectsInt;
@@ -157,20 +158,20 @@ class ArgsTest extends \PHPUnit\Framework\TestCase
     }
     #endregion
 
-    #region traversable
-    public function testExpectsTraversable_Positive()
+    #region iterable_
+    public function testExpectsIterable_Positive()
     {
-        function expectsTraversablePositiveTest($arg1) { expects(traversable, $arg1); }
-        $this->assertNull(expectsTraversablePositiveTest(array('hello', 'world')));
-        $this->assertNull(expectsTraversablePositiveTest(new \ArrayIterator(array('hello', 'world'))));
+        function expectsIterablePositiveTest($arg1) { expects(iterable_, $arg1); }
+        $this->assertNull(expectsIterablePositiveTest(array('hello', 'world')));
+        $this->assertNull(expectsIterablePositiveTest(new \ArrayIterator(array('hello', 'world'))));
     }
 
-    public function testExpectsTraversable_Negative()
+    public function testExpectsIterable_Negative()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Argument 1 passed to NsplTest\\expectsTraversableNegativeTest() must be an array or traversable, string 'hello world' given");
-        function expectsTraversableNegativeTest($arg1) { expects(traversable, $arg1); }
-        $this->assertNull(expectsTraversableNegativeTest('hello world'));
+        $this->expectExceptionMessage("Argument 1 passed to NsplTest\\expectsIterableNegativeTest() must be iterable, string 'hello world' given");
+        function expectsIterableNegativeTest($arg1) { expects(iterable_, $arg1); }
+        $this->assertNull(expectsIterableNegativeTest('hello world'));
     }
     #endregion
 
@@ -178,8 +179,8 @@ class ArgsTest extends \PHPUnit\Framework\TestCase
     public function testExpectsArrayAccess_Positive()
     {
         function expectsArrayAccessPositiveTest($arg1) { expects(arrayAccess, $arg1); }
-        $this->assertNull(expectsTraversablePositiveTest(array('hello', 'world')));
-        $this->assertNull(expectsTraversablePositiveTest(new \ArrayObject(array('hello', 'world'))));
+        $this->assertNull(expectsArrayAccessPositiveTest(array('hello', 'world')));
+        $this->assertNull(expectsArrayAccessPositiveTest(new \ArrayObject(array('hello', 'world'))));
     }
 
     public function testExpectsArrayAccess_Negative()
@@ -644,6 +645,20 @@ class ArgsTest extends \PHPUnit\Framework\TestCase
     #endregion
 
     #region Deprecated
+    public function testExpectsTraversable_Positive()
+    {
+        function expectsTraversablePositiveTest($arg1) { expects(traversable, $arg1); }
+        $this->assertNull(expectsTraversablePositiveTest(array('hello', 'world')));
+        $this->assertNull(expectsTraversablePositiveTest(new \ArrayIterator(array('hello', 'world'))));
+    }
+
+    public function testExpectsTraversable_Negative()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Argument 1 passed to NsplTest\\expectsTraversableNegativeTest() must be iterable, string 'hello world' given");
+        function expectsTraversableNegativeTest($arg1) { expects(traversable, $arg1); }
+        $this->assertNull(expectsTraversableNegativeTest('hello world'));
+    }
     public function testDeprecatedExpectsNotEmpty_Positive()
     {
         function deprecatedExpectsNotEmptyPositiveTest($arg) { expectsNotEmpty($arg); }
@@ -757,7 +772,7 @@ class ArgsTest extends \PHPUnit\Framework\TestCase
     public function testDeprecatedExpectsTraversable_Negative()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Argument 1 passed to NsplTest\\deprecatedExpectsTraversableNegativeTest() must be an array or traversable, string 'hello world' given");
+        $this->expectExceptionMessage("Argument 1 passed to NsplTest\\deprecatedExpectsTraversableNegativeTest() must be iterable, string 'hello world' given");
         function deprecatedExpectsTraversableNegativeTest($arg1) { expectsTraversable($arg1); }
         $this->assertNull(deprecatedExpectsTraversableNegativeTest('hello world'));
     }

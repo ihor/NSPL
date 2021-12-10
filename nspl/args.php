@@ -92,8 +92,12 @@ const array_ = 'is_array';
 const object = 'is_object';
 const callable_ = 'is_callable';
 const arrayKey = '\nspl\args\_p\isArrayKey';
-const traversable = '\nspl\args\_p\isTraversable';
+const iterable_ = 'is_iterable';
 const arrayAccess = '\nspl\args\_p\isArrayAccess';
+/**
+ * @deprecated
+ */
+const traversable = 'is_iterable';
 
 // And-constraints
 const nonEmpty = '\nspl\args\_p\isNotEmpty';
@@ -371,8 +375,8 @@ function expectsArrayKey($arg, $atPosition = null, $otherwiseThrow = '\InvalidAr
  */
 function expectsTraversable($arg, $atPosition = null, $otherwiseThrow = '\InvalidArgumentException')
 {
-    if (!is_array($arg) && !$arg instanceof \Traversable) {
-        _p\throwExpectsException($arg, 'be an array or traversable', $atPosition, $otherwiseThrow);
+    if (!is_iterable($arg)) {
+        _p\throwExpectsException($arg, 'be iterable', $atPosition, $otherwiseThrow);
     }
 }
 
@@ -507,7 +511,6 @@ use nspl\args\Constraint;
 
 function isNotEmpty($value) { return (bool) $value; }
 function isArrayKey($value) { return is_int($value) || is_string($value); }
-function isTraversable($value) { return is_array($value) || $value instanceof \Traversable; }
 function isArrayAccess($value) { return is_array($value) || $value instanceof \ArrayAccess; }
 function isPositive($value) { return $value > 0; }
 function isNotNegative($value) { return $value >= 0; }
@@ -615,6 +618,7 @@ class Checker
         \nspl\args\object => true,
         \nspl\args\arrayKey => true,
         \nspl\args\callable_ => true,
+        \nspl\args\iterable_ => true,
         \nspl\args\traversable => true,
         \nspl\args\arrayAccess => true,
     );
@@ -633,7 +637,8 @@ class ErrorMessage
         \nspl\args\array_ => 'be an array',
         \nspl\args\object => 'be an object',
         \nspl\args\callable_ => 'be callable',
-        \nspl\args\traversable => 'be an array or traversable',
+        \nspl\args\iterable_ => 'be iterable',
+        \nspl\args\traversable => 'be iterable',
         \nspl\args\arrayAccess => 'be an array or implement array access',
 
         \nspl\args\nonEmpty => 'not be empty',

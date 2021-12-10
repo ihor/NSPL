@@ -162,10 +162,10 @@ class ChainableSequence implements \Iterator
     /**
      * Zips sequence with a sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function zip($sequence)
+    public function zip(iterable $sequence)
     {
         return new self(zip($this->sequence, $sequence));
     }
@@ -174,10 +174,10 @@ class ChainableSequence implements \Iterator
      * Generalises zip by zipping with the function given as the first argument
      *
      * @param callable $function
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-     public function zipWith(callable $function, $sequence)
+     public function zipWith(callable $function, iterable $sequence)
      {
          return new self(zipWith($function, $this->sequence, $sequence));
      }
@@ -415,10 +415,10 @@ class ChainableSequence implements \Iterator
     /**
      * Merges sequence with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function merge($sequence)
+    public function merge(iterable $sequence)
     {
         return new self(merge($this->sequence, $sequence));
     }
@@ -481,10 +481,10 @@ class ChainableSequence implements \Iterator
     /**
      * Computes the difference with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function diff($sequence)
+    public function diff(iterable $sequence)
     {
         return new self(diff($this->sequence, $sequence));
     }
@@ -492,18 +492,18 @@ class ChainableSequence implements \Iterator
     /**
      * Computes the intersection with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function intersect($sequence)
+    public function intersect(iterable $sequence)
     {
         return new self(intersect($this->sequence, $sequence));
     }
 
     /**
-     * Computes the cartesian product of two or more arrays or traversable objects
+     * Computes the cartesian product of two or more iterables (arrays or traversable objects)
      *
-     * @param array|\Traversable $sequences
+     * @param iterable $sequences
      * @return $this
      */
     public function cartesianProduct()

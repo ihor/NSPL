@@ -25,17 +25,12 @@ class Set extends Collection
     }
 
     /**
-     * @param array|\Traversable $sequence1
-     * @param array|\Traversable $sequence2
-     * @param ...
-     * @param array|\Traversable $sequenceN
+     * @param iterable[] ...$sequences
      * @return $this
      */
-    public function update($sequence1 /*, $sequence2, ..., $sequenceN */)
+    public function update(iterable ...$sequences)
     {
-        foreach (func_get_args() as $position => $sequence) {
-            args\expects(args\traversable, $sequence, $position);
-
+        foreach ($sequences as $sequence) {
             foreach ($sequence as $element) {
                 $this->array[static::getElementKey($element)] = $element;
             }
@@ -65,10 +60,10 @@ class Set extends Collection
     }
 
     /**
-     * @param Set|array|\Traversable $sequence
+     * @param iterable $sequence
      * @return Set
      */
-    public function intersection($sequence)
+    public function intersection(iterable $sequence)
     {
         if ($sequence instanceof Set) {
             $result = new Set();
@@ -76,8 +71,6 @@ class Set extends Collection
 
             return $result;
         }
-
-        args\expects(args\traversable, $sequence);
 
         $result = new Set();
         foreach ($sequence as $element) {
@@ -91,10 +84,10 @@ class Set extends Collection
     }
 
     /**
-     * @param Set|array|\Traversable $sequence
+     * @param iterable $sequence
      * @return Set
      */
-    public function difference($sequence)
+    public function difference(iterable $sequence)
     {
         if ($sequence instanceof Set) {
             $result = new Set();
@@ -102,8 +95,6 @@ class Set extends Collection
 
             return $result;
         }
-
-        args\expects(args\traversable, $sequence);
 
         $result = new Set();
         $intersection = $this->intersection($sequence);
@@ -118,10 +109,10 @@ class Set extends Collection
     }
 
     /**
-     * @param Set|array|\Traversable $sequence
+     * @param iterable $sequence
      * @return Set
      */
-    public function union($sequence)
+    public function union(iterable $sequence)
     {
         if ($sequence instanceof Set) {
             $result = new Set();
@@ -129,8 +120,6 @@ class Set extends Collection
 
             return $result;
         }
-
-        args\expects(args\traversable, $sequence);
 
         $result = $this->copy();
         foreach ($sequence as $element) {
@@ -141,16 +130,14 @@ class Set extends Collection
     }
 
     /**
-     * @param Set|array|\Traversable $sequence
+     * @param iterable $sequence
      * @return bool
      */
-    public function isSuperset($sequence)
+    public function isSuperset(iterable $sequence)
     {
         if ($sequence instanceof Set) {
             return array_intersect_key($this->array, $sequence->array) === $sequence->array;
         }
-
-        args\expects(args\traversable, $sequence);
 
         foreach ($sequence as $element) {
             $elementKey = static::getElementKey($element);
@@ -164,16 +151,14 @@ class Set extends Collection
     }
 
     /**
-     * @param Set|array|\Traversable $sequence
+     * @param iterable $sequence
      * @return bool
      */
-    public function isSubset($sequence)
+    public function isSubset(iterable $sequence)
     {
         if ($sequence instanceof Set) {
             return array_intersect_key($this->array, $sequence->array) === $this->array;
         }
-
-        args\expects(args\traversable, $sequence);
 
         $size = count($this->array);
         $present = array();

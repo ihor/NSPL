@@ -252,7 +252,7 @@ class Set extends Collection
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
      */
-    public function offsetExists($index)
+    public function offsetExists($index): bool
     {
         throw new \BadMethodCallException('Set does not support indexing');
     }
@@ -267,6 +267,7 @@ class Set extends Collection
      * @throws \Exception
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($index)
     {
         throw new \BadMethodCallException('Set does not support indexing');
@@ -285,7 +286,7 @@ class Set extends Collection
      * @throws \Exception
      * @return void
      */
-    public function offsetSet($index, $value)
+    public function offsetSet($index, $value): void
     {
         if (null === $index) {
             $this->array[static::getElementKey($value)] = $value;
@@ -305,7 +306,7 @@ class Set extends Collection
      * @throws \Exception
      * @return void
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         throw new \BadMethodCallException('Set does not support indexing');
     }
@@ -318,6 +319,7 @@ class Set extends Collection
      * @link http://php.net/manual/en/iterator.key.php
      * @return mixed scalar on success, or null on failure.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         throw new \BadMethodCallException('Set does not have keys');

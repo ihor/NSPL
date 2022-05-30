@@ -45,6 +45,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->isArray
@@ -58,7 +59,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    public function next()
+    public function next(): void
     {
         if ($this->isArray) {
             $this->isValid = (bool) next($this->sequence);
@@ -74,6 +75,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.key.php
      * @return mixed scalar on success, or null on failure.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->isArray
@@ -88,7 +90,7 @@ class ChainableSequence implements \Iterator
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->isArray
             ? $this->isValid
@@ -101,7 +103,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      */
-    public function rewind()
+    public function rewind(): void
     {
         if ($this->isArray) {
             reset($this->sequence);

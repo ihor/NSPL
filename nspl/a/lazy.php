@@ -43,13 +43,12 @@ const flatMap = '\nspl\a\lazy\flatMap';
  * @param iterable $sequence2
  * @return \Generator
  */
-function zip(iterable $sequence1, iterable $sequence2)
+function zip(iterable $sequence1, iterable $sequence2, iterable ...$moreSequences)
 {
     $sequences = func_get_args();
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\iterable_, $sequences[$j], $j + 1);
         if (is_array($sequences[$j])) {
             $sequences[$j] = new \ArrayIterator($sequences[$j]);
         }
@@ -80,14 +79,13 @@ const zip = '\nspl\a\lazy\zip';
  * @param iterable $sequence2
  * @return \Generator
  */
-function zipWith(callable $function, iterable $sequence1, iterable $sequence2)
+function zipWith(callable $function, iterable $sequence1, iterable $sequence2, iterable ...$moreSequences)
 {
     $sequences = func_get_args();
     array_shift($sequences);
     $count = count($sequences);
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\iterable_, $sequences[$j], $j + 1);
         if (is_array($sequences[$j])) {
             $sequences[$j] = new \ArrayIterator($sequences[$j]);
         }

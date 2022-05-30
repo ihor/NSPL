@@ -10,7 +10,7 @@ use function \nspl\rnd\sample;
 use function \nspl\rnd\choice;
 use function \nspl\rnd\weightedChoice;
 
-class RndTest extends \PHPUnit_Framework_TestCase
+class RndTest extends \PHPUnit\Framework\TestCase
 {
     public function testRandomString()
     {
@@ -49,15 +49,13 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($appearances as $item => $rate) {
-            $this->assertEquals(30000, $rate, '', 500);
+            $this->assertEqualsWithDelta(30000, $rate, 500);
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSampleOfPopulationLessThanLength()
     {
+        $this->expectException(\InvalidArgumentException::class);
         sample(['a', 'b', 'c'], 4);
     }
 
@@ -74,15 +72,13 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($appearances as $item => $rate) {
-            $this->assertEquals(10000, $rate, '', 300);
+            $this->assertEqualsWithDelta(10000, $rate, 300);
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testChoiceFromEmptySequence()
     {
+        $this->expectException(\InvalidArgumentException::class);
         choice([]);
     }
 
@@ -104,7 +100,7 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($appearances as $item => $rate) {
-            $this->assertEquals(50000 * $weights[$item] / 100, $rate, '', 300);
+            $this->assertEqualsWithDelta(50000 * $weights[$item] / 100, $rate, 300);
         }
     }
 
@@ -126,15 +122,13 @@ class RndTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($appearances as $item => $rate) {
-            $this->assertEquals(50000 * $weights[$item], $rate, '', 300);
+            $this->assertEqualsWithDelta(50000 * $weights[$item], $rate, 300);
         }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWeightedChoiceFromEmptySequence()
     {
+        $this->expectException(\InvalidArgumentException::class);
         weightedChoice([]);
     }
 

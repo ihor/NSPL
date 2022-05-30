@@ -47,7 +47,7 @@ use function nspl\op\instanceOf_;
 use function \nspl\a\map;
 use function nspl\f\partial;
 
-class OpTest extends \PHPUnit_Framework_TestCase
+class OpTest extends \PHPUnit\Framework\TestCase
 {
     public function testSum()
     {

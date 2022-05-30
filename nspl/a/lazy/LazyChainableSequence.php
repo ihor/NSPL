@@ -31,10 +31,10 @@ class LazyChainableSequence extends a\ChainableSequence
     /**
      * Zips sequence with a sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function zip($sequence)
+    public function zip(iterable $sequence)
     {
         return new self(zip($this->sequence, $sequence));
     }
@@ -43,10 +43,10 @@ class LazyChainableSequence extends a\ChainableSequence
      * Generalises zip by zipping with the function given as the first argument
      *
      * @param callable $function
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-     public function zipWith(callable $function, $sequence)
+     public function zipWith(callable $function, iterable $sequence)
      {
          return new self(zipWith($function, $this->sequence, $sequence));
      }

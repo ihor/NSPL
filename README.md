@@ -4,7 +4,7 @@ Non-standard PHP Library (NSPL) is a collection of modules that are meant to sol
 
  - [nspl\f](#nsplf) - provides functions that act on other functions. Helps to write code in functional programming paradigm
  - [nspl\op](#nsplop) - provides functions that perform standard PHP operations and can be passed as callbacks to higher-order functions. Mimics Python's [operator](https://docs.python.org/2/library/operator.html) module
- - [nspl\a](#nspla) - provides missing array functions which also can be applied to traversable sequences
+ - [nspl\a](#nspla) - provides missing array functions which also can be applied to iterable sequences
  - [nspl\a\lazy](#nsplalazy) - provides lazy versions of functions from ```\nspl\a```
  - [nspl\args](#nsplargs) - validates function arguments (will be moved into a separate package in version 2.0)
  - [nspl\ds](#nsplds) - provides non-standard data structures and methods to work with them
@@ -415,7 +415,7 @@ Check more ```\nspl\op``` examples [here](https://github.com/ihor/Nspl/blob/mast
 
 ## nspl\a
 
-Provides missing array functions which also can be applied to traversable sequences
+Provides missing array functions which also can be applied to iterable sequences
 
 ##### all($sequence, $predicate)
 
@@ -664,28 +664,28 @@ assert(['a', 'b', 'c'] === keys(array('a' => 1, 'b' => 2, 'c' => 3)));
 
 ##### in($item, $sequence)
 
-Checks if the item is present in array or traversable object
+Checks if the item is present in iterable (array or traversable object)
 ```php
 assert(true === in(1, [1, 2, 3]);
 ```
 
 ##### diff($sequence1, $sequence2)
 
-Computes the difference of arrays or traversable objects
+Computes the difference of iterables (arrays or traversable objects)
 ```php
 assert([1] === diff([1, 2, 3], new ArrayObject([2, 3, 4]));
 ```
 
 ##### intersect($sequence1, $sequence2)
 
-Computes the intersection of arrays or traversable objects
+Computes the intersection of iterables (arrays or traversable objects)
 ```php
 assert([2, 3] === intersect([1, 2, 3], new ArrayObject([2, 3, 4]));
 ```
 
 ##### cartesianProduct($sequences)
 
-Computes the cartesian product of two or more arrays or traversable objects
+Computes the cartesian product of two or more iterables (arrays or traversable objects)
 ```php
 assert([
     [1, 'a'],
@@ -740,7 +740,7 @@ Check more ```\nspl\a``` examples [here](https://github.com/ihor/Nspl/blob/maste
 ## nspl\a\lazy
 Provides lazy versions of functions from [nspl\a](#nspla)
 
-This module might be useful when you don't need to process all the values from an array or any other traversable sequence. To understand how these lazy functions work let's have a look at the following example.
+This module might be useful when you don't need to process all the values from an iterable (array or any other traversable sequence). To understand how these lazy functions work let's have a look at the following example.
 
 Let's define a function which wraps a generator function and logs all the values it yields. It will help up us to see the order of function calls:
 ```php
@@ -937,7 +937,8 @@ array_                              | Checks that argument is an array          
 object                              | Checks that argument is an object                                         | OR
 callable_                           | Checks that argument is callable                                       | OR
 arrayKey                            | Checks that argument can be an array key                               | OR
-traversable                         | Checks that argument can be traversed with foreach                     | OR
+iterable_                           | Checks that argument can be iterated with foreach                      | OR
+~~traversable~~                     | Deprecated in favour of `iterable_`                                    | OR
 arrayAccess                         | Checks that argument supports array index access                       | OR
 nonEmpty                            | Checks that argument is not empty                                      | AND
 positive                            | Checks that argument is positive (> 0)                                 | AND

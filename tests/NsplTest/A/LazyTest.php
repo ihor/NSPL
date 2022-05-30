@@ -38,7 +38,7 @@ use const \nspl\op\lt;
 use const \nspl\op\sum;
 
 
-class LazyTest extends \PHPUnit_Framework_TestCase
+class LazyTest extends \PHPUnit\Framework\TestCase
 {
     public function testMap()
     {
@@ -148,14 +148,14 @@ class LazyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(\Generator::class, filter('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 
-        $this->assertEquals([1, 2, 3], iterator_to_array(filter('is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([1, 2, 3], iterator_to_array(filter('is_numeric', ['a', 1, 'b', 2, 'c', 3])));
         $this->assertEquals(
             array('b' => 2),
             iterator_to_array(filter(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3)))
         );
         $this->assertEquals([], iterator_to_array(filter('is_int', [])));
 
-        $this->assertEquals([1, 2, 3], iterator_to_array(call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing([1, 2, 3], iterator_to_array(call_user_func(filter, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])));
         $this->assertEquals('\nspl\a\lazy\filter', filter);
     }
 
@@ -163,14 +163,14 @@ class LazyTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(\Generator::class, filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3]));
 
-        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing(['a', 'b', 'c'], iterator_to_array(filterNot('is_numeric', ['a', 1, 'b', 2, 'c', 3])));
         $this->assertEquals(
             array('a' => 1, 'c' => 3),
             iterator_to_array(filterNot(function($v) { return $v % 2 === 0; }, array('a' => 1, 'b' => 2, 'c' => 3)))
         );
         $this->assertEquals([], iterator_to_array(filterNot('is_int', [])));
 
-        $this->assertEquals(['a', 'b', 'c'], iterator_to_array(call_user_func(filterNot, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])), '', 0, 10, true);
+        $this->assertEqualsCanonicalizing(['a', 'b', 'c'], iterator_to_array(call_user_func(filterNot, 'is_numeric', ['a', 1, 'b', 2, 'c', 3])));
         $this->assertEquals('\nspl\a\lazy\filterNot', filterNot);
     }
 
@@ -234,7 +234,7 @@ class LazyTest extends \PHPUnit_Framework_TestCase
     {
         $result = partition('is_numeric', ['a', 1, 'b', 2, 'c', 3]);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertArrayHasKey(0, $result);
         $this->assertArrayHasKey(1, $result);
         $this->assertInstanceOf(\Generator::class, $result[0]);

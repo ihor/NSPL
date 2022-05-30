@@ -41,16 +41,13 @@ const apply = '\nspl\f\apply';
  * predefined left arguments passed to partial
  *
  * @param callable $function
- * @param mixed $arg1
- * @param mixed $arg2
- * @param mixed ...
+ * @param mixed[] ...$args
  * @return callable
  */
-function partial(callable $function, $arg1)
+function partial(callable $function, ...$args)
 {
-    $args = array_slice(func_get_args(), 1);
-    return function() use ($function, $args) {
-        return call_user_func_array($function, array_merge($args, func_get_args()));
+    return function(...$extraArgs) use ($function, $args) {
+        return call_user_func_array($function, array_merge($args, $extraArgs));
     };
 }
 const partial = '\nspl\f\partial';
@@ -60,16 +57,13 @@ const partial = '\nspl\f\partial';
  * predefined right arguments passed to rpartial
  *
  * @param callable $function
- * @param mixed $arg1
- * @param mixed $arg2
- * @param mixed ...
+ * @param mixed[] ...$args
  * @return callable
  */
-function rpartial(callable $function, $arg1)
+function rpartial(callable $function, ...$args)
 {
-    $args = array_slice(func_get_args(), 1);
-    return function() use ($function, $args) {
-        return call_user_func_array($function, array_merge(func_get_args(), $args));
+    return function(...$extraArgs) use ($function, $args) {
+        return call_user_func_array($function, array_merge($extraArgs, $args));
     };
 }
 const rpartial = '\nspl\f\rpartial';
@@ -84,15 +78,14 @@ const rpartial = '\nspl\f\rpartial';
  */
 function ppartial(callable $function, array $args)
 {
-    return function() use ($function, $args) {
-        $_args = func_get_args();
+    return function(...$extraArgs) use ($function, $args) {
         $position = 0;
-        do {
+        while ($extraArgs) {
             if (!isset($args[$position]) && !array_key_exists($position, $args)) {
-                $args[$position] = array_shift($_args);
+                $args[$position] = array_shift($extraArgs);
             }
             ++$position;
-        } while($_args);
+        };
         ksort($args);
         return call_user_func_array($function, $args);
     };
@@ -268,12 +261,11 @@ const throttled = '\nspl\f\throttled';
  * Applies function of one argument to each sequence item
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function map(callable $function, $sequence)
+function map(callable $function, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
     return array_map($function, a\traversableToArray($sequence));
 }
 const map = '\nspl\a\map';
@@ -286,13 +278,12 @@ const map = '\nspl\a\map';
  * to a single value.
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param mixed $initial
  * @return array
  */
-function reduce(callable $function, $sequence, $initial = 0)
+function reduce(callable $function, iterable $sequence, $initial = 0)
 {
-    args\expects(args\traversable, $sequence);
     return array_reduce(a\traversableToArray($sequence), $function, $initial);
 }
 const reduce = '\nspl\a\reduce';
@@ -304,13 +295,11 @@ const reduce = '\nspl\a\reduce';
  * Returns sequence items that satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function filter(callable $predicate, $sequence)
+function filter(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $sequence = a\traversableToArray($sequence);
     $filtered = array_filter($sequence, $predicate);
     return a\isList($sequence) ? array_values($filtered) : $filtered;
@@ -325,13 +314,11 @@ const filter = '\nspl\a\filter';
  * the elements that returned false
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function partition(callable $predicate, $sequence)
+function partition(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $isList = a\isList($sequence);
     $result = [[], []];
     foreach ($sequence as $k => $v) {
@@ -355,13 +342,11 @@ const partition = '\nspl\a\partition';
  * false, and the other containing all the elements that left
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function span(callable $predicate, $sequence)
+function span(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $isList = a\isList($sequence);
     $result = [[], []];
 

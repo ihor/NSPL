@@ -45,6 +45,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->isArray
@@ -58,7 +59,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    public function next()
+    public function next(): void
     {
         if ($this->isArray) {
             $this->isValid = (bool) next($this->sequence);
@@ -74,6 +75,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.key.php
      * @return mixed scalar on success, or null on failure.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->isArray
@@ -88,7 +90,7 @@ class ChainableSequence implements \Iterator
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->isArray
             ? $this->isValid
@@ -101,7 +103,7 @@ class ChainableSequence implements \Iterator
      * @link http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      */
-    public function rewind()
+    public function rewind(): void
     {
         if ($this->isArray) {
             reset($this->sequence);
@@ -162,10 +164,10 @@ class ChainableSequence implements \Iterator
     /**
      * Zips sequence with a sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function zip($sequence)
+    public function zip(iterable $sequence)
     {
         return new self(zip($this->sequence, $sequence));
     }
@@ -174,10 +176,10 @@ class ChainableSequence implements \Iterator
      * Generalises zip by zipping with the function given as the first argument
      *
      * @param callable $function
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-     public function zipWith(callable $function, $sequence)
+     public function zipWith(callable $function, iterable $sequence)
      {
          return new self(zipWith($function, $this->sequence, $sequence));
      }
@@ -415,10 +417,10 @@ class ChainableSequence implements \Iterator
     /**
      * Merges sequence with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function merge($sequence)
+    public function merge(iterable $sequence)
     {
         return new self(merge($this->sequence, $sequence));
     }
@@ -481,10 +483,10 @@ class ChainableSequence implements \Iterator
     /**
      * Computes the difference with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function diff($sequence)
+    public function diff(iterable $sequence)
     {
         return new self(diff($this->sequence, $sequence));
     }
@@ -492,18 +494,18 @@ class ChainableSequence implements \Iterator
     /**
      * Computes the intersection with the given sequence
      *
-     * @param array|\Traversable $sequence
+     * @param iterable $sequence
      * @return $this
      */
-    public function intersect($sequence)
+    public function intersect(iterable $sequence)
     {
         return new self(intersect($this->sequence, $sequence));
     }
 
     /**
-     * Computes the cartesian product of two or more arrays or traversable objects
+     * Computes the cartesian product of two or more iterables (arrays or traversable objects)
      *
-     * @param array|\Traversable $sequences
+     * @param iterable $sequences
      * @return $this
      */
     public function cartesianProduct()

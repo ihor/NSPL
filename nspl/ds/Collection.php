@@ -25,7 +25,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
      */
-    public function offsetExists($index)
+    public function offsetExists($index): bool
     {
         return isset($this->array[$index]);
     }
@@ -40,6 +40,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @throws \Exception
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($index)
     {
         if (!isset($this->array[$index])) {
@@ -62,7 +63,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @throws \Exception
      * @return void
      */
-    public function offsetSet($index, $value)
+    public function offsetSet($index, $value): void
     {
         if (null === $index) {
             $this->array[] = $value;
@@ -82,7 +83,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @throws \Exception
      * @return void
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         if (!isset($this->array[$index])) {
             throw new \Exception('Index out of range'); // @todo Throw IndexException
@@ -104,6 +105,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @link http://php.net/manual/en/iterator.current.php
      * @return mixed Can return any type.
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->array);
@@ -115,7 +117,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @link http://php.net/manual/en/iterator.next.php
      * @return void Any returned value is ignored.
      */
-    public function next()
+    public function next(): void
     {
         $this->valid = (bool) next($this->array);
     }
@@ -126,6 +128,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @link http://php.net/manual/en/iterator.key.php
      * @return mixed scalar on success, or null on failure.
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->array);
@@ -138,7 +141,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @return boolean The return value will be casted to boolean and then evaluated.
      * Returns true on success or false on failure.
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->valid;
     }
@@ -149,7 +152,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
      * @link http://php.net/manual/en/iterator.rewind.php
      * @return void Any returned value is ignored.
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->array);
         $this->valid = true;
@@ -160,7 +163,7 @@ abstract class Collection implements \ArrayAccess, \Iterator, \Countable
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->array);
     }

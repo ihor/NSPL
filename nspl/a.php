@@ -10,14 +10,12 @@ use nspl\args;
  * Returns true if all of the $sequence items satisfy the predicate (or if the $sequence is empty).
  * If the predicate was not passed returns true if all of the $sequence items are true.
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param callable $predicate
  * @return bool
  */
-function all($sequence, callable $predicate = null)
+function all(iterable $sequence, callable $predicate = null)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $value) {
         if ($predicate && !$predicate($value) || !$predicate && !$value) {
             return false;
@@ -32,14 +30,12 @@ const all = '\nspl\a\all';
  * Returns true if any of the $sequence items satisfy the predicate.
  * If the predicate was not passed returns true if any of the $sequence items are true.
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param callable $predicate
  * @return bool
  */
-function any($sequence, callable $predicate = null)
+function any(iterable $sequence, callable $predicate = null)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $value) {
         if ($predicate && $predicate($value) || !$predicate && $value) {
             return true;
@@ -54,13 +50,11 @@ const any = '\nspl\a\any';
  * Applies function of one argument to each sequence item
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function map(callable $function, $sequence)
+function map(callable $function, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $result = [];
     foreach ($sequence as $key => $item) {
         $result[$key] = $function($item);
@@ -74,13 +68,11 @@ const map = '\nspl\a\map';
  * Applies function of one argument to each sequence item and flattens the result
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function flatMap(callable $function, $sequence)
+function flatMap(callable $function, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $result = [];
     foreach ($sequence as $item) {
         foreach ($function($item) as $resultValue) {
@@ -95,17 +87,16 @@ const flatMap = '\nspl\a\flatMap';
 /**
  * Zips two or more sequences
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function zip($sequence1, $sequence2)
+function zip(iterable $sequence1, iterable $sequence2, iterable ...$moreSequences)
 {
     $sequences = func_get_args();
     $count = func_num_args();
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $sequences[$j], $j + 1);
         if ($sequences[$j] instanceof \Iterator) {
             $sequences[$j] = iterator_to_array($sequences[$j]);
         }
@@ -137,18 +128,17 @@ const zip = '\nspl\a\zip';
  * Generalises zip by zipping with the function given as the first argument, instead of an array-creating function
  *
  * @param callable $function
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function zipWith(callable $function, $sequence1, $sequence2)
+function zipWith(callable $function, iterable $sequence1, iterable $sequence2, iterable ...$moreSequences)
 {
     $sequences = func_get_args();
     array_shift($sequences);
     $count = count($sequences);
 
     for ($j = 0; $j < $count; ++$j) {
-        args\expects(args\traversable, $sequences[$j], $j + 1);
         if ($sequences[$j] instanceof \Iterator) {
             $sequences[$j] = iterator_to_array($sequences[$j]);
         }
@@ -185,14 +175,12 @@ const zipWith = '\nspl\a\zipWith';
  * to reduce the sequence to a single value.
  *
  * @param callable $function
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param mixed $initial
  * @return mixed
  */
-function reduce(callable $function, $sequence, $initial = 0)
+function reduce(callable $function, iterable $sequence, $initial = 0)
 {
-    args\expects(args\traversable, $sequence);
-
     foreach ($sequence as $item) {
         $initial = $function($initial, $item);
     }
@@ -205,13 +193,11 @@ const reduce = '\nspl\a\reduce';
  * Returns sequence items that satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function filter(callable $predicate, $sequence)
+function filter(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $prevKey = -1;
     $isList = true;
 
@@ -237,13 +223,11 @@ const filter = '\nspl\a\filter';
  * Returns sequence items that don't satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function filterNot(callable $predicate, $sequence)
+function filterNot(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $prevKey = -1;
     $isList = true;
 
@@ -268,14 +252,13 @@ const filterNot = '\nspl\a\filterNot';
 /**
  * Returns the first N sequence items with the given step
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int $N
  * @param int $step
  * @return array
  */
-function take($sequence, $N, $step = 1)
+function take(iterable $sequence, $N, $step = 1)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\int, $N);
     args\expects(args\int, $step, 3);
 
@@ -335,13 +318,11 @@ const takeKeys = '\nspl\a\takeKeys';
  * Returns the longest sequence prefix of all items which satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function takeWhile(callable $predicate, $sequence)
+function takeWhile(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $result = [];
     foreach ($sequence as $item) {
         if ($predicate($item)) {
@@ -359,13 +340,11 @@ const takeWhile = '\nspl\a\takeWhile';
 /**
  * Returns the first sequence item
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return mixed
  */
-function first($sequence)
+function first(iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $counter = 0;
     foreach ($sequence as $item) {
         ++$counter;
@@ -383,13 +362,11 @@ const first = '\nspl\a\first';
 /**
  * Returns the second sequence item
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return mixed
  */
-function second($sequence)
+function second(iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $counter = 0;
     foreach ($sequence as $item) {
         if (++$counter < 2) {
@@ -409,13 +386,11 @@ const second = '\nspl\a\second';
 /**
  * Returns the last sequence item
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return mixed
  */
-function last($sequence)
+function last(iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     if (!$sequence) {
         throw new \InvalidArgumentException('Can not return the last item of an empty sequence');
     }
@@ -433,13 +408,12 @@ const last = '\nspl\a\last';
 /**
  * Drops the first N sequence items
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int $N
  * @return array
  */
-function drop($sequence, $N)
+function drop(iterable $sequence, $N)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\int, $N);
 
     if (is_array($sequence)) {
@@ -465,13 +439,11 @@ const drop = '\nspl\a\drop';
  * Drops the longest sequence prefix of all items which satisfy the predicate
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function dropWhile(callable $predicate, $sequence)
+function dropWhile(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $drop = true;
     $result = [];
     foreach ($sequence as $item) {
@@ -517,13 +489,11 @@ const dropKeys = '\nspl\a\dropKeys';
  * the items that returned false
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function partition(callable $predicate, $sequence)
+function partition(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $isList = isList($sequence);
     $result = [[], []];
 
@@ -547,13 +517,11 @@ const partition = '\nspl\a\partition';
  * false, and the other containing all the items that left
  *
  * @param callable $predicate
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function span(callable $predicate, $sequence)
+function span(callable $predicate, iterable $sequence)
 {
-    args\expects(args\traversable, $sequence);
-
     $isList = isList($sequence);
     $result = [[], []];
 
@@ -578,15 +546,14 @@ const span = '\nspl\a\span';
 /**
  * Returns array which contains indexed sequence items
  *
- * @param array|\Traversable $sequence List of arrays or objects
+ * @param iterable $sequence List of arrays or objects
  * @param int|string|callable $by An array key or a function
  * @param bool $keepLast If true only the last item with the key will be returned otherwise list of items which share the same key value will be returned
  * @param callable|null $transform A function that transforms list item after indexing
  * @return array
  */
-function indexed($sequence, $by, $keepLast = true, callable $transform = null)
+function indexed(iterable $sequence, $by, $keepLast = true, callable $transform = null)
 {
-    args\expects(args\traversable, $sequence);
     args\expects([args\arrayKey, args\callable_], $by);
     args\expects(args\bool, $keepLast);
 
@@ -617,16 +584,15 @@ const indexed = '\nspl\a\indexed';
 /**
  * Returns array which contains sorted items from the passed sequence
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param bool|callable $reversed If true then return reversed sorted sequence. If not boolean and $key was not passed then acts as a $key parameter
  * @param callable $key Function of one argument that is used to extract a comparison key from each item
  * @param callable $cmp Function of two arguments which returns a negative number, zero or positive number depending on
  *                      whether the first argument is smaller than, equal to, or larger than the second argument
  * @return array
  */
-function sorted($sequence, $reversed = false, callable $key = null, callable $cmp = null)
+function sorted(iterable $sequence, $reversed = false, callable $key = null, callable $cmp = null)
 {
-    args\expects(args\traversable, $sequence);
     args\expects([args\bool, args\callable_], $reversed);
 
     if (!$cmp) {
@@ -661,13 +627,12 @@ const sorted = '\nspl\a\sorted';
 /**
  * Returns array which contains sequence items sorted by keys
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param bool $reversed
  * @return array
  */
-function keySorted($sequence, $reversed = false)
+function keySorted(iterable $sequence, $reversed = false)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\bool, $reversed);
 
     if ($sequence instanceof \Iterator) {
@@ -688,13 +653,12 @@ const keySorted = '\nspl\a\keySorted';
 /**
  * Flattens multidimensional sequence
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param int|null $depth
  * @return array
  */
-function flatten($sequence, $depth = null)
+function flatten(iterable $sequence, $depth = null)
 {
-    args\expects(args\traversable, $sequence);
     args\expectsOptional(args\int, $depth);
 
     if (null === $depth) {
@@ -734,13 +698,12 @@ const flatten = '\nspl\a\flatten';
 /**
  * Returns a list of (key, value) pairs
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @param bool $valueKey If true then returns (value, key) pairs
  * @return array
  */
-function pairs($sequence, $valueKey = false)
+function pairs(iterable $sequence, $valueKey = false)
 {
-    args\expects(args\traversable, $sequence);
     args\expects(args\bool, $valueKey);
 
     if (!$sequence) {
@@ -759,15 +722,12 @@ const pairs = '\nspl\a\pairs';
 /**
  * Returns array containing $sequence1 items and $sequence2 items
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function merge($sequence1, $sequence2)
+function merge(iterable $sequence1, iterable $sequence2)
 {
-    args\expects(args\traversable, $sequence1);
-    args\expects(args\traversable, $sequence2, 2);
-
     $result = $sequence1 instanceof \Iterator
         ? iterator_to_array($sequence1)
         : $sequence1;
@@ -837,10 +797,10 @@ const value = '\nspl\a\value';
 /**
  * Returns list of the sequence keys
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function keys($sequence)
+function keys(iterable $sequence)
 {
     if (is_array($sequence)) {
         return array_keys($sequence);
@@ -858,10 +818,10 @@ const keys = '\nspl\a\keys';
 /**
  * Returns list of the sequence values
  *
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return array
  */
-function values($sequence)
+function values(iterable $sequence)
 {
     if (is_array($sequence)) {
         return array_values($sequence);
@@ -889,13 +849,13 @@ function isList($var)
 const isList = '\nspl\a\isList';
 
 /**
- * Checks if the item is present in array or traversable object
+ * Checks if the item is present in iterable (array or traversable object)
  *
  * @param mixed $item
- * @param array|\Traversable $sequence
+ * @param iterable $sequence
  * @return bool
  */
-function in($item, $sequence)
+function in($item, iterable $sequence)
 {
     if (is_array($sequence)) {
         return in_array($item, $sequence);
@@ -905,7 +865,6 @@ function in($item, $sequence)
         return in_array($item, $sequence->toArray());
     }
 
-    args\expects(args\traversable, $sequence);
     foreach ($sequence as $sequenceItem) {
         if ($sequenceItem === $item) {
             return true;
@@ -917,13 +876,13 @@ function in($item, $sequence)
 const in = '\nspl\a\in';
 
 /**
- * Computes the difference of arrays or traversable objects
+ * Computes the difference of iterables (arrays or traversable objects)
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function diff($sequence1, $sequence2)
+function diff(iterable $sequence1, iterable $sequence2)
 {
     if (is_array($sequence1)) {
         $toDiff1 = $sequence1;
@@ -950,13 +909,13 @@ function diff($sequence1, $sequence2)
 const diff = '\nspl\a\diff';
 
 /**
- * Computes the intersection of arrays or traversable objects
+ * Computes the intersection of iterables (arrays or traversable objects)
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function intersect($sequence1, $sequence2)
+function intersect(iterable $sequence1, iterable $sequence2)
 {
     if (is_array($sequence1)) {
         $toDiff1 = $sequence1;
@@ -983,12 +942,12 @@ function intersect($sequence1, $sequence2)
 const intersect = '\nspl\a\intersect';
 
 /**
- * Computes the cartesian product of two or more arrays or traversable objects
+ * Computes the cartesian product of two or more iterables (arrays or traversable objects)
  *
- * @param array|\Traversable $sequences
+ * @param iterable $sequences
  * @return array
  */
-function cartesianProduct($sequences)
+function cartesianProduct(iterable $sequences)
 {
     $count = func_num_args();
     if ($count > 1) {
@@ -1028,10 +987,10 @@ function with($sequence)
 //region deprecated
 /**
  * @deprecated
- * @param array|\Traversable $var
+ * @param iterable $var
  * @return array
  */
-function traversableToArray($var)
+function traversableToArray(iterable $var)
 {
     return $var instanceof \Iterator
         ? iterator_to_array($var)
@@ -1043,15 +1002,12 @@ function traversableToArray($var)
  * @see \nspl\a\merge
  * Returns arrays containing $sequence1 items and $sequence2 items
  *
- * @param array|\Traversable $sequence1
- * @param array|\Traversable $sequence2
+ * @param iterable $sequence1
+ * @param iterable $sequence2
  * @return array
  */
-function extend($sequence1, $sequence2)
+function extend(iterable $sequence1, iterable $sequence2)
 {
-    args\expects(args\traversable, $sequence1);
-    args\expects(args\traversable, $sequence2, 2);
-
     return array_merge(traversableToArray($sequence1), traversableToArray(($sequence2)));
 }
 const extend = '\nspl\a\merge';

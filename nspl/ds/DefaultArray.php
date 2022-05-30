@@ -53,6 +53,7 @@ class DefaultArray extends Collection
      * </p>
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($index)
     {
         if (!$this->offsetExists($index)) {
